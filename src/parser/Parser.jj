@@ -5,7 +5,7 @@ options {
 PARSER_BEGIN(Parser)
 
 package parser;
-import ast.*;import ast.arithmetic.*; import ast.relational.*;
+import ast.*; import ast.value.*; import ast.operations.*;
 
 public class Parser {
 

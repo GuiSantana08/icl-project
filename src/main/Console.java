@@ -1,11 +1,11 @@
 package main;
 
 import java.io.ByteArrayInputStream;
+import java.text.ParseException;
 
-import ast.Exp;
+import ast.ASTNode;
 
 import interpreter.*;
-import types.TypingException;
 
 public class Console {
 
@@ -15,9 +15,9 @@ public class Console {
 
 		while (true) {
 			try {
-				Exp e = parser.Start();
+				ASTNode e = parser.Start();
 				System.out.println("Parse OK!" );
-				System.out.println(Interpreter.interpret(e));
+				//System.out.println(Interpreter.interpret(e));
 			} catch (TokenMgrError e) {
 				System.out.println("Lexical Error!");
 				e.printStackTrace();

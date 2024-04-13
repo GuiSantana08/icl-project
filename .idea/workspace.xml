@@ -1,20 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="5065f8a3-b26e-41a6-8781-d9c0f65d5f82" name="Changes" comment="" />
+    <list default="true" id="a8fa6a96-beb2-4532-9600-0f61f2671cf2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/ast/ASTType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ast/value/ASTBool.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ast/value/ASTInt.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/compiler/CodeGen.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/exceptions/InvalidTypeException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/interpreter/Interpreter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/symbols/Env.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/type/BaseType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/type/Type.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/type/TypeChecker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/type/TypeVoid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/Console.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/Console.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/Parser.jj" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/Parser.jj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/BoolValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/BoolValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/IntValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/IntValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/Value.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/Value.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
-  <component name="ProjectId" id="2exHerV9PW2BpNIUZROKzauFlDV" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2exBRQU9ZPBNbwDWUnvWLdDjfX3" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -24,16 +53,31 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/guipi/Documents/eu/SST_FCT_UNL_MIEI/4Ano/2ºSemestre/ICL/icl-project/src/value",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2ºSemestre\ICL\icl-project\src\value" />
+      <recent name="C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2ºSemestre\ICL\icl-project" />
+      <recent name="C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2ºSemestre\ICL\ICL-Project\src" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2ºSemestre\ICL\icl-project\src" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration default="true" type="AZURE_FUNCTION_SUPPORT" factoryName="Run Functions">
       <option name="appName" />
       <option name="appServicePlanName" />
       <option name="appServicePlanResourceGroup" />
-      <option name="appSettingsKey" value="f1f5e940-1f70-48ac-91ba-0c04f45ac8cc" />
+      <option name="appSettingsKey" value="3bc0cdd7-2c5e-4054-90c1-0dfba09033e9" />
       <option name="artifact" />
       <option name="debugOptions" />
       <option name="deployment" />
@@ -71,12 +115,15 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="5065f8a3-b26e-41a6-8781-d9c0f65d5f82" name="Changes" comment="" />
-      <created>1712839406910</created>
+      <changelist id="a8fa6a96-beb2-4532-9600-0f61f2671cf2" name="Changes" comment="" />
+      <created>1712836344425</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1712839406910</updated>
-      <workItem from="1712839408001" duration="2000" />
+      <updated>1712836344425</updated>
+      <workItem from="1712836345693" duration="326000" />
+      <workItem from="1712836703459" duration="2232000" />
+      <workItem from="1713007223498" duration="2848000" />
+      <workItem from="1713010502638" duration="2949000" />
     </task>
     <servers />
   </component>
