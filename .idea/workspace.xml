@@ -5,23 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a8fa6a96-beb2-4532-9600-0f61f2671cf2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/ast/ASTType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ast/value/ASTBool.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ast/value/ASTInt.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/compiler/CodeGen.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/exceptions/InvalidTypeException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/interpreter/Interpreter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/symbols/Env.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/type/BaseType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/type/Type.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/type/TypeChecker.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/type/TypeVoid.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/target/BasicBlock.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/target/Instruction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/target/SIPush.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/target/arithmetic/IAdd.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/target/arithmetic/IDiv.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/target/arithmetic/IMul.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/target/arithmetic/INeg.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/target/arithmetic/ISub.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/target/relational/IAnd.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/target/relational/If_ICmpDiff.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/target/relational/If_ICmpEq.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/target/relational/If_ICmpGEq.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/target/relational/If_ICmpGt.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/target/relational/If_ICmpLEq.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/target/relational/If_ICmpLt.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tests/ParserTester.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/Console.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/Console.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/Parser.jj" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/Parser.jj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/value/BoolValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/BoolValue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/value/IntValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/IntValue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/value/Value.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/Value.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/icl-project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/icl-project.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/compiler/CodeGen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/compiler/CodeGen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interpreter/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/interpreter/Interpreter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,10 +53,14 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/guipi/Documents/eu/SST_FCT_UNL_MIEI/4Ano/2ºSemestre/ICL/icl-project/src/value",
+    "last_opened_file_path": "C:/Users/guipi/Documents/eu/SST_FCT_UNL_MIEI/4Ano/2ºSemestre/ICL/icl-project/src",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -64,6 +71,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2ºSemestre\ICL\icl-project\src" />
       <recent name="C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2ºSemestre\ICL\icl-project\src\value" />
       <recent name="C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2ºSemestre\ICL\icl-project" />
       <recent name="C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2ºSemestre\ICL\ICL-Project\src" />
@@ -124,6 +132,7 @@
       <workItem from="1712836703459" duration="2232000" />
       <workItem from="1713007223498" duration="2848000" />
       <workItem from="1713010502638" duration="2949000" />
+      <workItem from="1713177712073" duration="1156000" />
     </task>
     <servers />
   </component>
