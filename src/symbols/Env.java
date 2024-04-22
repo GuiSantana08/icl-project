@@ -5,33 +5,33 @@ import java.util.Map;
 
 public class Env<T> {
 
-	private Map<Symbol,T> table;
+	private Map<String,T> table;
 	private Env<T> prev;
 
 	public Env() {
 		table = new Hashtable<>(20);
+		prev = new Env<>();
 	}
 	
 	public void bind(String id, T val) {
-	       //TODO:
+		table.put(id, val);
 	}
 	
 
 	
 	public T find(String id) {
-	    //TODO:
-	    return null;
+		return table.get(id);
 	}
 	
 	
 	public Env<T> beginScope() {
-	       //TODO:
-	    return null;
+		this.prev = this;
+		return new Env<>();
 	}
 	
 	public Env<T> endScope() {
-	       //TODO:
-	    return null;
+		this.table = this.prev.table;
+		return this.prev;
 	}
 	
 

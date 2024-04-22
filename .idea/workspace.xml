@@ -5,26 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a8fa6a96-beb2-4532-9600-0f61f2671cf2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/target/BasicBlock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/target/Instruction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/target/SIPush.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/target/arithmetic/IAdd.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/target/arithmetic/IDiv.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/target/arithmetic/IMul.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/target/arithmetic/INeg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/target/arithmetic/ISub.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/target/relational/IAnd.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/target/relational/If_ICmpDiff.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/target/relational/If_ICmpEq.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/target/relational/If_ICmpGEq.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/target/relational/If_ICmpGt.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/target/relational/If_ICmpLEq.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/target/relational/If_ICmpLt.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/tests/ParserTester.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/icl-project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/icl-project.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/compiler/CodeGen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/compiler/CodeGen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/interpreter/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/interpreter/Interpreter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/symbols/Env.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/symbols/Env.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +25,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 2
@@ -57,10 +43,11 @@
     "Repository.Attach.Annotations": "false",
     "Repository.Attach.JavaDocs": "false",
     "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/guipi/Documents/eu/SST_FCT_UNL_MIEI/4Ano/2ºSemestre/ICL/icl-project/src",
+    "last_opened_file_path": "/Users/gpeduarte/Documents/ICL/icl-project",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -112,14 +99,6 @@
       </method>
     </configuration>
   </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
-        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
-      </set>
-    </attachedChunks>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -133,6 +112,7 @@
       <workItem from="1713007223498" duration="2848000" />
       <workItem from="1713010502638" duration="2949000" />
       <workItem from="1713177712073" duration="1156000" />
+      <workItem from="1713780234539" duration="390000" />
     </task>
     <servers />
   </component>
