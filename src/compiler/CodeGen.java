@@ -12,7 +12,6 @@ import target.BasicBlock;
 import target.SIPush;
 import target.arithmetic.*;
 import target.relational.*;
-import type.Type;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -132,8 +131,8 @@ public class CodeGen implements ast.ASTNode.Visitor<Void, Env<Void>>{
 
     @Override
     public Void visit(ASTEq e, Env<Void> env) throws InvalidTypeException {
-        e.left.accept(this, env);
-        e.right.accept(this, env);
+        e.arg1.accept(this, env);
+        e.arg2.accept(this, env);
         block.addInstruction(new If_ICmpEq());
         return null;
     }

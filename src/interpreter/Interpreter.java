@@ -108,8 +108,8 @@ public class Interpreter implements ast.ASTNode.Visitor<Value, Env<Value>>{
 
     @Override
     public Value visit(ASTEq e, Env<Value> env) throws InvalidTypeException {
-        IntValue b1 = (IntValue) e.left.accept(this, env);
-        IntValue b2 = (IntValue) e.right.accept(this, env);
+        IntValue b1 = (IntValue) e.arg1.accept(this, env);
+        IntValue b2 = (IntValue) e.arg2.accept(this, env);
         return (new BoolValue(b1.getValue() == b2.getValue()));
     }
 
