@@ -2,85 +2,147 @@ package compiler;
 
 import ast.ASTNode;
 import ast.operations.arithmetic.*;
+import ast.operations.references.ASTRef;
 import ast.operations.relational.*;
 import ast.value.ASTBool;
 import ast.value.ASTInt;
 import exceptions.InvalidTypeException;
 import symbols.Env;
 import target.BasicBlock;
+import target.SIPush;
+import target.arithmetic.*;
+import target.relational.*;
 import type.Type;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 
-public class CodeGen implements ast.ASTNode.Visitor<Void, Env<Type>>{
+public class CodeGen implements ast.ASTNode.Visitor<Void, Env<Void>>{
 
     BasicBlock block = new BasicBlock();
 
 
     @Override
-    public Void visit(ASTInt i, Env<Type> env) throws InvalidTypeException {
+    public Void visit(ASTInt i, Env<Void> env) throws InvalidTypeException {
+        block.addInstruction(new SIPush(i.value) );
+        return i.accept(this, env);
+    }
+
+    @Override
+    public Void visit(ASTBool b, Env<Void> env) throws InvalidTypeException {
+        block.addInstruction(new SIPush(b.value ? 1 : 0));
+        return b.accept(this, env);
+    }
+
+    @Override
+    public Void visit(ASTNeg e, Env<Void> env) throws InvalidTypeException {
+        e.arg.accept(this, env);
+        block.addInstruction(new INeg());
         return null;
     }
 
     @Override
-    public Void visit(ASTBool b, Env<Type> env) throws InvalidTypeException {
+    public Void visit(ASTDiv e, Env<Void> env) throws InvalidTypeException {
+        e.arg1.accept(this, env);
+        e.arg2.accept(this, env);
+        block.addInstruction(new IDiv());
         return null;
     }
 
     @Override
-    public Void visit(ASTNeg e, Env<Type> env) throws InvalidTypeException {
+    public Void visit(ASTMult e, Env<Void> env) throws InvalidTypeException {
+        e.arg1.accept(this, env);
+        e.arg2.accept(this, env);
+        block.addInstruction(new IMul());
         return null;
     }
 
     @Override
-    public Void visit(ASTDiv e, Env<Type> env) throws InvalidTypeException {
+    public Void visit(ASTSub e, Env<Void> env) throws InvalidTypeException {
+        e.arg1.accept(this, env);
+        e.arg2.accept(this, env);
+        block.addInstruction(new ISub());
         return null;
     }
 
     @Override
-    public Void visit(ASTMult e, Env<Type> env) throws InvalidTypeException {
+    public Void visit(ASTAdd e, Env<Void> env) throws InvalidTypeException {
+        e.arg1.accept(this, env);
+        e.arg2.accept(this, env);
+        block.addInstruction(new IAdd());
         return null;
     }
 
     @Override
-    public Void visit(ASTSub e, Env<Type> env) throws InvalidTypeException {
+    public Void visit(ASTAnd e, Env<Void> env) throws InvalidTypeException {
+        e.left.accept(this, env);
+        e.right.accept(this, env);
+        //block.addInstruction(new SIPush());
+        return e.accept(this, env);
+    }
+
+    @Override
+    public Void visit(ASTOr e, Env<Void> env) throws InvalidTypeException {
+        e.left.accept(this, env);
+        e.right.accept(this, env);
+        //block.addInstruction(new SIPush());
+        return e.accept(this, env);
+    }
+
+    @Override
+    public Void visit(ASTDiff e, Env<Void> env) throws InvalidTypeException {
+        e.arg1.accept(this, env);
+        e.arg2.accept(this, env);
+        block.addInstruction(new If_ICmpDiff());
         return null;
     }
 
     @Override
-    public Void visit(ASTAdd e, Env<Type> env) throws InvalidTypeException {
+    public Void visit(ASTLeq e, Env<Void> env) throws InvalidTypeException {
+        e.arg1.accept(this, env);
+        e.arg2.accept(this, env);
+        block.addInstruction(new If_ICmpLEq());
         return null;
     }
 
     @Override
-    public Void visit(ASTDiff e, Env<Type> env) throws InvalidTypeException {
+    public Void visit(ASTLt e, Env<Void> env) throws InvalidTypeException {
+        e.arg1.accept(this, env);
+        e.arg2.accept(this, env);
+        block.addInstruction(new If_ICmpLt());
         return null;
     }
 
     @Override
-    public Void visit(ASTLeq e, Env<Type> env) throws InvalidTypeException {
+    public Void visit(ASTGeq e, Env<Void> env) throws InvalidTypeException {
+        e.arg1.accept(this, env);
+        e.arg2.accept(this, env);
+        block.addInstruction(new If_ICmpGEq());
         return null;
     }
 
     @Override
-    public Void visit(ASTLt e, Env<Type> env) throws InvalidTypeException {
+    public Void visit(ASTGt e, Env<Void> env) throws InvalidTypeException {
+        e.arg1.accept(this, env);
+        e.arg2.accept(this, env);
+        block.addInstruction(new If_ICmpGt());
         return null;
     }
 
     @Override
-    public Void visit(ASTGeq e, Env<Type> env) throws InvalidTypeException {
+    public Void visit(ASTEq e, Env<Void> env) throws InvalidTypeException {
+        e.left.accept(this, env);
+        e.right.accept(this, env);
+        block.addInstruction(new If_ICmpEq());
         return null;
     }
 
     @Override
-    public Void visit(ASTGt e, Env<Type> env) throws InvalidTypeException {
-        return null;
-    }
-
-    @Override
-    public Void visit(ASTEq e, Env<Type> env) throws InvalidTypeException {
+    public Void visit(ASTRef e, Env<Void> env) throws InvalidTypeException {
+        e.mem.accept(this, env);
+        e.val.accept(this, env);
+        //block.addInstruction(new SIPush());
         return null;
     }
 
