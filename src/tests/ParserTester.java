@@ -1,7 +1,7 @@
 package tests;
 
 import exceptions.InvalidTypeException;
-import main.Console;
+import main.InterMain;
 import org.junit.Assert;
 import org.junit.Test;
 import parser.ParseException;
@@ -10,11 +10,11 @@ import parser.ParseException;
 public class ParserTester {
 
 	private void testCase(String expression) throws InvalidTypeException {
-		Assert.assertTrue(Console.accept(expression));		
+		Assert.assertTrue(InterMain.accept(expression));
 	}
 	
 	private void testNegativeCase(String expression) throws InvalidTypeException {
-		Assert.assertFalse(Console.accept(expression));
+		Assert.assertFalse(InterMain.accept(expression));
 	}
 	
 	@Test

@@ -4,12 +4,12 @@ import ast.ASTType;
 import exceptions.InvalidTypeException;
 
 public class ASTEq extends ASTType {
-    public ASTType left;
-    public ASTType right;
+    public ASTType arg1;
+    public ASTType arg2;
 
     public ASTEq(ASTType left, ASTType right){
-        this.left = left;
-        this.right = right;
+        arg1 = left;
+        arg2 = right;
     }
 
     @Override

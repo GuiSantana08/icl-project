@@ -5,9 +5,10 @@ import java.text.ParseException;
 
 import ast.ASTNode;
 
+import exceptions.InvalidTypeException;
 import interpreter.*;
 
-public class Console {
+public class InterMain {
 
 	@SuppressWarnings("static-access")
 	public static void main(String args[]) {
@@ -17,7 +18,7 @@ public class Console {
 			try {
 				ASTNode e = parser.Start();
 				System.out.println("Parse OK!" );
-				//System.out.println(Interpreter.interpret(e));
+				System.out.println(Interpreter.interpret(e));
 			} catch (TokenMgrError e) {
 				System.out.println("Lexical Error!");
 				e.printStackTrace();
@@ -26,7 +27,7 @@ public class Console {
 				System.out.println("Syntax Error!");
 				e.printStackTrace();
 				parser.ReInit(System.in);
-			} catch (TypingException e) {
+            } catch (InvalidTypeException e) {
                 throw new RuntimeException(e);
             }
         }
