@@ -5,11 +5,14 @@ import exceptions.InvalidTypeException;
 
 public class ASTRef extends ASTType {
 
-    public ASTType mem, val;
+    public ASTType val;
 
-    public ASTRef(ASTType e1, ASTType e2) {
-        this.mem = e1;
-        this.val = e2;
+    public ASTRef() {
+
+    }
+
+    public ASTRef(ASTType val) {
+        this.val = val;
     }
 
     @Override
