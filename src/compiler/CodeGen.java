@@ -139,7 +139,6 @@ public class CodeGen implements ast.ASTNode.Visitor<Void, Env<Void>>{
 
     @Override
     public Void visit(ASTRef e, Env<Void> env) throws InvalidTypeException {
-        e.mem.accept(this, env);
         e.val.accept(this, env);
         //block.addInstruction(new SIPush());
         return null;
