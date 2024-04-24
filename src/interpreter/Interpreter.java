@@ -10,6 +10,7 @@ import exceptions.InvalidTypeException;
 import symbols.Env;
 import value.BoolValue;
 import value.IntValue;
+import value.RefValue;
 import value.Value;
 
 public class Interpreter implements ast.ASTNode.Visitor<Value, Env<Value>>{
@@ -115,9 +116,7 @@ public class Interpreter implements ast.ASTNode.Visitor<Value, Env<Value>>{
 
     @Override
     public Value visit(ASTRef e, Env<Value> env) throws InvalidTypeException {
-        IntValue mempos = (IntValue) e.mem.accept(this, env);
-        //Value valueType = e.val.accept(this, env).getClass();
-        return (new IntValue(mempos.getValue()));
+        return e.val.accept(this, env);
     }
 
 
