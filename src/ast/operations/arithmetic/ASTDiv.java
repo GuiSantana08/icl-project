@@ -1,13 +1,13 @@
 package ast.operations.arithmetic;
 
-import ast.ASTType;
+import ast.ASTValue;
 import exceptions.InvalidTypeException;
 
-public class ASTDiv extends ASTType{
-    public final ASTType arg1;
-    public final ASTType arg2;
+public class ASTDiv extends ASTValue{
+    public final ASTValue arg1;
+    public final ASTValue arg2;
 
-    public ASTDiv(ASTType arg1, ASTType arg2) {
+    public ASTDiv(ASTValue arg1, ASTValue arg2) {
         this.arg1 = arg1;
         this.arg2 = arg2;
     }

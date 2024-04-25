@@ -7,6 +7,9 @@ import ast.ASTNode;
 
 import exceptions.InvalidTypeException;
 import interpreter.*;
+import parser.Parser;
+import parser.ParseException;
+import parser.TokenMgrError;
 
 public class InterMain {
 
@@ -18,17 +21,18 @@ public class InterMain {
 			try {
 				ASTNode e = parser.Start();
 				System.out.println("Parse OK!" );
+
 				System.out.println(Interpreter.interpret(e));
 			} catch (TokenMgrError e) {
 				System.out.println("Lexical Error!");
 				e.printStackTrace();
 				parser.ReInit(System.in);
-			} catch (ParseException e) {
+			} catch (InvalidTypeException e) {
+                throw new RuntimeException(e);
+            } catch (parser.ParseException e) {
 				System.out.println("Syntax Error!");
 				e.printStackTrace();
 				parser.ReInit(System.in);
-            } catch (InvalidTypeException e) {
-                throw new RuntimeException(e);
             }
         }
 	}

@@ -41,16 +41,16 @@ public class ParserTester {
 	
 	@Test
 	public void testsLabClass01() throws Exception {
-//		testCase("-1\n");
-//		testCase("-1*3\n");
-//		testCase("true\n");
-//		testCase("false\n");
-//		testCase("11 > 22\n");
-//		testCase("11 < 22\n");
-//		testCase("11 >= 22\n");
-//		testCase("11 <= 22\n");
-//		testCase("11 == 22\n");
-//		testCase("11 != 22\n");
+		testCase("-1\n");
+		testCase("-1*3\n");
+		testCase("true\n");
+		testCase("false\n");
+		testCase("11 > 22\n");
+		testCase("11 < 22\n");
+		testCase("11 >= 22\n");
+		testCase("11 <= 22\n");
+		testCase("11 == 22\n");
+		testCase("11 != 22\n");
 		testCase("11 != 22 == true\n");
 		testCase("3*5+4 != 1+2\n");
 		testCase("3*5 != 1+2 == true\n");

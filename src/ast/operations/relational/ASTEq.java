@@ -1,13 +1,13 @@
 package ast.operations.relational;
 
-import ast.ASTType;
+import ast.ASTValue;
 import exceptions.InvalidTypeException;
 
-public class ASTEq extends ASTType {
-    public ASTType arg1;
-    public ASTType arg2;
+public class ASTEq extends ASTValue {
+    public ASTValue arg1;
+    public ASTValue arg2;
 
-    public ASTEq(ASTType left, ASTType right){
+    public ASTEq(ASTValue left, ASTValue right){
         arg1 = left;
         arg2 = right;
     }

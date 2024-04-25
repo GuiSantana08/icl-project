@@ -2,6 +2,7 @@ package main;
 
 import ast.ASTNode;
 import compiler.CodeGen;
+import parser.Parser;
 
 public class CompMain {
 

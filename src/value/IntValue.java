@@ -1,13 +1,13 @@
 package value;
 
-public class IntValue implements Value {
+public class IntValue implements Value<Integer> {
 	private int value;
 	
 	public IntValue(int value) {
 		this.value = value;
 	}
 
-	public int getValue() {
+	public Integer getValue() {
 		return value;
 	}
 

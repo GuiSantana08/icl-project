@@ -144,6 +144,11 @@ public class CodeGen implements ast.ASTNode.Visitor<Void, Env<Void>>{
         return null;
     }
 
+    @Override
+    public Void visit(ASTNot astNot, Env<Void> env) throws InvalidTypeException {
+        return null;
+    }
+
     public static BasicBlock codeGen(ASTNode e) throws InvalidTypeException {
         CodeGen cg = new CodeGen();
         e.accept(cg, null);

@@ -5,7 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a8fa6a96-beb2-4532-9600-0f61f2671cf2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/compiler/CodeGen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/compiler/CodeGen.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTNot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/ASTNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/ASTNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/ASTType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/ASTValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTAdd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTAdd.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTDiv.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTDiv.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTMult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTMult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTNeg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTNeg.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTSub.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTSub.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/references/ASTRef.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/references/ASTRef.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTAnd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTAnd.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTDiff.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTDiff.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTEq.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTEq.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTGeq.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTGeq.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTGt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTGt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTLeq.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTLeq.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTLt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTLt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTOr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTOr.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/value/ASTInt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/value/ASTInt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interpreter/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/interpreter/Interpreter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/InterMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/InterMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/Parser.jj" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/Parser.jj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/type/TypeChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/type/TypeChecker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/Value.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/Value.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

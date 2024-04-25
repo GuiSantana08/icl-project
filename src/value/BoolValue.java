@@ -1,13 +1,14 @@
 package value;
 
-public class BoolValue implements Value {
+public class BoolValue implements Value<Boolean> {
 	private boolean value;
-	
-	public BoolValue(boolean value) {
+
+public BoolValue(boolean value) {
 		this.value = value;
 	}
 
-	public boolean getValue() {
+	@Override
+	public Boolean getValue() {
 		return value;
 	}
 
@@ -16,11 +17,13 @@ public class BoolValue implements Value {
 		return Boolean.toString(value);
 	}
 
+
 	@Override
 	public boolean equals(Object obj) {
 		return obj instanceof BoolValue && value == ((BoolValue)obj).getValue();
 	}
-	
+
+
 	
 	
 	
