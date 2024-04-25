@@ -3,6 +3,7 @@ package type;
 import ast.ASTNode;
 import ast.ASTNode.Visitor;
 import ast.operations.arithmetic.*;
+import ast.operations.references.ASTNew;
 import ast.operations.references.ASTRef;
 import ast.operations.relational.*;
 import ast.value.ASTBool;
@@ -116,6 +117,11 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
         } else {
             throw new InvalidTypeException("Type error in negation");
         }
+    }
+
+    @Override
+    public Type visit(ASTNew e, Env<Type> env) throws InvalidTypeException {
+        return null;
     }
 
     private Type handleIntegerOperation(ASTNode arg1, ASTNode arg2, String operationName, Env<Type> env) throws InvalidTypeException {

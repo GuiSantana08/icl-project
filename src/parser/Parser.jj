@@ -40,6 +40,7 @@ TOKEN :
   |  < NOT : "!">
   |  < AND : "&&">
   |  < OR : "||">
+  |  < LET : "let">
   |  < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >
 }
 
@@ -99,4 +100,5 @@ ASTNode Fact() :
  | <NOT> e = Fact() { return new ASTNot(e); }
  | ("-" e = Fact() { return new ASTNeg(e); })
  | <LPAR> e = Expr() <RPAR> { return e; }
+ | <LET> e = Expr() { }
 }
