@@ -5,17 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="871e79da-d30d-47f1-b889-e3756a61fe08" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/type/BoolType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/type/IntType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTNot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTNot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/interpreter/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/interpreter/Interpreter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/InterMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/InterMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/type/BaseType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/type/Type.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/type/Type.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/type/TypeChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/type/TypeChecker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/type/TypeVoid.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/RefValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/RefValue.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,13 +15,13 @@
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.InterMain.executor": "Run",
-    "git-widget-placeholder": "master",
-    "node.js.selected.package.tslint": "(autodetect)"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.InterMain.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration default="true" type="AZURE_FUNCTION_SUPPORT" factoryName="Run Functions">
       <option name="appName" />
