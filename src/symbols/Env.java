@@ -6,16 +6,14 @@ import java.util.Map;
 public class Env<T> {
 
 	private Map<String,T> table;
-	private Env<T> prev; //TODO: inicializar a null
+	private Env<T> prev = null;
 
 	public Env() {
 		table = new Hashtable<>(20);
-		prev = new Env<>(); //TODO: nao inicializar o prev
 	}
 
-	// TODO: verificar se o id e unico
 	public void bind(String id, T val) {
-		table.put(id, val);
+		table.putIfAbsent(id, val);
 	}
 
 	public T find(String id) {
@@ -25,13 +23,16 @@ public class Env<T> {
 			return table.get(id);
 		}
 		//TODO: nao verifica se nao tivermos um prev, ou sej aum nivel a baixo
-		do {
-			Env<T> currentEnv = this.prev;
-			found = currentEnv.table.get(id) != null;
-			if (found) {
-				return currentEnv.table.get(id);
-			}
-		}while(!found);
+		if(this.prev != null) {
+			do {
+				Env<T> currentEnv = this.prev;
+				found = currentEnv.table.get(id) != null;
+				if (found) {
+					return currentEnv.table.get(id);
+				}
+			} while (!found);
+		}
+
 		return null;
 	}
 

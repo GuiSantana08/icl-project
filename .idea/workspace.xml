@@ -5,36 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a8fa6a96-beb2-4532-9600-0f61f2671cf2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/ASTValue.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTAdd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTAdd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTDiv.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTDiv.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTMult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTMult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTNeg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTNeg.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTSub.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTSub.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/operations/references/ASTRef.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/references/ASTRef.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTAnd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTAnd.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTDiff.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTDiff.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTEq.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTEq.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTGeq.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTGeq.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTGt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTGt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTLeq.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTLeq.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTLt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTLt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTNot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTNot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTOr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTOr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/value/ASTBool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/value/ASTBool.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/value/ASTInt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/value/ASTInt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/compiler/CodeGen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/compiler/CodeGen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/interpreter/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/interpreter/Interpreter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/InterMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/InterMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/ParseException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/Parser.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/ParserConstants.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/ParserTokenManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/SimpleCharStream.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/Token.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/TokenMgrError.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tests/ParserTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/ParserTester.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/symbols/Env.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/symbols/Env.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,28 +40,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Downloaded.Files.Path.Enabled": "false",
-    "JUnit.ParserTester.test01.executor": "Run",
-    "JUnit.ParserTester.test02ArithmeticOps.executor": "Run",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/guipi/Documents/eu/SST_FCT_UNL_MIEI/4Ano/2ºSemestre/ICL/icl-project",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;JUnit.ParserTester.test01.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ParserTester.test02ArithmeticOps.executor&quot;: &quot;Run&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/guipi/Documents/eu/SST_FCT_UNL_MIEI/4Ano/2ºSemestre/ICL/icl-project&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2ºSemestre\ICL\icl-project\src" />
