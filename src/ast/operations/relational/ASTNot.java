@@ -5,10 +5,10 @@ import exceptions.InvalidTypeException;
 
 public class ASTNot implements ASTNode {
 
-        public ASTNode expr;
+        public ASTNode arg;
 
-        public ASTNot(ASTNode expr){
-            this.expr = expr;
+        public ASTNot(ASTNode arg){
+            this.arg = arg;
         }
 
         @Override
@@ -18,6 +18,6 @@ public class ASTNot implements ASTNode {
 
         @Override
         public String toString(){
-            return "ASTNot(" + expr + ")";
+            return "ASTNot(" + arg + ")";
         }
 }

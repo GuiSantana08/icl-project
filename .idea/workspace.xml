@@ -4,89 +4,40 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a8fa6a96-beb2-4532-9600-0f61f2671cf2" name="Changes" comment="">
+    <list default="true" id="871e79da-d30d-47f1-b889-e3756a61fe08" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/type/BoolType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/type/IntType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/symbols/Env.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/symbols/Env.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTNot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTNot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interpreter/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/interpreter/Interpreter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/InterMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/InterMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/type/BaseType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/type/Type.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/type/Type.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/type/TypeChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/type/TypeChecker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/type/TypeVoid.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Interface" />
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
-  </component>
-  <component name="ProjectColorInfo">{
-  &quot;customColor&quot;: &quot;&quot;,
-  &quot;associatedIndex&quot;: 2
-}</component>
-  <component name="ProjectId" id="2exBRQU9ZPBNbwDWUnvWLdDjfX3" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
-  </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;JUnit.ParserTester.test01.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ParserTester.test02ArithmeticOps.executor&quot;: &quot;Run&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/guipi/Documents/eu/SST_FCT_UNL_MIEI/4Ano/2ºSemestre/ICL/icl-project&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.InterMain.executor": "Run",
+    "git-widget-placeholder": "master",
+    "node.js.selected.package.tslint": "(autodetect)"
   }
-}</component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2ºSemestre\ICL\icl-project\src" />
-      <recent name="C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2ºSemestre\ICL\icl-project\src\value" />
-      <recent name="C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2ºSemestre\ICL\icl-project" />
-      <recent name="C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2ºSemestre\ICL\ICL-Project\src" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2ºSemestre\ICL\icl-project\src" />
-    </key>
-    <key name="ExtractSuperBase.RECENT_KEYS">
-      <recent name="ast.value" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="ast.operations.references" />
-      <recent name="value" />
-      <recent name="ast.operations.relational" />
-    </key>
-  </component>
-  <component name="RunManager" selected="Application.InterMain">
+}]]></component>
+  <component name="RunManager">
     <configuration default="true" type="AZURE_FUNCTION_SUPPORT" factoryName="Run Functions">
       <option name="appName" />
       <option name="appServicePlanName" />
       <option name="appServicePlanResourceGroup" />
-      <option name="appSettingsKey" value="3bc0cdd7-2c5e-4054-90c1-0dfba09033e9" />
+      <option name="appSettingsKey" value="d1b9fc28-7825-4700-9b17-f6d5cf90af15" />
       <option name="artifact" />
       <option name="debugOptions" />
       <option name="deployment" />
@@ -112,138 +63,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="InterMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="main.InterMain" />
-      <module name="icl-project" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="main.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ParserTester.test01" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="icl-project" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="tests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="tests" />
-      <option name="MAIN_CLASS_NAME" value="tests.ParserTester" />
-      <option name="METHOD_NAME" value="test01" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ParserTester.test02ArithmeticOps" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="icl-project" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="tests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="tests" />
-      <option name="MAIN_CLASS_NAME" value="tests.ParserTester" />
-      <option name="METHOD_NAME" value="test02ArithmeticOps" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ParserTester.test03Error01" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="icl-project" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="tests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="tests" />
-      <option name="MAIN_CLASS_NAME" value="tests.ParserTester" />
-      <option name="METHOD_NAME" value="test03Error01" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ParserTester.testsLabClass01" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="icl-project" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="tests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="tests" />
-      <option name="MAIN_CLASS_NAME" value="tests.ParserTester" />
-      <option name="METHOD_NAME" value="testsLabClass01" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.InterMain" />
-        <item itemvalue="JUnit.ParserTester.testsLabClass01" />
-        <item itemvalue="JUnit.ParserTester.test03Error01" />
-        <item itemvalue="JUnit.ParserTester.test02ArithmeticOps" />
-        <item itemvalue="JUnit.ParserTester.test01" />
-      </list>
-    </recent_temporary>
   </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
-        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
-      </set>
-    </attachedChunks>
-  </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="a8fa6a96-beb2-4532-9600-0f61f2671cf2" name="Changes" comment="" />
-      <created>1712836344425</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1712836344425</updated>
-      <workItem from="1712836345693" duration="326000" />
-      <workItem from="1712836703459" duration="2232000" />
-      <workItem from="1713007223498" duration="2848000" />
-      <workItem from="1713010502638" duration="2949000" />
-      <workItem from="1713177712073" duration="1156000" />
-      <workItem from="1713780234539" duration="517000" />
-      <workItem from="1713799237869" duration="763000" />
-      <workItem from="1713883873169" duration="12000" />
-      <workItem from="1713883895325" duration="2586000" />
-      <workItem from="1713963963640" duration="3899000" />
-      <workItem from="1714062629610" duration="320000" />
-    </task>
     <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>

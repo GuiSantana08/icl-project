@@ -14,11 +14,13 @@ import value.IntValue;
 //import value.RefValue;
 import value.Value;
 
+import java.util.Objects;
+
 public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
 
     @Override
     public Value<?> visit(ASTInt i, Env<Value<?>> env) throws InvalidTypeException {
-        return i.accept(this, env);
+        return new IntValue(i.value);
     }
 
     @Override
@@ -74,12 +76,18 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
         return (new BoolValue(b1.getValue() || b2.getValue()));
     }
 
-    //TODO: pode ser inteiro e booleano
     @Override
     public Value<?> visit(ASTDiff e, Env<Value<?>> env) throws InvalidTypeException {
-        IntValue b1 = (IntValue) e.arg1.accept(this, env);
-        IntValue b2 = (IntValue) e.arg2.accept(this, env);
-        return (new BoolValue(b1.getValue() != b2.getValue()));
+        Value<?> arg1Value = e.arg1.accept(this, env);
+        Value<?> arg2Value = e.arg2.accept(this, env);
+
+        if (arg1Value instanceof IntValue intValue1 && arg2Value instanceof IntValue intValue2) {
+            return new BoolValue(!Objects.equals(intValue1.getValue(), intValue2.getValue()));
+        } else if (arg1Value instanceof BoolValue boolValue1 && arg2Value instanceof BoolValue boolValue2) {
+            return new BoolValue(boolValue1.getValue() != boolValue2.getValue());
+        } else {
+            throw new InvalidTypeException("Arguments must be either both integers or both booleans.");
+        }
     }
 
     @Override
@@ -113,9 +121,16 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
     //TODO: pode ser inteiro e booleano
     @Override
     public Value<?> visit(ASTEq e, Env<Value<?>> env) throws InvalidTypeException {
-        IntValue b1 = (IntValue) e.arg1.accept(this, env);
-        IntValue b2 = (IntValue) e.arg2.accept(this, env);
-        return (new BoolValue(b1.getValue() == b2.getValue()));
+        Value<?> arg1Value = e.arg1.accept(this, env);
+        Value<?> arg2Value = e.arg2.accept(this, env);
+
+        if (arg1Value instanceof IntValue intValue1 && arg2Value instanceof IntValue intValue2) {
+            return new BoolValue(Objects.equals(intValue1.getValue(), intValue2.getValue()));
+        } else if (arg1Value instanceof BoolValue boolValue1 && arg2Value instanceof BoolValue boolValue2) {
+            return new BoolValue(boolValue1.getValue() == boolValue2.getValue());
+        } else {
+            throw new InvalidTypeException("For equals the arguments must be either both integers or both booleans.");
+        }
     }
 
     @Override
@@ -125,7 +140,8 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
 
     @Override
     public Value<?> visit(ASTNot astNot, Env<Value<?>> env) throws InvalidTypeException {
-        return null;
+        BoolValue b = (BoolValue) astNot.arg.accept(this, env);
+        return new BoolValue(!b.getValue());
     }
 
 

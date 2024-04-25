@@ -9,19 +9,25 @@ import interpreter.*;
 import parser.Parser;
 import parser.ParseException;
 import parser.TokenMgrError;
+import symbols.Env;
+import type.Type;
+import type.TypeChecker;
 
 public class InterMain {
 
 	@SuppressWarnings("static-access")
 	public static void main(String args[]) {
 		Parser parser = new Parser(System.in);
+		TypeChecker typeChecker = new TypeChecker();
+		Env<Type> environmentType = new Env<>();
 
 		while (true) {
 			try {
 				ASTNode e = parser.Start();
 				System.out.println("Parse OK!" );
-
+				e.accept(typeChecker, environmentType);
 				System.out.println(Interpreter.interpret(e));
+
 			} catch (TokenMgrError e) {
 				System.out.println("Lexical Error!");
 				e.printStackTrace();

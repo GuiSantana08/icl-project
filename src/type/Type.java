@@ -2,7 +2,7 @@ package type;
 
 public interface Type {
 
-        String type();
+        String getType();
 
         String jvmType();
 }
