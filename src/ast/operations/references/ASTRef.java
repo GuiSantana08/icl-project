@@ -1,17 +1,17 @@
 package ast.operations.references;
 
-import ast.ASTValue;
+import ast.ASTNode;
 import exceptions.InvalidTypeException;
 
-public class ASTRef extends ASTValue {
+public class ASTRef implements ASTNode {
 
-    public ASTValue val;
+    public ASTNode val;
 
     public ASTRef() {
 
     }
 
-    public ASTRef(ASTValue val) {
+    public ASTRef(ASTNode val) {
         this.val = val;
     }
 

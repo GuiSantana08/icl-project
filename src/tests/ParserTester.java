@@ -9,11 +9,11 @@ import parser.ParseException;
 
 public class ParserTester {
 
-	private void testCase(String expression) throws InvalidTypeException {
+	private void testCase(String expression) throws ParseException {
 		Assert.assertTrue(InterMain.accept(expression));
 	}
 	
-	private void testNegativeCase(String expression) throws InvalidTypeException {
+	private void testNegativeCase(String expression) throws ParseException {
 		Assert.assertFalse(InterMain.accept(expression));
 	}
 	

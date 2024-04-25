@@ -1,14 +1,14 @@
 package ast.operations.relational;
 
-import ast.ASTValue;
+import ast.ASTNode;
 import exceptions.InvalidTypeException;
 
-public class ASTOr extends ASTValue {
+public class ASTOr implements ASTNode {
 
-    public ASTValue left;
-    public ASTValue right;
+    public ASTNode left;
+    public ASTNode right;
 
-    public ASTOr(ASTValue left, ASTValue right){
+    public ASTOr(ASTNode left, ASTNode right){
         this.left = left;
         this.right = right;
     }

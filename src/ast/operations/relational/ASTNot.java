@@ -1,13 +1,13 @@
 package ast.operations.relational;
 
-import ast.ASTType;
+import ast.ASTNode;
 import exceptions.InvalidTypeException;
 
-public class ASTNot extends ASTType {
+public class ASTNot implements ASTNode {
 
-        public ASTType expr;
+        public ASTNode expr;
 
-        public ASTNot(ASTType expr){
+        public ASTNot(ASTNode expr){
             this.expr = expr;
         }
 

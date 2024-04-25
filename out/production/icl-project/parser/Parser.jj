@@ -40,18 +40,17 @@ TOKEN :
   |  < NOT : "!">
   |  < AND : "&&">
   |  < OR : "||">
-  |
-  < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >
+  |  < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >
 }
 
-Exp Start():
-{ Exp e; }
+ASTNode Start():
+{ ASTNode e; }
 {
    e = logicOps() <EL>  { return e; }
 }
 
-Exp logicOps():
-{Exp e1, e2;}
+ASTNode logicOps():
+{ASTNode e1, e2;}
 {
     e1 = BoolOps()
     [ <AND> e2 = logicOps() { e1 = new ASTAnd(e1,e2); }
@@ -59,8 +58,8 @@ Exp logicOps():
     { return e1; }
 }
 
-Exp BoolOps():
-{Exp e1, e2;}
+ASTNode BoolOps():
+{ASTNode e1, e2;}
 {
     e1 = Expr()
     [ <EQREL> e2 = BoolOps() { e1 = new ASTEq(e1,e2); }
@@ -74,8 +73,8 @@ Exp BoolOps():
 }
 
 
-Exp Expr() :
-{ Exp e1, e2; }
+ASTNode Expr() :
+{ ASTNode e1, e2; }
 {
    e1 = Term() 
      [ <PLUS> e2 = Expr() { e1 = new ASTAdd(e1,e2); }
@@ -83,8 +82,8 @@ Exp Expr() :
      { return e1; }
 }
 
-Exp Term() :
-{ Exp e1, e2; }
+ASTNode Term() :
+{ ASTNode e1, e2; }
 {
      e1 = Fact()
      [ <TIMES> e2 = Term() { e1 = new ASTMult(e1,e2); }
@@ -92,11 +91,12 @@ Exp Term() :
      { return e1; }
 }
 
-Exp Fact() :
-{ Token x; Exp e;}
+ASTNode Fact() :
+{ Token x; ASTNode e;}
 {
    x = <Num> {return new ASTInt(Integer.parseInt(x.image));}
  | x = <BOOL> { return new ASTBool(Boolean.parseBoolean(x.image)); }
+ | <NOT> e = Fact() { return new ASTNot(e); }
  | ("-" e = Fact() { return new ASTNeg(e); })
  | <LPAR> e = Expr() <RPAR> { return e; }
 }

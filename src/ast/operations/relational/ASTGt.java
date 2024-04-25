@@ -1,13 +1,13 @@
 package ast.operations.relational;
 
-import ast.ASTValue;
+import ast.ASTNode;
 import exceptions.InvalidTypeException;
 
-public class ASTGt extends ASTValue {
-    public ASTValue arg1;
-    public ASTValue arg2;
+public class ASTGt implements ASTNode {
+    public ASTNode arg1;
+    public ASTNode arg2;
 
-    public ASTGt(ASTValue arg1, ASTValue arg2) {
+    public ASTGt(ASTNode arg1, ASTNode arg2) {
         this.arg1 = arg1;
         this.arg2 = arg2;
     }

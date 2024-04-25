@@ -1,6 +1,7 @@
 package compiler;
 
 import ast.ASTNode;
+import ast.ASTNode.Visitor;
 import ast.operations.arithmetic.*;
 import ast.operations.references.ASTRef;
 import ast.operations.relational.*;
@@ -17,7 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 
-public class CodeGen implements ast.ASTNode.Visitor<Void, Env<Void>>{
+public class CodeGen implements Visitor<Void, Env<Void>>{
 
     BasicBlock block = new BasicBlock();
 

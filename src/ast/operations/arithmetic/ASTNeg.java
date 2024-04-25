@@ -1,12 +1,12 @@
 package ast.operations.arithmetic;
 
-import ast.ASTValue;
+import ast.ASTNode;
 import exceptions.InvalidTypeException;
 
-public class ASTNeg extends ASTValue {
-    public final ASTValue arg;
+public class ASTNeg implements ASTNode {
+    public final ASTNode arg;
 
-    public ASTNeg(ASTValue arg) {
+    public ASTNeg(ASTNode arg) {
         this.arg = arg;
     }
 

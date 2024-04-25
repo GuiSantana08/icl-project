@@ -1,6 +1,7 @@
 package interpreter;
 
 import ast.ASTNode;
+import ast.ASTNode.Visitor;
 import ast.operations.arithmetic.*;
 import ast.operations.references.ASTRef;
 import ast.operations.relational.*;
@@ -13,7 +14,7 @@ import value.IntValue;
 //import value.RefValue;
 import value.Value;
 
-public class Interpreter implements ast.ASTNode.Visitor<Value<?>, Env<Value<?>{
+public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
 
     @Override
     public Value<?> visit(ASTInt i, Env<Value<?>> env) throws InvalidTypeException {

@@ -1,9 +1,9 @@
 package ast.value;
 
-import ast.ASTValue;
+import ast.ASTNode;
 import exceptions.InvalidTypeException;
 
-public class ASTInt extends ASTValue {
+public class ASTInt  implements ASTNode {
     public final int value;
 
     public ASTInt(int value) {

@@ -1,9 +1,9 @@
 package ast.value;
 
-import ast.ASTValue;
+import ast.ASTNode;
 import exceptions.InvalidTypeException;
 
-public class ASTBool extends ASTValue {
+public class ASTBool implements ASTNode{
     public final boolean value;
 
     public ASTBool(boolean value) {
