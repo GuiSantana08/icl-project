@@ -8,6 +8,7 @@ import ast.operations.references.*;
 import ast.operations.relational.*;
 import ast.value.ASTBool;
 import ast.value.ASTInt;
+import ast.value.ASTString;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 
@@ -15,6 +16,7 @@ public interface ASTNode {
     public interface Visitor<T,E> {
         T visit(ASTInt e, E env)        throws InvalidTypeException, DuplicateVariableFoundException;
         T visit(ASTBool e, E env)       throws InvalidTypeException, DuplicateVariableFoundException;
+        T visit(ASTString e, E env)     throws InvalidTypeException, DuplicateVariableFoundException;
         T visit(ASTNeg e, E env)        throws InvalidTypeException, DuplicateVariableFoundException;
         T visit(ASTDiv e, E env)        throws InvalidTypeException, DuplicateVariableFoundException;
         T visit(ASTMult e, E env)       throws InvalidTypeException, DuplicateVariableFoundException;

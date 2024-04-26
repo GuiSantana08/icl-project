@@ -10,6 +10,7 @@ import ast.operations.references.*;
 import ast.operations.relational.*;
 import ast.value.ASTBool;
 import ast.value.ASTInt;
+import ast.value.ASTString;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 import symbols.Env;

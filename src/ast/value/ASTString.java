@@ -1,17 +1,17 @@
-package ast.operations.references;
+package ast.value;
 
 import ast.ASTNode;
-import ast.value.ASTString;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 
-public class ASTId implements ASTNode {
+public class ASTString implements ASTNode {
 
-    public String id;
+    public final String string;
 
-    public ASTId(String id) {
-        this.id = id;
+    public ASTString(String string) {
+        this.string = string;
     }
+
     @Override
     public <T, E> T accept(Visitor<T, E> v, E env) throws InvalidTypeException, DuplicateVariableFoundException {
         return v.visit(this, env);

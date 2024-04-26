@@ -10,6 +10,7 @@ import ast.operations.references.*;
 import ast.operations.relational.*;
 import ast.value.ASTBool;
 import ast.value.ASTInt;
+import ast.value.ASTString;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 import symbols.Env;
@@ -24,6 +25,11 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     @Override
     public Type visit(ASTBool b, Env<Type> env) throws InvalidTypeException {
         return BoolType.singleton;
+    }
+
+    @Override
+    public Type visit(ASTString s, Env<Type> env) throws InvalidTypeException {
+        return StringType.singleton;
     }
 
     @Override
