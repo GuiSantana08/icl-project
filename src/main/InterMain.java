@@ -1,8 +1,6 @@
 package main;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 
 import ast.ASTNode;
 
@@ -20,12 +18,8 @@ import value.Value;
 public class InterMain {
 
 	@SuppressWarnings("static-access")
-	public static void main(String args[]) throws FileNotFoundException {
-		Parser parser = null;
-		if(args[0] != null)
-			parser = new Parser(new FileReader(args[0]));
-		else
-			parser = new Parser(System.in);
+	public static void main(String args[]) {
+		Parser parser = new Parser(System.in);
 		TypeChecker typeChecker = new TypeChecker();
 		Env<Type> environmentType = new Env<>();
 		Env<Value<?>> environmentValue = new Env<>();
@@ -35,22 +29,21 @@ public class InterMain {
 				ASTNode e = parser.Start();
 				System.out.println("Parse OK!" );
 				e.accept(typeChecker, environmentType);
-				Interpreter.interpret(e, environmentValue);
-				//System.out.println(Interpreter.interpret(e, environmentValue));
+				System.out.println(Interpreter.interpret(e, environmentValue));
 
 			} catch (TokenMgrError e) {
 				System.out.println("Lexical Error!");
 				e.printStackTrace();
 				parser.ReInit(System.in);
 			} catch (InvalidTypeException | DuplicateVariableFoundException e) {
-                throw new RuntimeException(e);
-            }
+				throw new RuntimeException(e);
+			}
 			catch (parser.ParseException e) {
 				System.out.println("Syntax Error!");
 				e.printStackTrace();
 				parser.ReInit(System.in);
-            }
-        }
+			}
+		}
 	}
 
 	public static boolean accept(String s) throws ParseException {
