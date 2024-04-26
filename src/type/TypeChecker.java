@@ -3,8 +3,7 @@ package type;
 import ast.ASTNode;
 import ast.ASTNode.Visitor;
 import ast.operations.arithmetic.*;
-import ast.operations.references.ASTNew;
-import ast.operations.references.ASTRef;
+import ast.operations.references.*;
 import ast.operations.relational.*;
 import ast.value.ASTBool;
 import ast.value.ASTInt;
@@ -121,6 +120,21 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
 
     @Override
     public Type visit(ASTNew e, Env<Type> env) throws InvalidTypeException {
+        return null;
+    }
+
+    @Override
+    public Type visit(ASTLet e, Env<Type> env) throws InvalidTypeException {
+        return null;
+    }
+
+    @Override
+    public Type visit(ASTId e, Env<Type> env) throws InvalidTypeException {
+        return null;
+    }
+
+    @Override
+    public Type visit(ASTAtrib e, Env<Type> env) throws InvalidTypeException {
         return null;
     }
 
