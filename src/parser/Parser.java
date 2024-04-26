@@ -85,6 +85,7 @@ ASTNode productionOps():
     case LPAR:
     case BOOL:
     case DEREF:
+    case IF:
     case NEW:
     case NOT:
     case PRINT:
@@ -109,6 +110,7 @@ ASTNode productionOps():
     case LPAR:
     case BOOL:
     case DEREF:
+    case IF:
     case NEW:
     case PRINT:
     case PRINTLN:
@@ -300,6 +302,9 @@ ASTNode productionOps():
       e = BoolOps();
                                     e = new ASTPrintln(e);
       break;
+    case IF:
+      e = ifElse();
+      break;
     case Num:
     case MINUS:
       e = Num();
@@ -326,6 +331,19 @@ ASTNode productionOps():
       throw new ParseException();
     }
       {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public ASTNode ifElse() throws ParseException {
+   ASTNode e1, e2, e3;
+    jj_consume_token(IF);
+    e1 = BoolOps();
+    jj_consume_token(THEN);
+    e2 = SeqE();
+    jj_consume_token(ELSE);
+    e3 = SeqE();
+    jj_consume_token(END);
+                                                                       {if (true) return new ASTIfThenElse(e1, e2, e3);}
     throw new Error("Missing return statement in function");
   }
 
@@ -381,7 +399,7 @@ ASTNode productionOps():
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x0,0x0,0x1202250,0xc00000,0xc00000,0x202250,0x1f8000,0x1f8000,0x60,0x60,0x180,0x180,0x202250,0x50,};
+      jj_la1_0 = new int[] {0x0,0x0,0x3202250,0xc00000,0xc00000,0x2202250,0x1f8000,0x1f8000,0x60,0x60,0x180,0x180,0x2202250,0x50,};
    }
    private static void jj_la1_init_1() {
       jj_la1_1 = new int[] {0x10,0x20,0x2f,0x0,0x0,0x2f,0x0,0x0,0x0,0x0,0x0,0x0,0x2d,0x0,};

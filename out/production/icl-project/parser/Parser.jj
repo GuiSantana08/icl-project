@@ -170,12 +170,19 @@ ASTNode Fact() :
         <DEREF> e = BoolOps() { e = new ASTDRef(e); }
         | <PRINT> e = BoolOps() { e = new ASTPrint(e); }
         | <PRINTLN> e = BoolOps() { e = new ASTPrintln(e); }
+        | e = ifElse()
         |  e = Num()
         | e = Id()
         | e = Bool()
         | <LPAR> e = SeqE() <RPAR>
         | <NEW> e = BoolOps() { e = new ASTNew(e); })
     { return e; }
+ }
+
+ ASTNode ifElse():
+ { ASTNode e1, e2, e3; }
+ {
+     <IF> e1 = BoolOps() <THEN> e2 = SeqE() <ELSE> e3 = SeqE() <END> { return new ASTIfThenElse(e1, e2, e3); }
  }
 
 ASTNode Num():

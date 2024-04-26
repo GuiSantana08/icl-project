@@ -160,8 +160,14 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
     }
 
     @Override
-    public Value<?> visit(ASTWhile e, Env<Value<?>> env) throws InvalidTypeException {
-        return null;
+    public Value<?> visit(ASTWhile e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        BoolValue b = (BoolValue) e.condition.accept(this, env);
+        Value<?> result = null;
+        while (b.getValue()) {
+            result = e.body.accept(this, env);
+            b = (BoolValue) e.condition.accept(this, env);
+        }
+        return result;
     }
 
     @Override

@@ -175,7 +175,12 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     }
 
     @Override
-    public Type visit(ASTWhile e, Env<Type> env) throws InvalidTypeException {
+    public Type visit(ASTWhile e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        Type condition = e.condition.accept(this, env);
+        Type body = e.body.accept(this, env);
+        if (condition != BoolType.singleton) {
+            throw new InvalidTypeException("Type error in while operation");
+        }
         return null;
     }
 
