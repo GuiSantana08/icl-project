@@ -1,6 +1,8 @@
 package main;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
 import ast.ASTNode;
 
@@ -18,8 +20,8 @@ import value.Value;
 public class InterMain {
 
 	@SuppressWarnings("static-access")
-	public static void main(String args[]) {
-		Parser parser = new Parser(System.in);
+	public static void main(String args[]) throws FileNotFoundException {
+		Parser parser = new Parser(new FileReader(args[0]));
 		TypeChecker typeChecker = new TypeChecker();
 		Env<Type> environmentType = new Env<>();
 		Env<Value<?>> environmentValue = new Env<>();
