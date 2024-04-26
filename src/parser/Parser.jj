@@ -94,14 +94,20 @@ ASTNode Term() :
      { return e1; }
 }
 
+ASTNode Let() :
+{ ASTNode e1, e2; }
+{
+    <LPAR> e1 = Expr() <RPAR> "in" e2 = Expr() { return new ASTLet(e1, e2); }
+}
+
 ASTNode Fact() :
-{ Token x; ASTNode e1, e2;}
+{ Token x; ASTNode e;}
 {
    x = <Num> {return new ASTInt(Integer.parseInt(x.image));}
  | x = <BOOL> { return new ASTBool(Boolean.parseBoolean(x.image)); }
- | <NOT> e1 = Fact() { return new ASTNot(e1); }
- | ("-" e1 = Fact() { return new ASTNeg(e1); })
- | <LPAR> e1 = Expr() <RPAR> { return e1; }
- | <LET> <LPAR> e1 = Expr() <RPAR> "in" e2 = Expr() { return new ASTLet(e1, e2); }
- | <NEW> e1 = Term() { return new ASTNew(e1);}
+ | <NOT> e = Fact() { return new ASTNot(e); }
+ | ("-" e = Fact() { return new ASTNeg(e); })
+ | <LPAR> e = Expr() <RPAR> { return e; }
+ | <LET> Let()
+ | <NEW> e = Term() { return new ASTNew(e);}
 }
