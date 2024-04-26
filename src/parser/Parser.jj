@@ -5,7 +5,7 @@ options {
 PARSER_BEGIN(Parser)
 
 package parser;
-import ast.*; import ast.value.*; import ast.operations.arithmetic.*; import ast.operations.relational.*;
+import ast.*; import ast.operations.references.ASTLet;import ast.operations.references.ASTNew;import ast.value.*; import ast.operations.arithmetic.*; import ast.operations.relational.*;
 
 public class Parser {
 
@@ -41,6 +41,8 @@ TOKEN :
   |  < AND : "&&">
   |  < OR : "||">
   |  < LET : "let">
+  |  < IN : "in">
+  |  <NEW : "new">
   |  < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >
 }
 
@@ -93,12 +95,13 @@ ASTNode Term() :
 }
 
 ASTNode Fact() :
-{ Token x; ASTNode e;}
+{ Token x; ASTNode e1, e2;}
 {
    x = <Num> {return new ASTInt(Integer.parseInt(x.image));}
  | x = <BOOL> { return new ASTBool(Boolean.parseBoolean(x.image)); }
- | <NOT> e = Fact() { return new ASTNot(e); }
- | ("-" e = Fact() { return new ASTNeg(e); })
- | <LPAR> e = Expr() <RPAR> { return e; }
- | <LET> <LPAR> e = Fact() <RPAR> "in"  { }
+ | <NOT> e1 = Fact() { return new ASTNot(e1); }
+ | ("-" e1 = Fact() { return new ASTNeg(e1); })
+ | <LPAR> e1 = Expr() <RPAR> { return e1; }
+ | <LET> <LPAR> e1 = Expr() <RPAR> "in" e2 = Expr() { return new ASTLet(e1, e2); }
+ | <NEW> e1 = Term() { return new ASTNew(e1);}
 }
