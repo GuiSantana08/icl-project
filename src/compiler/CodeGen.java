@@ -2,12 +2,16 @@ package compiler;
 
 import ast.ASTNode;
 import ast.ASTNode.Visitor;
+import ast.control.ASTIfThenElse;
+import ast.control.ASTSeq;
+import ast.control.ASTWhile;
 import ast.operations.arithmetic.*;
 import ast.operations.references.*;
 import ast.operations.relational.*;
 import ast.value.ASTBool;
 import ast.value.ASTInt;
 import ast.value.ASTString;
+import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 import symbols.Env;
 import target.BasicBlock;
@@ -25,13 +29,13 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
 
 
     @Override
-    public Void visit(ASTInt i, Env<Void> env) throws InvalidTypeException {
+    public Void visit(ASTInt i, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         block.addInstruction(new SIPush(i.value) );
         return i.accept(this, env);
     }
 
     @Override
-    public Void visit(ASTBool b, Env<Void> env) throws InvalidTypeException {
+    public Void visit(ASTBool b, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         block.addInstruction(new SIPush(b.value ? 1 : 0));
         return b.accept(this, env);
     }
@@ -42,14 +46,14 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
     }
 
     @Override
-    public Void visit(ASTNeg e, Env<Void> env) throws InvalidTypeException {
+    public Void visit(ASTNeg e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         e.arg.accept(this, env);
         block.addInstruction(new INeg());
         return null;
     }
 
     @Override
-    public Void visit(ASTDiv e, Env<Void> env) throws InvalidTypeException {
+    public Void visit(ASTDiv e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         e.arg1.accept(this, env);
         e.arg2.accept(this, env);
         block.addInstruction(new IDiv());
@@ -57,7 +61,7 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
     }
 
     @Override
-    public Void visit(ASTMult e, Env<Void> env) throws InvalidTypeException {
+    public Void visit(ASTMult e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         e.arg1.accept(this, env);
         e.arg2.accept(this, env);
         block.addInstruction(new IMul());
@@ -65,7 +69,7 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
     }
 
     @Override
-    public Void visit(ASTSub e, Env<Void> env) throws InvalidTypeException {
+    public Void visit(ASTSub e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         e.arg1.accept(this, env);
         e.arg2.accept(this, env);
         block.addInstruction(new ISub());
@@ -73,7 +77,7 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
     }
 
     @Override
-    public Void visit(ASTAdd e, Env<Void> env) throws InvalidTypeException {
+    public Void visit(ASTAdd e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         e.arg1.accept(this, env);
         e.arg2.accept(this, env);
         block.addInstruction(new IAdd());
@@ -81,7 +85,7 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
     }
 
     @Override
-    public Void visit(ASTAnd e, Env<Void> env) throws InvalidTypeException {
+    public Void visit(ASTAnd e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         e.left.accept(this, env);
         e.right.accept(this, env);
         //block.addInstruction(new SIPush());
@@ -89,7 +93,7 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
     }
 
     @Override
-    public Void visit(ASTOr e, Env<Void> env) throws InvalidTypeException {
+    public Void visit(ASTOr e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         e.left.accept(this, env);
         e.right.accept(this, env);
         //block.addInstruction(new SIPush());
@@ -97,7 +101,7 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
     }
 
     @Override
-    public Void visit(ASTDiff e, Env<Void> env) throws InvalidTypeException {
+    public Void visit(ASTDiff e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         e.arg1.accept(this, env);
         e.arg2.accept(this, env);
         block.addInstruction(new If_ICmpDiff());
@@ -105,7 +109,7 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
     }
 
     @Override
-    public Void visit(ASTLeq e, Env<Void> env) throws InvalidTypeException {
+    public Void visit(ASTLeq e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         e.arg1.accept(this, env);
         e.arg2.accept(this, env);
         block.addInstruction(new If_ICmpLEq());
@@ -113,7 +117,7 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
     }
 
     @Override
-    public Void visit(ASTLt e, Env<Void> env) throws InvalidTypeException {
+    public Void visit(ASTLt e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         e.arg1.accept(this, env);
         e.arg2.accept(this, env);
         block.addInstruction(new If_ICmpLt());
@@ -121,7 +125,7 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
     }
 
     @Override
-    public Void visit(ASTGeq e, Env<Void> env) throws InvalidTypeException {
+    public Void visit(ASTGeq e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         e.arg1.accept(this, env);
         e.arg2.accept(this, env);
         block.addInstruction(new If_ICmpGEq());
@@ -129,7 +133,7 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
     }
 
     @Override
-    public Void visit(ASTGt e, Env<Void> env) throws InvalidTypeException {
+    public Void visit(ASTGt e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         e.arg1.accept(this, env);
         e.arg2.accept(this, env);
         block.addInstruction(new If_ICmpGt());
@@ -137,7 +141,7 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
     }
 
     @Override
-    public Void visit(ASTEq e, Env<Void> env) throws InvalidTypeException {
+    public Void visit(ASTEq e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         e.arg1.accept(this, env);
         e.arg2.accept(this, env);
         block.addInstruction(new If_ICmpEq());
@@ -145,7 +149,7 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
     }
 
     @Override
-    public Void visit(ASTRef e, Env<Void> env) throws InvalidTypeException {
+    public Void visit(ASTRef e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         e.val.accept(this, env);
         //block.addInstruction(new SIPush());
         return null;
@@ -167,6 +171,16 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
     }
 
     @Override
+    public Void visit(ASTWhile e, Env<Void> env) {
+        return null;
+    }
+
+    @Override
+    public Void visit(ASTSeq e, Env<Void> env) throws InvalidTypeException {
+        return null;
+    }
+
+    @Override
     public Void visit(ASTLet e, Env<Void> env) throws InvalidTypeException {
         return null;
     }
@@ -176,7 +190,11 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
         return null;
     }
 
-    public static BasicBlock codeGen(ASTNode e) throws InvalidTypeException {
+    @Override
+    public Void visit(ASTIfThenElse e, Env<Void> env) throws InvalidTypeException {
+        return null;
+    }
+    public static BasicBlock codeGen(ASTNode e) throws InvalidTypeException, DuplicateVariableFoundException {
         CodeGen cg = new CodeGen();
         e.accept(cg, null);
         //e.accept(cg, null);
@@ -214,7 +232,7 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
 
     }
 
-    public static void writeToFile(ASTNode e, String filename) throws FileNotFoundException, InvalidTypeException {
+    public static void writeToFile(ASTNode e, String filename) throws FileNotFoundException, InvalidTypeException, DuplicateVariableFoundException {
         StringBuilder sb = genPreAndPost(codeGen(e));
         PrintStream out = new PrintStream(new FileOutputStream(filename));
         out.print(sb.toString());

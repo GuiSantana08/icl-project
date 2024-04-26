@@ -5,16 +5,47 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="871e79da-d30d-47f1-b889-e3756a61fe08" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/ast/control/ASTIfThenElse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ast/control/ASTSeq.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/ast/control/ASTWhile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/exceptions/DuplicateVariableFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/symbols/Tuple.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/icl-project/parser/Parser.jj" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/icl-project/parser/Parser.jj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ast/ASTNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/ASTNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTAdd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTAdd.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTDiv.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTDiv.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTMult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTMult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTNeg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTNeg.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTSub.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/arithmetic/ASTSub.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/references/ASTAtrib.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/references/ASTAtrib.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ast/operations/references/ASTId.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/references/ASTId.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/references/ASTLet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/references/ASTLet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/references/ASTNew.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/references/ASTNew.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/references/ASTRef.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/references/ASTRef.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTAnd.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTAnd.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTDiff.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTDiff.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTEq.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTEq.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTGeq.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTGeq.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTGt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTGt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTLeq.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTLeq.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTLt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTLt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTNot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTNot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/operations/relational/ASTOr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/operations/relational/ASTOr.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/value/ASTBool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/value/ASTBool.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/value/ASTInt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/value/ASTInt.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ast/value/ASTString.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/value/ASTString.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/compiler/CodeGen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/compiler/CodeGen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/interpreter/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/interpreter/Interpreter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/type/StringType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/type/StringType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/InterMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/InterMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/Parser.jj" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/Parser.jj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/ParserConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/ParserConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/ParserTokenManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/ParserTokenManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/symbols/Env.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/symbols/Env.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tests/ParserTester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/ParserTester.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/type/TypeChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/type/TypeChecker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/value/StringValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/StringValue.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,19 +55,39 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Record" />
         <option value="Class" />
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="2fdwoZZ4qJXXh6wXNRt5kQYljLS" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
     "Application.InterMain.executor": "Run",
     "JUnit.ParserTester.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
-    "node.js.selected.package.tslint": "(autodetect)"
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/guipi/Desktop/src/src",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RunManager" selected="Application.InterMain">
@@ -105,8 +156,28 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
+        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="871e79da-d30d-47f1-b889-e3756a61fe08" name="Changes" comment="" />
+      <created>1714144438223</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1714144438223</updated>
+      <workItem from="1714144439564" duration="2565000" />
+    </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -119,6 +190,9 @@
       </map>
     </option>
   </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
@@ -126,6 +200,25 @@
           <properties class="exceptions.InvalidTypeException" package="exceptions" />
           <option name="timeStamp" value="1" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/ast/operations/relational/ASTNot.java</url>
+          <line>10</line>
+          <properties class="ast.operations.relational.ASTNot" method="&lt;init&gt;">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/type/TypeChecker.java</url>
+          <line>113</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/type/TypeChecker.java</url>
+          <line>61</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

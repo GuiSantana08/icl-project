@@ -1,6 +1,7 @@
 package ast.value;
 
 import ast.ASTNode;
+import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 
 public class ASTInt  implements ASTNode {
@@ -11,7 +12,7 @@ public class ASTInt  implements ASTNode {
     }
 
     @Override
-    public <T, E> T accept(Visitor<T, E> v, E env) throws InvalidTypeException {
+    public <T, E> T accept(Visitor<T, E> v, E env) throws InvalidTypeException, DuplicateVariableFoundException {
         return v.visit(this, env);
     }
 }

@@ -4,14 +4,16 @@ import java.io.ByteArrayInputStream;
 
 import ast.ASTNode;
 
+import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 import interpreter.*;
-import parser.Parser;
 import parser.ParseException;
+import parser.Parser;
 import parser.TokenMgrError;
 import symbols.Env;
 import type.Type;
 import type.TypeChecker;
+import value.Value;
 
 public class InterMain {
 
@@ -20,21 +22,23 @@ public class InterMain {
 		Parser parser = new Parser(System.in);
 		TypeChecker typeChecker = new TypeChecker();
 		Env<Type> environmentType = new Env<>();
+		Env<Value<?>> environmentValue = new Env<>();
 
 		while (true) {
 			try {
 				ASTNode e = parser.Start();
 				System.out.println("Parse OK!" );
 				e.accept(typeChecker, environmentType);
-				System.out.println(Interpreter.interpret(e));
+				System.out.println(Interpreter.interpret(e, environmentValue));
 
 			} catch (TokenMgrError e) {
 				System.out.println("Lexical Error!");
 				e.printStackTrace();
 				parser.ReInit(System.in);
-			} catch (InvalidTypeException e) {
+			} catch (InvalidTypeException | DuplicateVariableFoundException e) {
                 throw new RuntimeException(e);
-            } catch (parser.ParseException e) {
+            }
+			catch (parser.ParseException e) {
 				System.out.println("Syntax Error!");
 				e.printStackTrace();
 				parser.ReInit(System.in);

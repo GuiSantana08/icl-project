@@ -1,19 +1,24 @@
 package ast.operations.references;
 
 import ast.ASTNode;
+import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
+import symbols.Tuple;
+
+import java.util.List;
 
 public class ASTLet implements ASTNode {
 
-    public ASTNode arg1, arg2;
+    public List<Tuple<String, ASTNode>> vars;
+    public ASTNode body;
 
-    public ASTLet(ASTNode exp1, ASTNode exp2) {
-        this.arg1 = exp1;
-        this.arg2 = exp2;
+    public ASTLet(List<Tuple<String, ASTNode>> vars, ASTNode body) {
+        this.vars = vars;
+        this.body = body;
     }
 
     @Override
-    public <T, E> T accept(Visitor<T, E> v, E env) throws InvalidTypeException {
+    public <T, E> T accept(Visitor<T, E> v, E env) throws InvalidTypeException, DuplicateVariableFoundException {
         return v.visit(this, env);
     }
 }

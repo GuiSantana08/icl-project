@@ -1,6 +1,7 @@
 package ast.operations.references;
 
 import ast.ASTNode;
+import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 
 public class ASTNew implements ASTNode {
@@ -12,7 +13,7 @@ public class ASTNew implements ASTNode {
     }
 
     @Override
-    public <T, E> T accept(Visitor<T, E> v, E env) throws InvalidTypeException {
+    public <T, E> T accept(Visitor<T, E> v, E env) throws InvalidTypeException, DuplicateVariableFoundException {
         return v.visit(this, env);
     }
 }

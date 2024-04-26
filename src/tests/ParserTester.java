@@ -1,6 +1,5 @@
 package tests;
 
-import exceptions.InvalidTypeException;
 import main.InterMain;
 import org.junit.Assert;
 import org.junit.Test;

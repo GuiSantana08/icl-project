@@ -1,16 +1,16 @@
-package ast.operations.references;
+package ast.control;
 
 import ast.ASTNode;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 
-public class ASTAtrib implements ASTNode {
+public class ASTSeq implements ASTNode {
+    public ASTNode left;
+    public ASTNode right;
 
-    public ASTNode arg1, arg2;
-
-    public ASTAtrib(ASTNode e1, ASTNode e2) {
-        this.arg1 = e1;
-        this.arg2 = e2;
+    public ASTSeq(ASTNode left, ASTNode right) {
+        this.left = left;
+        this.right = right;
     }
 
     @Override

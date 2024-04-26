@@ -1,5 +1,7 @@
 package symbols;
 
+import exceptions.DuplicateVariableFoundException;
+
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -12,31 +14,23 @@ public class Env<T> {
 		table = new Hashtable<>(20);
 	}
 
-	public void bind(String id, T val) {
-		table.putIfAbsent(id, val);
+	public void bind(String id, T val) throws DuplicateVariableFoundException {
+		var bi = table.get(id);
+		if (bi != null)
+			throw new DuplicateVariableFoundException(id);
+		table.put(id, val);
 	}
 
 	public T find(String id) {
-		boolean found = false;
-		found = table.get(id) != null;
-		if (found) {
-			return table.get(id);
+		for (Env<T> e = this; e != null; e = e.prev) {
+			T found = e.table.get(id);
+			if (found != null) {
+				return found;
+			}
 		}
-		//TODO: nao verifica se nao tivermos um prev, ou sej aum nivel a baixo
-		if(this.prev != null) {
-			do {
-				Env<T> currentEnv = this.prev;
-				found = currentEnv.table.get(id) != null;
-				if (found) {
-					return currentEnv.table.get(id);
-				}
-			} while (!found);
-		}
-
 		return null;
 	}
 
-	//TODO: criar um construtor novo
 	public Env<T> beginScope() {
 		Env<T> newEnv = new Env<>();
 		newEnv.prev = this;
