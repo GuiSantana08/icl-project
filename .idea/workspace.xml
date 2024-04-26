@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="871e79da-d30d-47f1-b889-e3756a61fe08" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/type/RefType.java" afterDir="false" />
+    <list default="true" id="871e79da-d30d-47f1-b889-e3756a61fe08" name="Changes" comment="Interpretador agora recebe ficheiros">
+      <change afterPath="$PROJECT_DIR$/build.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/icl-project/parser/Parser.jj" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/icl-project/parser/Parser.jj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/interpreter/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/interpreter/Interpreter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/Parser.jj" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/Parser.jj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/type/TypeChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/type/TypeChecker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/InterMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/InterMain.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,9 +26,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5
-}]]></component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="2fdwoZZ4qJXXh6wXNRt5kQYljLS" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -44,7 +44,9 @@
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "Application.InterMain.executor": "Run",
+    "Batch.build.executor": "Run",
     "JUnit.ParserTester.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
@@ -53,10 +55,19 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.InterMain">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Batch.build">
     <configuration default="true" type="AZURE_FUNCTION_SUPPORT" factoryName="Run Functions">
       <option name="appName" />
       <option name="appServicePlanName" />
@@ -100,6 +111,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="build" type="BatchConfigurationType" factoryName="Batch" temporary="true">
+      <module name="icl-project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SCRIPT_NAME" value="build.bat" />
+      <option name="PARAMETERS" value="" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ParserTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="icl-project" />
       <extension name="coverage">
@@ -117,18 +139,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Batch.build" />
         <item itemvalue="Application.InterMain" />
         <item itemvalue="JUnit.ParserTester" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
-        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
-      </set>
-    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -139,7 +154,25 @@
       <option name="presentableId" value="Default" />
       <updated>1714144438223</updated>
       <workItem from="1714144439564" duration="6069000" />
+      <workItem from="1714163167636" duration="1801000" />
     </task>
+    <task id="LOCAL-00001" summary="README.md atualizado">
+      <option name="closed" value="true" />
+      <created>1714162504885</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1714162504885</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Interpretador agora recebe ficheiros">
+      <option name="closed" value="true" />
+      <created>1714162778710</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1714162778710</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -158,6 +191,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="README.md atualizado" />
+    <MESSAGE value="Interpretador agora recebe ficheiros" />
+    <option name="LAST_COMMIT_MESSAGE" value="Interpretador agora recebe ficheiros" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

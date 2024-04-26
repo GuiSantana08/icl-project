@@ -21,7 +21,11 @@ public class InterMain {
 
 	@SuppressWarnings("static-access")
 	public static void main(String args[]) throws FileNotFoundException {
-		Parser parser = new Parser(new FileReader(args[0]));
+		Parser parser = null;
+		if(args[0] != null)
+			parser = new Parser(new FileReader(args[0]));
+		else
+			parser = new Parser(System.in);
 		TypeChecker typeChecker = new TypeChecker();
 		Env<Type> environmentType = new Env<>();
 		Env<Value<?>> environmentValue = new Env<>();
