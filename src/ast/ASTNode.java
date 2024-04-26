@@ -15,7 +15,7 @@ import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 
 public interface ASTNode {
-    public interface Visitor<T,E> {
+    interface Visitor<T,E> {
         T visit(ASTInt e, E env)        throws InvalidTypeException, DuplicateVariableFoundException;
         T visit(ASTBool e, E env)       throws InvalidTypeException, DuplicateVariableFoundException;
         T visit(ASTString e, E env)     throws InvalidTypeException, DuplicateVariableFoundException;

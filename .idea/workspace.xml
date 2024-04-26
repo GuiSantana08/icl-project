@@ -5,10 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="871e79da-d30d-47f1-b889-e3756a61fe08" name="Changes" comment="">
+<<<<<<< Updated upstream
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ast/ASTNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/ASTNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/InterMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/InterMain.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/Parser.java" afterDir="false" />
+=======
+      <change afterPath="$PROJECT_DIR$/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ast/ASTNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/ASTNode.java" afterDir="false" />
+>>>>>>> Stashed changes
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +33,11 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
@@ -152,6 +165,7 @@
       <workItem from="1714144439564" duration="10503000" />
       <workItem from="1714160655522" duration="12000" />
       <workItem from="1714160673987" duration="7177000" />
+      <workItem from="1714170980227" duration="938000" />
     </task>
     <task id="LOCAL-00001" summary="README.md atualizado">
       <option name="closed" value="true" />
@@ -180,7 +194,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -199,6 +225,7 @@
           <properties class="exceptions.InvalidTypeException" package="exceptions" />
           <option name="timeStamp" value="1" />
         </breakpoint>
+<<<<<<< Updated upstream
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/ast/operations/relational/ASTNot.java</url>
           <line>10</line>
@@ -228,6 +255,8 @@
           <line>131</line>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
+=======
+>>>>>>> Stashed changes
       </breakpoints>
     </breakpoint-manager>
   </component>
