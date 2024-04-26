@@ -86,41 +86,47 @@ ASTNode productionOps():
 
 
 ASTNode Decl():
-{ ASTNode e, body; Token x;
- List<Tuple<String, ASTNode>> vars = new ArrayList<Tuple<String, ASTNode>>(); }
+{ ASTNode e, body;
+  Token x;
+  List<Tuple<String, ASTNode>> vars = new ArrayList<Tuple<String, ASTNode>>(); }
 {
+    //TODO: varios escopos
     (
-    <LET> ( x = <Id> <EQUALS> e = LogicOps()
-           { vars.add(new Tuple<String, ASTNode>(x.image, e)); } )+
-            <IN> body = LogicOps() { return new ASTLet(vars, body); }
-    | e = LogicOps() )
+    <LET> ( x = <Id> <EQUALS> (e = BoolOps()
+                | <NEW> e = BoolOps() { e = new ASTNew(e); })
+
+           { vars.add(new Tuple<String, ASTNode>(x.image, e)); }
+
+           <IN> body = Decl() { return new ASTLet(vars, body); }
+           )+
+    | e = BoolOps() )
     { return e; }
 
 }
 
 
 
-ASTNode LogicOps():
-{ASTNode e1, e2;}
-{
-    (
-    e1 = BoolOps()
-    ( <AND> e2 = LogicOps() { e1 = new ASTAnd(e1,e2); }
-    | <OR> e2 = LogicOps() { e1 = new ASTOr(e1,e2); } )*
-    | <NOT> e2 = LogicOps() { e1 = new ASTNot(e2); })
-    { return e1; }
-}
-
 ASTNode BoolOps():
 {ASTNode e1, e2;}
 {
+    (
+    e1 = CmpOps()
+    ( <AND> e2 = BoolOps() { e1 = new ASTAnd(e1,e2); }
+    | <OR> e2 = BoolOps() { e1 = new ASTOr(e1,e2); } )*
+    | <NOT> e2 = BoolOps() { e1 = new ASTNot(e2); })
+    { return e1; }
+}
+
+ASTNode CmpOps():
+{ASTNode e1, e2;}
+{
     e1 = Expr()
-    [ <EQREL> e2 = BoolOps() { e1 = new ASTEq(e1,e2); }
-    | <GT> e2 = BoolOps() { e1 = new ASTGt(e1,e2); }
-    | <GEQT> e2 = BoolOps() { e1 = new ASTGeq(e1,e2); }
-    | <LT> e2 = BoolOps() { e1 = new ASTLt(e1,e2); }
-    | <LEQT> e2 = BoolOps() { e1 = new ASTLeq(e1,e2); }
-    | <DIFF> e2 = BoolOps() { e1 = new ASTDiff(e1,e2); }]
+    [ <EQREL> e2 = CmpOps() { e1 = new ASTEq(e1,e2); }
+    | <GT> e2 = CmpOps() { e1 = new ASTGt(e1,e2); }
+    | <GEQT> e2 = CmpOps() { e1 = new ASTGeq(e1,e2); }
+    | <LT> e2 = CmpOps() { e1 = new ASTLt(e1,e2); }
+    | <LEQT> e2 = CmpOps() { e1 = new ASTLeq(e1,e2); }
+    | <DIFF> e2 = CmpOps() { e1 = new ASTDiff(e1,e2); }]
     { return e1; }
 
 }

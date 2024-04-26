@@ -15,11 +15,8 @@ import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 import symbols.Env;
 import symbols.Tuple;
-import value.BoolValue;
-import value.IntValue;
+import value.*;
 //import value.RefValue;
-import value.StringValue;
-import value.Value;
 
 import java.util.Objects;
 
@@ -178,7 +175,8 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
 
     @Override
     public Value<?> visit(ASTNew e, Env<Value<?>> env) throws InvalidTypeException , DuplicateVariableFoundException{
-        return e.exp.accept(this, env);
+        Value<?> arg = e.exp.accept(this, env);
+        return new RefValue(arg);
     }
 
     @Override
