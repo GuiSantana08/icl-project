@@ -5,6 +5,8 @@ import ast.ASTNode.Visitor;
 import ast.control.ASTIfThenElse;
 import ast.control.ASTSeq;
 import ast.control.ASTWhile;
+import ast.functions.ASTPrint;
+import ast.functions.ASTPrintln;
 import ast.operations.arithmetic.*;
 import ast.operations.references.*;
 import ast.operations.relational.*;
@@ -141,12 +143,6 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
         }
     }
 
-    // TODO: check if this is correct
-    @Override
-    public Value<?> visit(ASTRef e, Env<Value<?>> env) throws InvalidTypeException , DuplicateVariableFoundException{
-        return e.val.accept(this, env);
-    }
-
     @Override
     public Value<?> visit(ASTNot astNot, Env<Value<?>> env) throws InvalidTypeException , DuplicateVariableFoundException{
         BoolValue b = (BoolValue) astNot.arg.accept(this, env);
@@ -174,6 +170,26 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
     }
 
     @Override
+    public Value<?> visit(ASTDRef e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        RefValue value = (RefValue) e.exp.accept(this, env);
+        return value.getValue();
+    }
+
+    @Override
+    public Value<?> visit(ASTPrint e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        Value arg = e.exp.accept(this, env);
+        System.out.print(arg);
+        return null;
+    }
+
+    @Override
+    public Value<?> visit(ASTPrintln e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        Value arg = e.exp.accept(this, env);
+        System.out.println(arg);
+        return null;
+    }
+
+    @Override
     public Value<?> visit(ASTNew e, Env<Value<?>> env) throws InvalidTypeException , DuplicateVariableFoundException{
         Value<?> arg = e.exp.accept(this, env);
         return new RefValue(arg);
@@ -189,15 +205,17 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
         return e.body.accept(this, env);
     }
 
-    //TODO: Implement the visit method for ASTId
     @Override
     public Value<?> visit(ASTId e, Env<Value<?>> env) throws InvalidTypeException {
         return env.find(e.id);
     }
 
     @Override
-    public Value<?> visit (ASTAtrib e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
-        return e.arg2.accept(this, env);
+    public Value<?> visit (ASTReff e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        RefValue value = (RefValue) e.id.accept(this, env);
+        value.setValue(e.exp.accept(this, env));
+        System.out.println(value.getValue());
+        return value;
     }
 
 

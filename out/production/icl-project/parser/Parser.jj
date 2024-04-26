@@ -7,6 +7,7 @@ PARSER_BEGIN(Parser)
 package parser;
 import ast.*; import ast.value.*; import ast.operations.arithmetic.*;
 import ast.operations.relational.*; import ast.control.*; import ast.operations.references.*;
+import ast.functions.*;
 import symbols.Tuple; import java.util.List;import java.util.ArrayList;
 
 public class Parser {
@@ -50,9 +51,12 @@ TOKEN :
   |  < ELSE : "else">
   |  < END: "end">
   |  < WHILE : "while">
+  |  < DO : "do">
   |  < IN : "in">
   |  < NEW : "new">
   |  < NOT : "~">
+  |  <PRINT : "print">
+  |  <PRINTLN : "println">
   |  < ATRIB : ":=">
   |  < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >
 }
@@ -60,7 +64,7 @@ TOKEN :
 ASTNode Start():
 { ASTNode e; }
 {
-   e = Decl() <EL>  { return e; }
+   e = SeqE() <EL>  { return e; }
 }
 
 
@@ -79,10 +83,19 @@ ASTNode productionOps():
 {
     e1 = logicOps()
     [ <IF> e2 = logicOps() <THEN> e3 = productionOps() <ELSE> e4 = productionOps() <END> { return new ASTIfThenElse(e2, e3, e4); }
-    | <WHILE> e2 = logicOps() <THEN> e3 = productionOps() <END> { return new ASTWhile(e2, e3); }]
+    | <WHILE> e2 = logicOps() <DO> e3 = productionOps() <END> { return new ASTWhile(e2, e3); }]
     { return e1; }
 }*/
 
+
+ASTNode SeqE():
+{ ASTNode e1, e2; }
+{
+    e1 = Decl()
+     (<ATRIB> e2 = Decl() { e1 =  new ASTReff(e1, e2); })*
+
+    { return e1; }
+}
 
 
 ASTNode Decl():
@@ -90,14 +103,12 @@ ASTNode Decl():
   Token x;
   List<Tuple<String, ASTNode>> vars = new ArrayList<Tuple<String, ASTNode>>(); }
 {
-    //TODO: varios escopos
     (
-    <LET> ( x = <Id> <EQUALS> (e = BoolOps()
-                | <NEW> e = BoolOps() { e = new ASTNew(e); })
+    <LET> ( x = <Id> <EQUALS> (e = BoolOps())
 
            { vars.add(new Tuple<String, ASTNode>(x.image, e)); }
 
-           <IN> body = Decl() { return new ASTLet(vars, body); }
+           <IN> body = SeqE() { e =  new ASTLet(vars, body); }
            )+
     | e = BoolOps() )
     { return e; }
@@ -156,10 +167,14 @@ ASTNode Fact() :
 { Token x; ASTNode e;}
 {
     (
-          e = Num()
+        <DEREF> e = BoolOps() { e = new ASTDRef(e); }
+        | <PRINT> e = BoolOps() { e = new ASTPrint(e); }
+        | <PRINTLN> e = BoolOps() { e = new ASTPrintln(e); }
+        |  e = Num()
         | e = Id()
         | e = Bool()
-        | <LPAR> e = Decl() <RPAR> )
+        | <LPAR> e = SeqE() <RPAR>
+        | <NEW> e = BoolOps() { e = new ASTNew(e); })
     { return e; }
  }
 
@@ -168,7 +183,7 @@ ASTNode Num():
 {
     (
     x = <Num> { e = new ASTInt(Integer.parseInt(x.image)); }
-    | <MINUS> e = Num())
+    | <MINUS> x = <Num> {e = new ASTInt(-Integer.parseInt(x.image)); } )
     { return e; }
 }
 

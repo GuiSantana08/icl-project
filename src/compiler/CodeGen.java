@@ -5,6 +5,8 @@ import ast.ASTNode.Visitor;
 import ast.control.ASTIfThenElse;
 import ast.control.ASTSeq;
 import ast.control.ASTWhile;
+import ast.functions.ASTPrint;
+import ast.functions.ASTPrintln;
 import ast.operations.arithmetic.*;
 import ast.operations.references.*;
 import ast.operations.relational.*;
@@ -148,12 +150,6 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
         return null;
     }
 
-    @Override
-    public Void visit(ASTRef e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
-        e.val.accept(this, env);
-        //block.addInstruction(new SIPush());
-        return null;
-    }
 
     @Override
     public Void visit(ASTNot astNot, Env<Void> env) throws InvalidTypeException {
@@ -166,7 +162,7 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
     }
 
     @Override
-    public Void visit(ASTAtrib e, Env<Void> env) throws InvalidTypeException {
+    public Void visit(ASTReff e, Env<Void> env) throws InvalidTypeException {
         return null;
     }
 
@@ -177,6 +173,21 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
 
     @Override
     public Void visit(ASTSeq e, Env<Void> env) throws InvalidTypeException {
+        return null;
+    }
+
+    @Override
+    public Void visit(ASTDRef e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        return null;
+    }
+
+    @Override
+    public Void visit(ASTPrint astPrint, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        return null;
+    }
+
+    @Override
+    public Void visit(ASTPrintln astPrintln, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         return null;
     }
 

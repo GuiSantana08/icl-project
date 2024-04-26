@@ -4,12 +4,12 @@ import ast.ASTNode;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 
-public class ASTRef implements ASTNode {
+public class ASTDRef implements ASTNode {
 
-    public ASTNode val;
+    public ASTNode exp;
 
-    public ASTRef(ASTNode val) {
-        this.val = val;
+    public ASTDRef(ASTNode exp) {
+        this.exp = exp;
     }
 
     @Override

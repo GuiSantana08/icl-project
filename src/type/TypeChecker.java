@@ -5,6 +5,8 @@ import ast.ASTNode.Visitor;
 import ast.control.ASTIfThenElse;
 import ast.control.ASTSeq;
 import ast.control.ASTWhile;
+import ast.functions.ASTPrint;
+import ast.functions.ASTPrintln;
 import ast.operations.arithmetic.*;
 import ast.operations.references.*;
 import ast.operations.relational.*;
@@ -15,6 +17,7 @@ import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 import symbols.Env;
 import symbols.Tuple;
+import value.RefValue;
 
 public class TypeChecker implements Visitor<Type, Env<Type>>{
     @Override
@@ -115,15 +118,6 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     }
 
     @Override
-    public Type visit(ASTRef e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
-        Type arg = e.val.accept(this, env);
-        if (arg == BoolType.singleton || arg == IntType.singleton)
-            return arg;
-        else
-            throw new InvalidTypeException("Type error in 'ref'");
-    }
-
-    @Override
     public Type visit(ASTNot astNot, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
         Type arg = astNot.arg.accept(this, env);
         if (arg == BoolType.singleton) {
@@ -171,10 +165,10 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     }
 
     @Override
-    public Type visit(ASTAtrib e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
-        Type arg1 = e.arg1.accept(this, env);
-        Type arg2 = e.arg2.accept(this, env);
-        if(arg1.getType().equals(arg2.getType()))
+    public Type visit(ASTReff e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        RefType arg1 = (RefType)e.id.accept(this, env);
+        Type arg2 = e.exp.accept(this, env);
+        if(arg1.getRefType().getType().equals(arg2.getType()))
             return arg1;
         else
             throw new InvalidTypeException("Type error in 'atrib'");
@@ -188,6 +182,24 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     @Override
     public Type visit(ASTSeq e, Env<Type> env) throws InvalidTypeException {
         return null;
+    }
+
+    @Override
+    public Type visit(ASTDRef e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        RefType type = (RefType) e.exp.accept(this, env);
+        if (type == null)
+            throw new InvalidTypeException("Variable not found");
+        return type;
+    }
+
+    @Override
+    public Type visit(ASTPrint e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        return e.exp.accept(this, env);
+    }
+
+    @Override
+    public Type visit(ASTPrintln e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        return e.exp.accept(this, env);
     }
 
     private Type handleIntegerOperation(ASTNode arg1, ASTNode arg2, String operationName, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {

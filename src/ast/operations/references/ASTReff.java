@@ -4,13 +4,13 @@ import ast.ASTNode;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 
-public class ASTAtrib implements ASTNode {
+public class  ASTReff implements ASTNode {
 
-    public ASTNode arg1, arg2;
+    public ASTNode id, exp;
 
-    public ASTAtrib(ASTNode e1, ASTNode e2) {
-        this.arg1 = e1;
-        this.arg2 = e2;
+    public ASTReff(ASTNode e1, ASTNode e2) {
+        this.id = e1;
+        this.exp = e2;
     }
 
     @Override
