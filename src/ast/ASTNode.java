@@ -1,10 +1,7 @@
 package ast;
 
 import ast.operations.arithmetic.*;
-import ast.operations.references.ASTId;
-import ast.operations.references.ASTLet;
-import ast.operations.references.ASTNew;
-import ast.operations.references.ASTRef;
+import ast.operations.references.*;
 import ast.operations.relational.*;
 import ast.value.ASTBool;
 import ast.value.ASTInt;
@@ -32,6 +29,7 @@ public interface ASTNode {
         T visit(ASTNew e, E env)        throws InvalidTypeException;
         T visit(ASTLet e, E env)        throws InvalidTypeException;
         T visit(ASTId e, E env)         throws InvalidTypeException;
+        T visit(ASTAtrib e, E env)      throws InvalidTypeException;
     }
      <T,E> T accept(Visitor<T, E> v, E env) throws InvalidTypeException;;
 }

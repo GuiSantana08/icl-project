@@ -3,9 +3,7 @@ package interpreter;
 import ast.ASTNode;
 import ast.ASTNode.Visitor;
 import ast.operations.arithmetic.*;
-import ast.operations.references.ASTLet;
-import ast.operations.references.ASTNew;
-import ast.operations.references.ASTRef;
+import ast.operations.references.*;
 import ast.operations.relational.*;
 import ast.value.ASTBool;
 import ast.value.ASTInt;
@@ -154,6 +152,16 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
     @Override
     public Value<?> visit (ASTLet e, Env<Value<?>> env) throws InvalidTypeException {
         return e.arg1.accept(this, env);
+    }
+
+    @Override
+    public Value<?> visit(ASTId e, Env<Value<?>> env) throws InvalidTypeException {
+        return e.id.accept(this, env);
+    }
+
+    @Override
+    public Value<?> visit (ASTAtrib e, Env<Value<?>> env) throws InvalidTypeException {
+        return e.arg2.accept(this, env);
     }
 
 

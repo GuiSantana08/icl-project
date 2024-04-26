@@ -37,12 +37,14 @@ TOKEN :
   |  < LT : "<">
   |  < LEQT : "<=">
   |  < DIFF : "!=">
-  |  < NOT : "!">
+  |  < NOT : "~">
   |  < AND : "&&">
   |  < OR : "||">
   |  < LET : "let">
   |  < IN : "in">
-  |  <NEW : "new">
+  |  < NEW : "new">
+  |  < DEREF : "!">
+  |  < ATRIB : ":=">
   |  < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >
 }
 
@@ -91,14 +93,14 @@ ASTNode Term() :
      e1 = Fact()
      [ <TIMES> e2 = Term() { e1 = new ASTMult(e1,e2); }
      | <DIV> e2 = Term() { e1 = new ASTDiv(e1,e2); }
-     | ":=" e2 = Expr() { e1 = new ASTRef(e2); }]
+     | <ATRIB> e2 = Expr() { e1 = new ASTRef(e2); }]
      { return e1; }
 }
 
 ASTNode Let() :
 { ASTNode e1, e2; }
 {
-    <LPAR> e1 = Expr() <RPAR> "in" e2 = Expr() { return new ASTLet(e1, e2); }
+    <LPAR> e1 = Expr() <RPAR> <IN> e2 = Expr() { return new ASTLet(e1, e2); }
 }
 
 ASTNode Fact() :
@@ -110,5 +112,6 @@ ASTNode Fact() :
  | ("-" e = Fact() { return new ASTNeg(e); })
  | <LPAR> e = Expr() <RPAR> { return e; }
  | <LET> Let()
+ | <DEREF> e = Expr() { return new ASTRef(e); }
  | <NEW> e = Term() { return new ASTNew(e);}
 }
