@@ -1,13 +1,14 @@
 package ast.operations.references;
 
 import ast.ASTNode;
+import ast.value.ASTString;
 import exceptions.InvalidTypeException;
 
 public class ASTId implements ASTNode {
 
-    public ASTNode id;
+    public ASTString id;
 
-    public ASTId(ASTNode id) {
+    public ASTId(ASTString id) {
         this.id = id;
     }
     @Override

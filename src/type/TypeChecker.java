@@ -7,6 +7,7 @@ import ast.operations.references.*;
 import ast.operations.relational.*;
 import ast.value.ASTBool;
 import ast.value.ASTInt;
+import ast.value.ASTString;
 import exceptions.InvalidTypeException;
 import symbols.Env;
 
@@ -19,6 +20,11 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     @Override
     public Type visit(ASTBool b, Env<Type> env) throws InvalidTypeException {
         return BoolType.singleton;
+    }
+
+    @Override
+    public Type visit(ASTString s, Env<Type> env) throws InvalidTypeException {
+        return StringType.singleton;
     }
 
     @Override
@@ -105,7 +111,11 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
 
     @Override
     public Type visit(ASTRef e, Env<Type> env) throws InvalidTypeException {
-        return null;
+        Type arg = e.val.accept(this, env);
+        if (arg == BoolType.singleton || arg == IntType.singleton)
+            return arg;
+        else
+            throw new InvalidTypeException("Type error in 'ref'");
     }
 
     @Override
@@ -120,22 +130,36 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
 
     @Override
     public Type visit(ASTNew e, Env<Type> env) throws InvalidTypeException {
-        return null;
+        Type arg = e.exp.accept(this, env);
+        if (arg == BoolType.singleton || arg == IntType.singleton)
+            return arg;
+        else
+            throw new InvalidTypeException("Type error in 'new'");
     }
 
     @Override
     public Type visit(ASTLet e, Env<Type> env) throws InvalidTypeException {
-        return null;
+        Type arg1 = e.arg1.accept(this, env);
+        Type arg2 = e.arg2.accept(this, env);
+        if (arg1.getType().equals(arg2.getType()))
+            return arg1;
+        else
+            throw new InvalidTypeException("Type error in 'let'");
     }
 
     @Override
     public Type visit(ASTId e, Env<Type> env) throws InvalidTypeException {
-        return null;
+        return e.id.accept(this, env);
     }
 
     @Override
     public Type visit(ASTAtrib e, Env<Type> env) throws InvalidTypeException {
-        return null;
+        Type arg1 = e.arg1.accept(this, env);
+        Type arg2 = e.arg2.accept(this, env);
+        if(arg1.getType().equals(arg2.getType()))
+            return arg1;
+        else
+            throw new InvalidTypeException("Type error in 'atrib'");
     }
 
     private Type handleIntegerOperation(ASTNode arg1, ASTNode arg2, String operationName, Env<Type> env) throws InvalidTypeException {

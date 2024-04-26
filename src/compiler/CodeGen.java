@@ -3,13 +3,11 @@ package compiler;
 import ast.ASTNode;
 import ast.ASTNode.Visitor;
 import ast.operations.arithmetic.*;
-import ast.operations.references.ASTId;
-import ast.operations.references.ASTLet;
-import ast.operations.references.ASTNew;
-import ast.operations.references.ASTRef;
+import ast.operations.references.*;
 import ast.operations.relational.*;
 import ast.value.ASTBool;
 import ast.value.ASTInt;
+import ast.value.ASTString;
 import exceptions.InvalidTypeException;
 import symbols.Env;
 import target.BasicBlock;
@@ -36,6 +34,11 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
     public Void visit(ASTBool b, Env<Void> env) throws InvalidTypeException {
         block.addInstruction(new SIPush(b.value ? 1 : 0));
         return b.accept(this, env);
+    }
+
+    @Override
+    public Void visit(ASTString e, Env<Void> env) throws InvalidTypeException {
+        return null;
     }
 
     @Override
@@ -155,6 +158,11 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
 
     @Override
     public Void visit(ASTId e, Env<Void> env) throws InvalidTypeException {
+        return null;
+    }
+
+    @Override
+    public Void visit(ASTAtrib e, Env<Void> env) throws InvalidTypeException {
         return null;
     }
 

@@ -5,12 +5,14 @@ import ast.operations.references.*;
 import ast.operations.relational.*;
 import ast.value.ASTBool;
 import ast.value.ASTInt;
+import ast.value.ASTString;
 import exceptions.InvalidTypeException;
 
 public interface ASTNode {
     public interface Visitor<T,E> {
         T visit(ASTInt e, E env)        throws InvalidTypeException;
         T visit(ASTBool e, E env)       throws InvalidTypeException;
+        T visit(ASTString e, E env)     throws InvalidTypeException;
         T visit(ASTNeg e, E env)        throws InvalidTypeException;
         T visit(ASTDiv e, E env)        throws InvalidTypeException;
         T visit(ASTMult e, E env)       throws InvalidTypeException;

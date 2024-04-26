@@ -5,7 +5,7 @@ options {
 PARSER_BEGIN(Parser)
 
 package parser;
-import ast.*; import ast.value.*; import ast.operations.arithmetic.*; import ast.operations.relational.*;
+import ast.*; import ast.operations.references.ASTId;import ast.operations.references.ASTLet;import ast.operations.references.ASTNew;import ast.operations.references.ASTRef;import ast.value.*; import ast.operations.arithmetic.*; import ast.operations.relational.*;
 
 public class Parser {
 
@@ -31,6 +31,7 @@ TOKEN :
   |  < RPAR : ")" >
   |  < EL: "\n" >
   |  < BOOL : ("true" | "false") >
+  |  < EQUALS : "=" >
   |  < EQREL : "==">
   |  < GT : ">">
   |  < GEQT : ">=">
@@ -40,6 +41,11 @@ TOKEN :
   |  < NOT : "!">
   |  < AND : "&&">
   |  < OR : "||">
+  |  < LET : "let">
+  |  < IN : "in">
+  |  < NEW : "new">
+  |  < DEREF : "~">
+  |  < ATRIB : ":=">
   |  < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >
 }
 
@@ -87,8 +93,16 @@ ASTNode Term() :
 {
      e1 = Fact()
      [ <TIMES> e2 = Term() { e1 = new ASTMult(e1,e2); }
-     | <DIV> e2 = Term() { e1 = new ASTDiv(e1,e2); } ]
+     | <DIV> e2 = Term() { e1 = new ASTDiv(e1,e2); }
+     | <ATRIB> e2 = Expr() { e1 = new ASTRef(e2); }
+     | <EQUALS> e2 = Expr() { e1 = new ASTInt(Integer.parseInt(e2.toString())); }]
      { return e1; }
+}
+
+ASTNode Let() :
+{ ASTNode e1, e2; }
+{
+    <LPAR> e1 = Term() <RPAR> <IN> e2 = Expr() { return new ASTLet(e1, e2); }
 }
 
 ASTNode Fact() :
@@ -99,4 +113,8 @@ ASTNode Fact() :
  | <NOT> e = Fact() { return new ASTNot(e); }
  | ("-" e = Fact() { return new ASTNeg(e); })
  | <LPAR> e = Expr() <RPAR> { return e; }
+ | <LET> e = Let() { return e;}
+ | <DEREF> e = Expr() { return new ASTRef(e); }
+ | <NEW> e = Term() { return new ASTNew(e);}
+ | x = <Id> { return new ASTId(new ASTString(x.image)); }
 }
