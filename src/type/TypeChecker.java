@@ -148,10 +148,7 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     @Override
     public Type visit(ASTNew e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
         Type arg = e.exp.accept(this, env);
-        if (arg == BoolType.singleton || arg == IntType.singleton)
-            return arg;
-        else
-            throw new InvalidTypeException("Type error in 'new'");
+        return new RefType(arg);
     }
 
     @Override

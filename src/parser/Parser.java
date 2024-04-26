@@ -33,8 +33,9 @@ ASTNode productionOps():
     { return e1; }
 }*/
   final public ASTNode Decl() throws ParseException {
-  ASTNode e, body; Token x;
- List<Tuple<String, ASTNode>> vars = new ArrayList<Tuple<String, ASTNode>>();
+  ASTNode e, body;
+  Token x;
+  List<Tuple<String, ASTNode>> vars = new ArrayList<Tuple<String, ASTNode>>();
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case LET:
       jj_consume_token(LET);
@@ -42,20 +43,38 @@ ASTNode productionOps():
       while (true) {
         x = jj_consume_token(Id);
         jj_consume_token(EQUALS);
-        e = LogicOps();
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case Num:
+        case MINUS:
+        case LPAR:
+        case BOOL:
+        case NOT:
+        case Id:
+          e = BoolOps();
+          break;
+        case NEW:
+          jj_consume_token(NEW);
+          e = BoolOps();
+                                        e = new ASTNew(e);
+          break;
+        default:
+          jj_la1[0] = jj_gen;
+          jj_consume_token(-1);
+          throw new ParseException();
+        }
              vars.add(new Tuple<String, ASTNode>(x.image, e));
+        jj_consume_token(IN);
+        body = Decl();
+                                {if (true) return new ASTLet(vars, body);}
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case Id:
           ;
           break;
         default:
-          jj_la1[0] = jj_gen;
+          jj_la1[1] = jj_gen;
           break label_1;
         }
       }
-      jj_consume_token(IN);
-      body = LogicOps();
-                                     {if (true) return new ASTLet(vars, body);}
       break;
     case Num:
     case MINUS:
@@ -63,10 +82,10 @@ ASTNode productionOps():
     case BOOL:
     case NOT:
     case Id:
-      e = LogicOps();
+      e = BoolOps();
       break;
     default:
-      jj_la1[1] = jj_gen;
+      jj_la1[2] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -74,7 +93,7 @@ ASTNode productionOps():
     throw new Error("Missing return statement in function");
   }
 
-  final public ASTNode LogicOps() throws ParseException {
+  final public ASTNode BoolOps() throws ParseException {
  ASTNode e1, e2;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case Num:
@@ -82,7 +101,7 @@ ASTNode productionOps():
     case LPAR:
     case BOOL:
     case Id:
-      e1 = BoolOps();
+      e1 = CmpOps();
       label_2:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -91,22 +110,22 @@ ASTNode productionOps():
           ;
           break;
         default:
-          jj_la1[2] = jj_gen;
+          jj_la1[3] = jj_gen;
           break label_2;
         }
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case AND:
           jj_consume_token(AND);
-          e2 = LogicOps();
-                              e1 = new ASTAnd(e1,e2);
+          e2 = BoolOps();
+                             e1 = new ASTAnd(e1,e2);
           break;
         case OR:
           jj_consume_token(OR);
-          e2 = LogicOps();
-                             e1 = new ASTOr(e1,e2);
+          e2 = BoolOps();
+                            e1 = new ASTOr(e1,e2);
           break;
         default:
-          jj_la1[3] = jj_gen;
+          jj_la1[4] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
@@ -114,11 +133,11 @@ ASTNode productionOps():
       break;
     case NOT:
       jj_consume_token(NOT);
-      e2 = LogicOps();
-                              e1 = new ASTNot(e2);
+      e2 = BoolOps();
+                             e1 = new ASTNot(e2);
       break;
     default:
-      jj_la1[4] = jj_gen;
+      jj_la1[5] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -126,7 +145,7 @@ ASTNode productionOps():
     throw new Error("Missing return statement in function");
   }
 
-  final public ASTNode BoolOps() throws ParseException {
+  final public ASTNode CmpOps() throws ParseException {
  ASTNode e1, e2;
     e1 = Expr();
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -139,42 +158,42 @@ ASTNode productionOps():
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case EQREL:
         jj_consume_token(EQREL);
-        e2 = BoolOps();
-                               e1 = new ASTEq(e1,e2);
+        e2 = CmpOps();
+                              e1 = new ASTEq(e1,e2);
         break;
       case GT:
         jj_consume_token(GT);
-        e2 = BoolOps();
-                            e1 = new ASTGt(e1,e2);
+        e2 = CmpOps();
+                           e1 = new ASTGt(e1,e2);
         break;
       case GEQT:
         jj_consume_token(GEQT);
-        e2 = BoolOps();
-                              e1 = new ASTGeq(e1,e2);
+        e2 = CmpOps();
+                             e1 = new ASTGeq(e1,e2);
         break;
       case LT:
         jj_consume_token(LT);
-        e2 = BoolOps();
-                            e1 = new ASTLt(e1,e2);
+        e2 = CmpOps();
+                           e1 = new ASTLt(e1,e2);
         break;
       case LEQT:
         jj_consume_token(LEQT);
-        e2 = BoolOps();
-                              e1 = new ASTLeq(e1,e2);
+        e2 = CmpOps();
+                             e1 = new ASTLeq(e1,e2);
         break;
       case DIFF:
         jj_consume_token(DIFF);
-        e2 = BoolOps();
-                              e1 = new ASTDiff(e1,e2);
+        e2 = CmpOps();
+                             e1 = new ASTDiff(e1,e2);
         break;
       default:
-        jj_la1[5] = jj_gen;
+        jj_la1[6] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
       break;
     default:
-      jj_la1[6] = jj_gen;
+      jj_la1[7] = jj_gen;
       ;
     }
       {if (true) return e1;}
@@ -192,7 +211,7 @@ ASTNode productionOps():
         ;
         break;
       default:
-        jj_la1[7] = jj_gen;
+        jj_la1[8] = jj_gen;
         break label_3;
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -207,7 +226,7 @@ ASTNode productionOps():
                              e1 = new ASTSub(e1,e2);
         break;
       default:
-        jj_la1[8] = jj_gen;
+        jj_la1[9] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -227,7 +246,7 @@ ASTNode productionOps():
         ;
         break;
       default:
-        jj_la1[9] = jj_gen;
+        jj_la1[10] = jj_gen;
         break label_4;
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -242,7 +261,7 @@ ASTNode productionOps():
                            e1 = new ASTDiv(e1,e2);
         break;
       default:
-        jj_la1[10] = jj_gen;
+        jj_la1[11] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -270,7 +289,7 @@ ASTNode productionOps():
       jj_consume_token(RPAR);
       break;
     default:
-      jj_la1[11] = jj_gen;
+      jj_la1[12] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -290,7 +309,7 @@ ASTNode productionOps():
       e = Num();
       break;
     default:
-      jj_la1[12] = jj_gen;
+      jj_la1[13] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -321,7 +340,7 @@ ASTNode productionOps():
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[13];
+  final private int[] jj_la1 = new int[14];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -329,10 +348,10 @@ ASTNode productionOps():
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x0,0x1002250,0xc00000,0xc00000,0x2250,0x1f8000,0x1f8000,0x60,0x60,0x180,0x180,0x2250,0x50,};
+      jj_la1_0 = new int[] {0x80002250,0x0,0x1002250,0xc00000,0xc00000,0x2250,0x1f8000,0x1f8000,0x60,0x60,0x180,0x180,0x2250,0x50,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x4,0x5,0x0,0x0,0x5,0x0,0x0,0x0,0x0,0x0,0x0,0x4,0x0,};
+      jj_la1_1 = new int[] {0x5,0x4,0x5,0x0,0x0,0x5,0x0,0x0,0x0,0x0,0x0,0x0,0x4,0x0,};
    }
 
   /** Constructor with InputStream. */
@@ -346,7 +365,7 @@ ASTNode productionOps():
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 13; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 14; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -360,7 +379,7 @@ ASTNode productionOps():
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 13; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 14; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -370,7 +389,7 @@ ASTNode productionOps():
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 13; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 14; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -380,7 +399,7 @@ ASTNode productionOps():
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 13; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 14; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -389,7 +408,7 @@ ASTNode productionOps():
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 13; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 14; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -398,7 +417,7 @@ ASTNode productionOps():
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 13; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 14; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -454,7 +473,7 @@ ASTNode productionOps():
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 13; i++) {
+    for (int i = 0; i < 14; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
