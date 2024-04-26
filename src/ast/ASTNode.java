@@ -41,9 +41,7 @@ public interface ASTNode {
         T visit(ASTWhile e, E env)      throws InvalidTypeException, DuplicateVariableFoundException;
         T visit(ASTSeq e, E env)        throws InvalidTypeException, DuplicateVariableFoundException;
         T visit(ASTDRef e, E env)       throws InvalidTypeException, DuplicateVariableFoundException;;
-
         T visit(ASTPrint e, E env) throws InvalidTypeException, DuplicateVariableFoundException;
-
         T visit(ASTPrintln e, E env)throws InvalidTypeException, DuplicateVariableFoundException;
     }
      <T,E> T accept(Visitor<T, E> v, E env) throws InvalidTypeException, DuplicateVariableFoundException;;

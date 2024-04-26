@@ -86,6 +86,7 @@ ASTNode productionOps():
     case BOOL:
     case DEREF:
     case IF:
+    case WHILE:
     case NEW:
     case NOT:
     case PRINT:
@@ -111,6 +112,7 @@ ASTNode productionOps():
     case BOOL:
     case DEREF:
     case IF:
+    case WHILE:
     case NEW:
     case PRINT:
     case PRINTLN:
@@ -305,6 +307,9 @@ ASTNode productionOps():
     case IF:
       e = ifElse();
       break;
+    case WHILE:
+      e = whileLoop();
+      break;
     case Num:
     case MINUS:
       e = Num();
@@ -331,6 +336,17 @@ ASTNode productionOps():
       throw new ParseException();
     }
       {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  final public ASTNode whileLoop() throws ParseException {
+   ASTNode e1, e2;
+    jj_consume_token(WHILE);
+    e1 = BoolOps();
+    jj_consume_token(DO);
+    e2 = SeqE();
+    jj_consume_token(END);
+                                                     {if (true) return new ASTWhile(e1, e2);}
     throw new Error("Missing return statement in function");
   }
 
@@ -399,7 +415,7 @@ ASTNode productionOps():
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x0,0x0,0x3202250,0xc00000,0xc00000,0x2202250,0x1f8000,0x1f8000,0x60,0x60,0x180,0x180,0x2202250,0x50,};
+      jj_la1_0 = new int[] {0x0,0x0,0x23202250,0xc00000,0xc00000,0x22202250,0x1f8000,0x1f8000,0x60,0x60,0x180,0x180,0x22202250,0x50,};
    }
    private static void jj_la1_init_1() {
       jj_la1_1 = new int[] {0x10,0x20,0x2f,0x0,0x0,0x2f,0x0,0x0,0x0,0x0,0x0,0x0,0x2d,0x0,};
