@@ -3,6 +3,9 @@ package compiler;
 import ast.ASTNode;
 import ast.ASTNode.Visitor;
 import ast.operations.arithmetic.*;
+import ast.operations.references.ASTId;
+import ast.operations.references.ASTLet;
+import ast.operations.references.ASTNew;
 import ast.operations.references.ASTRef;
 import ast.operations.relational.*;
 import ast.value.ASTBool;
@@ -147,6 +150,21 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
 
     @Override
     public Void visit(ASTNot astNot, Env<Void> env) throws InvalidTypeException {
+        return null;
+    }
+
+    @Override
+    public Void visit(ASTId e, Env<Void> env) throws InvalidTypeException {
+        return null;
+    }
+
+    @Override
+    public Void visit(ASTLet e, Env<Void> env) throws InvalidTypeException {
+        return null;
+    }
+
+    @Override
+    public Void visit(ASTNew e, Env<Void> env) throws InvalidTypeException {
         return null;
     }
 

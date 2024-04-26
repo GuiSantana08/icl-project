@@ -100,5 +100,5 @@ ASTNode Fact() :
  | <NOT> e = Fact() { return new ASTNot(e); }
  | ("-" e = Fact() { return new ASTNeg(e); })
  | <LPAR> e = Expr() <RPAR> { return e; }
- | <LET> e = Expr() { }
+ | <LET> <LPAR> e = Fact() <RPAR> "in"  { }
 }

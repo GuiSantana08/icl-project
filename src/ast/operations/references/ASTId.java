@@ -3,14 +3,13 @@ package ast.operations.references;
 import ast.ASTNode;
 import exceptions.InvalidTypeException;
 
-public class ASTRef implements ASTNode {
+public class ASTId implements ASTNode {
 
-    public ASTNode val;
+    public String id;
 
-    public ASTRef(ASTNode val) {
-        this.val = val;
+    public ASTId(String id) {
+        this.id = id;
     }
-
     @Override
     public <T, E> T accept(Visitor<T, E> v, E env) throws InvalidTypeException {
         return v.visit(this, env);

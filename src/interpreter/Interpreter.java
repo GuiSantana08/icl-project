@@ -3,6 +3,8 @@ package interpreter;
 import ast.ASTNode;
 import ast.ASTNode.Visitor;
 import ast.operations.arithmetic.*;
+import ast.operations.references.ASTLet;
+import ast.operations.references.ASTNew;
 import ast.operations.references.ASTRef;
 import ast.operations.relational.*;
 import ast.value.ASTBool;
@@ -142,6 +144,16 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
     public Value<?> visit(ASTNot astNot, Env<Value<?>> env) throws InvalidTypeException {
         BoolValue b = (BoolValue) astNot.arg.accept(this, env);
         return new BoolValue(!b.getValue());
+    }
+
+    @Override
+    public Value<?> visit(ASTNew e, Env<Value<?>> env) throws InvalidTypeException {
+        return e.exp.accept(this, env);
+    }
+
+    @Override
+    public Value<?> visit (ASTLet e, Env<Value<?>> env) throws InvalidTypeException {
+        return e.arg1.accept(this, env);
     }
 
 
