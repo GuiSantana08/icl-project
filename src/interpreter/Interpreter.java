@@ -10,7 +10,6 @@ import ast.operations.references.*;
 import ast.operations.relational.*;
 import ast.value.ASTBool;
 import ast.value.ASTInt;
-import ast.value.ASTString;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 import symbols.Env;
@@ -18,7 +17,6 @@ import symbols.Tuple;
 import value.BoolValue;
 import value.IntValue;
 //import value.RefValue;
-import value.StringValue;
 import value.Value;
 
 import java.util.Objects;
@@ -33,11 +31,6 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
     @Override
     public Value<?> visit(ASTBool b, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
         return new BoolValue(b.value);
-    }
-
-    @Override
-    public Value<?> visit(ASTString s, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
-        return new StringValue(s.string);
     }
 
     @Override

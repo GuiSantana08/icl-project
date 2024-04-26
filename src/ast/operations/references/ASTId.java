@@ -1,7 +1,6 @@
 package ast.operations.references;
 
 import ast.ASTNode;
-import ast.value.ASTString;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 
