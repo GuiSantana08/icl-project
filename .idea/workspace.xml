@@ -5,18 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="871e79da-d30d-47f1-b889-e3756a61fe08" name="Changes" comment="">
-<<<<<<< Updated upstream
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/ASTNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/ASTNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/InterMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/InterMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/Parser.java" afterDir="false" />
-=======
-      <change afterPath="$PROJECT_DIR$/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/build/Manifest.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ast/ASTNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ast/ASTNode.java" afterDir="false" />
->>>>>>> Stashed changes
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,6 +102,7 @@
     <configuration name="InterMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="main.InterMain" />
       <module name="icl-project" />
+      <option name="PROGRAM_PARAMETERS" value="test.txt" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="main.*" />
@@ -147,6 +139,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.InterMain" />
+      <item itemvalue="Batch.build" />
+      <item itemvalue="JUnit.ParserTester" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.InterMain" />
@@ -225,7 +222,6 @@
           <properties class="exceptions.InvalidTypeException" package="exceptions" />
           <option name="timeStamp" value="1" />
         </breakpoint>
-<<<<<<< Updated upstream
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/ast/operations/relational/ASTNot.java</url>
           <line>10</line>
@@ -255,8 +251,6 @@
           <line>131</line>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
-=======
->>>>>>> Stashed changes
       </breakpoints>
     </breakpoint-manager>
   </component>

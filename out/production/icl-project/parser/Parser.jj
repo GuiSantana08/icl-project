@@ -1,0 +1,218 @@
+options {
+  STATIC=false;
+}
+
+PARSER_BEGIN(Parser)
+
+package parser;
+import ast.*; import ast.value.*; import ast.operations.arithmetic.*;
+import ast.operations.relational.*; import ast.control.*; import ast.operations.references.*;
+import ast.functions.*;
+import symbols.Tuple; import java.util.List;import java.util.ArrayList;
+
+public class Parser {
+
+}
+
+PARSER_END(Parser)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\r"
+}
+
+TOKEN :
+{
+     < Num: (["0"-"9"]) + >
+  |  < PLUS : "+" >
+  |  < MINUS : "-">
+  |  < TIMES : "*">
+  |  < DIV : "/">
+  |  < LPAR : "(" >
+  |  < RPAR : ")" >
+  |  < EL: "\n" >
+  |  < SEQ : ";" >
+  |  < BOOL : ("true" | "false") >
+  |  < EQUALS : "=" >
+  |  < EQREL : "==">
+  |  < GT : ">">
+  |  < GEQT : ">=">
+  |  < LT : "<">
+  |  < LEQT : "<=">
+  |  < DIFF : "!=">
+  |  < DEREF : "!">
+  |  < AND : "&&">
+  |  < OR : "||">
+  |  < LET : "let">
+  |  < IF : "if">
+  |  < THEN : "then">
+  |  < ELSE : "else">
+  |  < END: "end">
+  |  < WHILE : "while">
+  |  < DO : "do">
+  |  < IN : "in">
+  |  < NEW : "new">
+  |  < NOT : "~">
+  |  <PRINT : "print">
+  |  <PRINTLN : "println">
+  |  < ATRIB : ":=">
+  |  < Id: ["a"-"z","A"-"Z"] ( ["a"-"z","A"-"Z","0"-"9"] )* >
+}
+
+ASTNode Start():
+{ ASTNode e; }
+{
+   e = SeqE() <EL>  { return e; }
+}
+
+
+/*ASTNode Seq():
+{ ASTNode e1, e2; }
+{
+    e1 = productionOps()
+    [ <SEQ> e2 = Seq() { return new ASTSeq(e1, e2); }]
+
+    { return e1; }
+}
+
+//TODO: incomplete and incorrect
+ASTNode productionOps():
+{ ASTNode e1, e2, e3, e4; }
+{
+    e1 = logicOps()
+    [ <IF> e2 = logicOps() <THEN> e3 = productionOps() <ELSE> e4 = productionOps() <END> { return new ASTIfThenElse(e2, e3, e4); }
+    | <WHILE> e2 = logicOps() <DO> e3 = productionOps() <END> { return new ASTWhile(e2, e3); }]
+    { return e1; }
+}*/
+
+
+ASTNode SeqE():
+{ ASTNode e1, e2; }
+{
+    e1 = Decl()
+     (<ATRIB> e2 = Decl() { e1 =  new ASTReff(e1, e2); })*
+
+    { return e1; }
+}
+
+
+ASTNode Decl():
+{ ASTNode e, body;
+  Token x;
+  List<Tuple<String, ASTNode>> vars = new ArrayList<Tuple<String, ASTNode>>(); }
+{
+    (
+    <LET> ( x = <Id> <EQUALS> (e = BoolOps())
+
+           { vars.add(new Tuple<String, ASTNode>(x.image, e)); }
+
+           <IN> body = SeqE() { e =  new ASTLet(vars, body); }
+           )+
+    | e = BoolOps() )
+    { return e; }
+
+}
+
+
+
+ASTNode BoolOps():
+{ASTNode e1, e2;}
+{
+    (
+    e1 = CmpOps()
+    ( <AND> e2 = BoolOps() { e1 = new ASTAnd(e1,e2); }
+    | <OR> e2 = BoolOps() { e1 = new ASTOr(e1,e2); } )*
+    | <NOT> e2 = BoolOps() { e1 = new ASTNot(e2); })
+    { return e1; }
+}
+
+ASTNode CmpOps():
+{ASTNode e1, e2;}
+{
+    e1 = Expr()
+    [ <EQREL> e2 = CmpOps() { e1 = new ASTEq(e1,e2); }
+    | <GT> e2 = CmpOps() { e1 = new ASTGt(e1,e2); }
+    | <GEQT> e2 = CmpOps() { e1 = new ASTGeq(e1,e2); }
+    | <LT> e2 = CmpOps() { e1 = new ASTLt(e1,e2); }
+    | <LEQT> e2 = CmpOps() { e1 = new ASTLeq(e1,e2); }
+    | <DIFF> e2 = CmpOps() { e1 = new ASTDiff(e1,e2); }]
+    { return e1; }
+
+}
+
+
+ASTNode Expr() :
+{ ASTNode e1, e2; }
+{
+   e1 = Term() 
+     ( <PLUS> e2 = Expr() { e1 = new ASTAdd(e1,e2); }
+     | <MINUS> e2 = Expr() { e1 = new ASTSub(e1,e2); } )*
+     { return e1; }
+}
+
+ASTNode Term() :
+{ ASTNode e1, e2; }
+{
+     e1 = Fact()
+     ( <TIMES> e2 = Term() { e1 = new ASTMult(e1,e2); }
+     | <DIV> e2 = Term() { e1 = new ASTDiv(e1,e2); } )*
+
+     { return e1; }
+}
+
+
+ASTNode Fact() :
+{ Token x; ASTNode e;}
+{
+    (
+        <DEREF> e = BoolOps() { e = new ASTDRef(e); }
+        | <PRINT> e = BoolOps() { e = new ASTPrint(e); }
+        | <PRINTLN> e = BoolOps() { e = new ASTPrintln(e); }
+        | e = ifElse()
+        | e = whileLoop()
+        |  e = Num()
+        | e = Id()
+        | e = Bool()
+        | <LPAR> e = SeqE() <RPAR>
+        | <NEW> e = BoolOps() { e = new ASTNew(e); })
+    { return e; }
+ }
+
+ ASTNode whileLoop():
+ { ASTNode e1, e2; }
+ {
+     <WHILE> e1 = BoolOps() <DO> e2 = SeqE() <END> { return new ASTWhile(e1, e2); }
+ }
+
+ ASTNode ifElse():
+ { ASTNode e1, e2, e3; }
+ {
+     <IF> e1 = BoolOps() <THEN> e2 = SeqE() <ELSE> e3 = SeqE() <END> { return new ASTIfThenElse(e1, e2, e3); }
+ }
+
+ASTNode Num():
+{ ASTNode e;  Token x;  }
+{
+    (
+    x = <Num> { e = new ASTInt(Integer.parseInt(x.image)); }
+    | <MINUS> x = <Num> {e = new ASTInt(-Integer.parseInt(x.image)); } )
+    { return e; }
+}
+
+
+ ASTNode Bool() :
+ { Token x; }
+ {
+     x = <BOOL> { return new ASTBool(Boolean.parseBoolean(x.image)); }
+ }
+
+
+ ASTNode Id() :
+{ Token x; }
+{
+    x = <Id> { return new ASTId(x.image); }
+
+
+}
