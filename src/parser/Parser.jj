@@ -33,7 +33,7 @@ TOKEN :
   |  < LPAR : "(" >
   |  < RPAR : ")" >
   |  < EL: "\n" >
-  |  < SEQ : ";" >
+  |  < SEMCOL : ";" >
   |  < BOOL : ("true" | "false") >
   |  < EQUALS : "=" >
   |  < EQREL : "==">
@@ -64,19 +64,19 @@ TOKEN :
 ASTNode Start():
 { ASTNode e; }
 {
-   e = SeqE() <EL>  { return e; }
+   e = Seq() <EL>  { return e; }
 }
 
 
-/*ASTNode Seq():
+ASTNode Seq():
 { ASTNode e1, e2; }
 {
-    e1 = productionOps()
-    [ <SEQ> e2 = Seq() { return new ASTSeq(e1, e2); }]
+    e1 = SeqE()
+    ( <SEMCOL> e2 = Seq() { return new ASTSeq(e1, e2); })*
 
     { return e1; }
 }
-*/
+
 
 
 ASTNode SeqE():
@@ -173,13 +173,13 @@ ASTNode Fact() :
  ASTNode whileLoop():
  { ASTNode e1, e2; }
  {
-     <WHILE> e1 = BoolOps() <DO> e2 = SeqE() <END> { return new ASTWhile(e1, e2); }
+     <WHILE> e1 = BoolOps() <DO> e2 = Seq() <END> { return new ASTWhile(e1, e2); }
  }
 
  ASTNode ifElse():
  { ASTNode e1, e2, e3; }
  {
-     <IF> e1 = BoolOps() <THEN> e2 = SeqE() <ELSE> e3 = SeqE() <END> { return new ASTIfThenElse(e1, e2, e3); }
+     <IF> e1 = BoolOps() <THEN> e2 = Seq() <ELSE> e3 = Seq() <END> { return new ASTIfThenElse(e1, e2, e3); }
  }
 
 ASTNode Num():

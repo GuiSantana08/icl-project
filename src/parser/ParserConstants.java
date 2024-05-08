@@ -27,7 +27,7 @@ public interface ParserConstants {
   /** RegularExpression Id. */
   int EL = 11;
   /** RegularExpression Id. */
-  int SEQ = 12;
+  int SEMCOL = 12;
   /** RegularExpression Id. */
   int BOOL = 13;
   /** RegularExpression Id. */

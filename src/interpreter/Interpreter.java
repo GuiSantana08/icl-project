@@ -171,8 +171,9 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
     }
 
     @Override
-    public Value<?> visit(ASTSeq e, Env<Value<?>> env) throws InvalidTypeException {
-        return null;
+    public Value<?> visit(ASTSeq e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        e.left.accept(this, env);
+        return e.right.accept(this, env);
     }
 
     @Override
@@ -220,7 +221,6 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
     public Value<?> visit (ASTReff e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
         RefValue value = (RefValue) e.id.accept(this, env);
         value.setValue(e.exp.accept(this, env));
-        System.out.println(value.getValue());
         return value;
     }
 
