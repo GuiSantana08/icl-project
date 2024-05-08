@@ -208,8 +208,8 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     }
 
     private Type handleIntegerOperation(ASTNode arg1, ASTNode arg2, String operationName, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
-        Type left = arg1.accept(this, env);
-        Type right = arg2.accept(this, env);
+        Type left = handleRefType(arg1.accept(this, env));
+        Type right = handleRefType(arg2.accept(this, env));
         if (left == IntType.singleton && right == IntType.singleton) {
             return left;
         } else {
@@ -218,8 +218,8 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     }
 
     private Type handleIntegerBoolOperation(ASTNode arg1, ASTNode arg2, String operationName, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
-        Type left = arg1.accept(this, env);
-        Type right = arg2.accept(this, env);
+        Type left = handleRefType(arg1.accept(this, env));
+        Type right = handleRefType(arg2.accept(this, env));
         if (left == IntType.singleton && right == IntType.singleton) {
             return BoolType.singleton;
         } else {
@@ -228,12 +228,19 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     }
 
     private Type handleBooleanOperation(ASTNode arg1, ASTNode arg2, String operationName, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
-        Type left = arg1.accept(this, env);
-        Type right = arg2.accept(this, env);
+        Type left = handleRefType(arg1.accept(this, env));
+        Type right = handleRefType(arg2.accept(this, env));
         if (left == BoolType.singleton && right == BoolType.singleton) {
             return BoolType.singleton;
         } else {
             throw new InvalidTypeException("Type error in " + operationName + " operation");
         }
+    }
+
+    private Type handleRefType(Type type) {
+        if (type instanceof RefType) {
+            return ((RefType) type).getRefType();
+        }
+        return type;
     }
 }

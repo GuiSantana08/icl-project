@@ -23,16 +23,7 @@ public class Parser implements ParserConstants {
 
     { return e1; }
 }
-
-//TODO: incomplete and incorrect
-ASTNode productionOps():
-{ ASTNode e1, e2, e3, e4; }
-{
-    e1 = logicOps()
-    [ <IF> e2 = logicOps() <THEN> e3 = productionOps() <ELSE> e4 = productionOps() <END> { return new ASTIfThenElse(e2, e3, e4); }
-    | <WHILE> e2 = logicOps() <DO> e3 = productionOps() <END> { return new ASTWhile(e2, e3); }]
-    { return e1; }
-}*/
+*/
   final public ASTNode SeqE() throws ParseException {
   ASTNode e1, e2;
     e1 = Decl();
@@ -66,10 +57,7 @@ ASTNode productionOps():
         x = jj_consume_token(Id);
         jj_consume_token(EQUALS);
         e = BoolOps();
-             vars.add(new Tuple<String, ASTNode>(x.image, e));
-        jj_consume_token(IN);
-        body = SeqE();
-                                e =  new ASTLet(vars, body);
+              vars.add(new Tuple<String, ASTNode>(x.image, e));
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case Id:
           ;
@@ -79,6 +67,9 @@ ASTNode productionOps():
           break label_2;
         }
       }
+      jj_consume_token(IN);
+      body = SeqE();
+                             e = new ASTLet(vars, body);
       break;
     case Num:
     case MINUS:
@@ -291,18 +282,18 @@ ASTNode productionOps():
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case DEREF:
       jj_consume_token(DEREF);
-      e = BoolOps();
-                                e = new ASTDRef(e);
+      e = Fact();
+                             e = new ASTDRef(e);
       break;
     case PRINT:
       jj_consume_token(PRINT);
-      e = BoolOps();
-                                  e = new ASTPrint(e);
+      e = Fact();
+                               e = new ASTPrint(e);
       break;
     case PRINTLN:
       jj_consume_token(PRINTLN);
-      e = BoolOps();
-                                    e = new ASTPrintln(e);
+      e = Fact();
+                                 e = new ASTPrintln(e);
       break;
     case IF:
       e = ifElse();

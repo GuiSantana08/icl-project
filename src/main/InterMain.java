@@ -1,9 +1,6 @@
 package main;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 import ast.ASTNode;
 
@@ -21,38 +18,31 @@ import value.Value;
 public class InterMain {
 
 	@SuppressWarnings("static-access")
-	public static void main(String args[]) throws FileNotFoundException {
-		try{
-			InputStream in;
-			boolean isFileMode;
-			if (args.length == 0 || args[0].trim().equals("")){
-				in = System.in;
-				isFileMode = false;
-			} else {
-				String filename = args[0];
-				in = new FileInputStream(filename);
-				isFileMode = true;
-			}
+	public static void main(String args[]) {
+		Parser parser = new Parser(System.in);
+		TypeChecker typeChecker = new TypeChecker();
+		Env<Type> environmentType = new Env<>();
+		Env<Value<?>> environmentValue = new Env<>();
 
-			Parser parser = new Parser(in);
-			TypeChecker typeChecker = new TypeChecker();
-			Env<Type> environmentType = new Env<>();
-			Env<Value<?>> environmentValue = new Env<>();
-
-			do {
-				if (!isFileMode)
-					System.out.print("< ");
+		while (true) {
+			try {
 				ASTNode e = parser.Start();
+				System.out.println("Parse OK!" );
 				e.accept(typeChecker, environmentType);
-				System.out.println(">");
 				System.out.println(Interpreter.interpret(e, environmentValue));
-			} while (!isFileMode);
 
-		} catch (InvalidTypeException | DuplicateVariableFoundException e) {
-			throw new RuntimeException(e);
-		} catch (ParseException e)  {
-			System.out.println("Syntax error encountered!");
-			e.printStackTrace();
+			} catch (TokenMgrError e) {
+				System.out.println("Lexical Error!");
+				e.printStackTrace();
+				parser.ReInit(System.in);
+			} catch (InvalidTypeException | DuplicateVariableFoundException e) {
+				throw new RuntimeException(e);
+			}
+			catch (parser.ParseException e) {
+				System.out.println("Syntax Error!");
+				e.printStackTrace();
+				parser.ReInit(System.in);
+			}
 		}
 	}
 
