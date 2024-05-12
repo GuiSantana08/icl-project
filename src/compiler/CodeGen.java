@@ -16,14 +16,19 @@ import ast.value.ASTString;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 import symbols.Env;
+import symbols.Tuple;
 import target.BasicBlock;
 import target.SIPush;
 import target.arithmetic.*;
+import target.references.IDRef;
+import target.references.IId;
+import target.references.ILet;
 import target.relational.*;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
+import java.util.Iterator;
 
 public class CodeGen implements Visitor<Void, Env<Void>>{
 
@@ -90,7 +95,7 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
     public Void visit(ASTAnd e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         e.left.accept(this, env);
         e.right.accept(this, env);
-        //block.addInstruction(new SIPush());
+        block.addInstruction(new IAdd());
         return e.accept(this, env);
     }
 
@@ -98,7 +103,7 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
     public Void visit(ASTOr e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         e.left.accept(this, env);
         e.right.accept(this, env);
-        //block.addInstruction(new SIPush());
+        block.addInstruction(new IOr());
         return e.accept(this, env);
     }
 
@@ -152,12 +157,17 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
 
 
     @Override
-    public Void visit(ASTNot astNot, Env<Void> env) throws InvalidTypeException {
+    public Void visit(ASTNot astNot, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        astNot.arg.accept(this, env);
+        block.addInstruction(new SIPush(0));
+        block.addInstruction(new INot());
         return null;
     }
 
     @Override
-    public Void visit(ASTId e, Env<Void> env) throws InvalidTypeException {
+    public Void visit(ASTId e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        e.accept(this, env);
+        block.addInstruction(new IId());
         return null;
     }
 
@@ -178,6 +188,8 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
 
     @Override
     public Void visit(ASTDRef e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        e.exp.accept(this, env);
+        block.addInstruction(new IDRef());
         return null;
     }
 
@@ -192,7 +204,14 @@ public class CodeGen implements Visitor<Void, Env<Void>>{
     }
 
     @Override
-    public Void visit(ASTLet e, Env<Void> env) throws InvalidTypeException {
+    public Void visit(ASTLet e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        e.body.accept(this, env);
+        Iterator<Tuple<String, ASTNode>> it = e.vars.iterator();
+        while (it.hasNext()){
+            Tuple<String, ASTNode> var = it.next();
+            var.item2().accept(this, env);
+        }
+        block.addInstruction(new ILet(e.vars));
         return null;
     }
 

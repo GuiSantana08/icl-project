@@ -5,9 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="871e79da-d30d-47f1-b889-e3756a61fe08" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Manifest.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/target/references/IDRef.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/target/references/IId.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/target/references/ILet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/target/relational/INot.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/target/relational/IOr.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/build/Manifest.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/Manifest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/compiler/CodeGen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/compiler/CodeGen.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,6 +71,9 @@
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="target.references" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
@@ -163,6 +173,10 @@
       <workItem from="1714160655522" duration="12000" />
       <workItem from="1714160673987" duration="7177000" />
       <workItem from="1714170980227" duration="938000" />
+      <workItem from="1714752699873" duration="3350000" />
+      <workItem from="1715078626887" duration="1400000" />
+      <workItem from="1715081242415" duration="1597000" />
+      <workItem from="1715531268592" duration="1581000" />
     </task>
     <task id="LOCAL-00001" summary="README.md atualizado">
       <option name="closed" value="true" />
@@ -222,15 +236,6 @@
           <properties class="exceptions.InvalidTypeException" package="exceptions" />
           <option name="timeStamp" value="1" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/ast/operations/relational/ASTNot.java</url>
-          <line>10</line>
-          <properties class="ast.operations.relational.ASTNot" method="&lt;init&gt;">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/type/TypeChecker.java</url>
           <line>168</line>
