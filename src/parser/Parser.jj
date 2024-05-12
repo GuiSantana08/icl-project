@@ -33,7 +33,7 @@ TOKEN :
   |  < LPAR : "(" >
   |  < RPAR : ")" >
   |  < EL: "\n" >
-  |  < SEQ : ";" >
+  |  < SEMCOL : ";" >
   |  < BOOL : ("true" | "false") >
   |  < EQUALS : "=" >
   |  < EQREL : "==">
@@ -64,28 +64,19 @@ TOKEN :
 ASTNode Start():
 { ASTNode e; }
 {
-   e = SeqE() <EL>  { return e; }
+   e = Seq() <EL>  { return e; }
 }
 
 
-/*ASTNode Seq():
+ASTNode Seq():
 { ASTNode e1, e2; }
 {
-    e1 = productionOps()
-    [ <SEQ> e2 = Seq() { return new ASTSeq(e1, e2); }]
+    e1 = SeqE()
+    ( <SEMCOL> e2 = Seq() { return new ASTSeq(e1, e2); })*
 
     { return e1; }
 }
 
-//TODO: incomplete and incorrect
-ASTNode productionOps():
-{ ASTNode e1, e2, e3, e4; }
-{
-    e1 = logicOps()
-    [ <IF> e2 = logicOps() <THEN> e3 = productionOps() <ELSE> e4 = productionOps() <END> { return new ASTIfThenElse(e2, e3, e4); }
-    | <WHILE> e2 = logicOps() <DO> e3 = productionOps() <END> { return new ASTWhile(e2, e3); }]
-    { return e1; }
-}*/
 
 
 ASTNode SeqE():
@@ -104,15 +95,14 @@ ASTNode Decl():
   List<Tuple<String, ASTNode>> vars = new ArrayList<Tuple<String, ASTNode>>(); }
 {
     (
-    <LET> ( x = <Id> <EQUALS> (e = BoolOps())
-
-           { vars.add(new Tuple<String, ASTNode>(x.image, e)); }
-
-           <IN> body = SeqE() { e =  new ASTLet(vars, body); }
-           )+
-    | e = BoolOps() )
+    (
+        <LET> (
+            x = <Id> <EQUALS> (e = BoolOps())
+            { vars.add(new Tuple<String, ASTNode>(x.image, e)); }
+        )+
+        <IN> body = SeqE() { e = new ASTLet(vars, body); }
+    ) | e = BoolOps() )
     { return e; }
-
 }
 
 
@@ -167,9 +157,9 @@ ASTNode Fact() :
 { Token x; ASTNode e;}
 {
     (
-        <DEREF> e = BoolOps() { e = new ASTDRef(e); }
-        | <PRINT> e = BoolOps() { e = new ASTPrint(e); }
-        | <PRINTLN> e = BoolOps() { e = new ASTPrintln(e); }
+        <DEREF> e = Fact() { e = new ASTDRef(e); }
+        | <PRINT> e = Fact() { e = new ASTPrint(e); }
+        | <PRINTLN> e = Fact() { e = new ASTPrintln(e); }
         | e = ifElse()
         | e = whileLoop()
         |  e = Num()
@@ -183,13 +173,13 @@ ASTNode Fact() :
  ASTNode whileLoop():
  { ASTNode e1, e2; }
  {
-     <WHILE> e1 = BoolOps() <DO> e2 = SeqE() <END> { return new ASTWhile(e1, e2); }
+     <WHILE> e1 = BoolOps() <DO> e2 = Seq() <END> { return new ASTWhile(e1, e2); }
  }
 
  ASTNode ifElse():
  { ASTNode e1, e2, e3; }
  {
-     <IF> e1 = BoolOps() <THEN> e2 = SeqE() <ELSE> e3 = SeqE() <END> { return new ASTIfThenElse(e1, e2, e3); }
+     <IF> e1 = BoolOps() <THEN> e2 = Seq() <ELSE> e3 = Seq() <END> { return new ASTIfThenElse(e1, e2, e3); }
  }
 
 ASTNode Num():

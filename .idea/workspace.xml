@@ -12,9 +12,18 @@
       <change afterPath="$PROJECT_DIR$/src/target/relational/INot.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/target/relational/IOr.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/Manifest.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/compiler/CodeGen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/compiler/CodeGen.java" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/src/interpreter/Interpreter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/interpreter/Interpreter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/InterMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/InterMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/Parser.jj" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/Parser.jj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parser/ParserConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parser/ParserConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/type/TypeChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/type/TypeChecker.java" afterDir="false" />
+>>>>>>> 78df8806d9ebdf09e9c7f0694ec8b9c71ba7c9e2
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,28 +57,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Application.InterMain.executor&quot;: &quot;Run&quot;,
-    &quot;Batch.build.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.ParserTester.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/guipi/Desktop/src/src&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Application.InterMain.executor": "Run",
+    "Batch.build.executor": "Run",
+    "JUnit.ParserTester.executor": "Run",
+    "JUnit.ParserTester.testsLabClass01.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/guipi/Desktop/src/src",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="target.references" />
@@ -149,17 +159,43 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ParserTester.testsLabClass01" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="icl-project" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="tests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="tests" />
+      <option name="MAIN_CLASS_NAME" value="tests.ParserTester" />
+      <option name="METHOD_NAME" value="testsLabClass01" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.InterMain" />
       <item itemvalue="Batch.build" />
+      <item itemvalue="JUnit.ParserTester.testsLabClass01" />
       <item itemvalue="JUnit.ParserTester" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.InterMain" />
+        <item itemvalue="JUnit.ParserTester.testsLabClass01" />
         <item itemvalue="JUnit.ParserTester" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
+        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -173,10 +209,16 @@
       <workItem from="1714160655522" duration="12000" />
       <workItem from="1714160673987" duration="7177000" />
       <workItem from="1714170980227" duration="938000" />
+<<<<<<< HEAD
       <workItem from="1714752699873" duration="3350000" />
       <workItem from="1715078626887" duration="1400000" />
       <workItem from="1715081242415" duration="1597000" />
       <workItem from="1715531268592" duration="1581000" />
+=======
+      <workItem from="1714777594531" duration="93000" />
+      <workItem from="1715081036200" duration="5246000" />
+      <workItem from="1715163412298" duration="2913000" />
+>>>>>>> 78df8806d9ebdf09e9c7f0694ec8b9c71ba7c9e2
     </task>
     <task id="LOCAL-00001" summary="README.md atualizado">
       <option name="closed" value="true" />
@@ -238,16 +280,6 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/type/TypeChecker.java</url>
-          <line>168</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/type/TypeChecker.java</url>
-          <line>193</line>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/type/TypeChecker.java</url>
           <line>64</line>
           <option name="timeStamp" value="14" />
         </line-breakpoint>
@@ -255,6 +287,11 @@
           <url>file://$PROJECT_DIR$/src/type/TypeChecker.java</url>
           <line>131</line>
           <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/type/TypeChecker.java</url>
+          <line>195</line>
+          <option name="timeStamp" value="18" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
