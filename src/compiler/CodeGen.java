@@ -5,6 +5,8 @@ import ast.ASTNode.Visitor;
 import ast.control.ASTIfThenElse;
 import ast.control.ASTSeq;
 import ast.control.ASTWhile;
+import ast.functions.ASTDefFun;
+import ast.functions.ASTFunCall;
 import ast.functions.ASTPrint;
 import ast.functions.ASTPrintln;
 import ast.operations.arithmetic.*;
@@ -212,6 +214,17 @@ public class CodeGen implements Visitor<Void, Void>{
         Frame f = p.item1();
         CompEnv newEnv = p.item2();
 
+    public Void visit(ASTDefFun e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        return null;
+    }
+
+    @Override
+    public Void visit(ASTFunCall e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        return null;
+    }
+
+    @Override
+    public Void visit(ASTLet e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         Iterator<Tuple<String, ASTNode>> it = e.vars.iterator();
         while (it.hasNext()){
             Tuple<String, ASTNode> var = it.next();

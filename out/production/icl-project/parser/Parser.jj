@@ -55,6 +55,8 @@ TOKEN :
   |  < DO : "do">
   |  < IN : "in">
   |  < NEW : "new">
+  | < FUN : "fun">
+  | < ARROWRIGHT : "->" >
   |  < NOT : "~">
   |  <PRINT : "print">
   |  <PRINTLN : "println">
@@ -108,6 +110,7 @@ ASTNode Decl():
 
 
 
+
 ASTNode BoolOps():
 {ASTNode e1, e2;}
 {
@@ -153,9 +156,37 @@ ASTNode Term() :
      { return e1; }
 }
 
+ASTNode DefFun():
+{ Token x;
+  ASTNode e;
+ List<String> args = new ArrayList<String>();}
+{
+    <FUN> (x = <Id> {args.add(x.image);}
+    ("," x = <Id> {args.add(x.image); })*)?
+
+     <ARROWRIGHT> e = SeqE() { return new ASTDefFun(args, e); }
+}
+
+ASTNode fcall()  :
+{ASTNode e;}
+{
+    e=Fact() (e=gets(e))*
+    {return e;}
+}
+
+ASTNode gets(ASTNode exp) :
+{ASTNode e1,e2;
+ List<ASTNode> args = new ArrayList<ASTNode>();}
+{
+
+    <LPAR> e2 = Expr() {args.add(e2); }
+    ("," e2 = Expr() { args.add(e2); })* <RPAR>
+    { return new ASTFunCall(exp, args); }
+}
+
 
 ASTNode Fact() :
-{ Token x; ASTNode e;}
+{ASTNode e;}
 {
     (
         <DEREF> e = Fact() { e = new ASTDRef(e); }
@@ -166,6 +197,7 @@ ASTNode Fact() :
         |  e = Num()
         | e = Id()
         | e = Bool()
+        | e = DefFun()
         | <LPAR> e = SeqE() <RPAR>
         | <NEW> e = BoolOps() { e = new ASTNew(e); })
     { return e; }

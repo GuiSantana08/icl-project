@@ -5,6 +5,8 @@ import ast.ASTNode.Visitor;
 import ast.control.ASTIfThenElse;
 import ast.control.ASTSeq;
 import ast.control.ASTWhile;
+import ast.functions.ASTDefFun;
+import ast.functions.ASTFunCall;
 import ast.functions.ASTPrint;
 import ast.functions.ASTPrintln;
 import ast.operations.arithmetic.*;
@@ -18,6 +20,8 @@ import exceptions.InvalidTypeException;
 import symbols.Env;
 import symbols.Tuple;
 import value.RefValue;
+
+import java.util.List;
 
 public class TypeChecker implements Visitor<Type, Env<Type>>{
     @Override
@@ -209,6 +213,40 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
         return e.exp.accept(this, env);
     }
 
+    @Override
+    public Type visit(ASTDefFun e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        env = env.beginScope();
+        for (String param : e.params) {
+            env.bind(param, UnitType.singleton);
+        }
+        Type returnType = e.body.accept(this, env);
+        env.endScope();
+        List<Type> params = e.params.stream().map(this::getType).toList();
+
+        return new ClosureType(returnType, params);
+    }
+
+    @Override
+    public Type visit(ASTFunCall e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        Type fun = e.node.accept(this, env);
+        if (fun instanceof ClosureType) {
+            ClosureType closure = (ClosureType) fun;
+            if (closure.getParams().size() == e.args.size()) {
+                for (int i = 0; i < e.args.size(); i++) {
+                    Type arg = e.args.get(i).accept(this, env);
+                    if (arg != closure.getParams().get(i)) {
+                        throw new InvalidTypeException("Type error in function call");
+                    }
+                }
+                return closure.getReturnType();
+            } else {
+                throw new InvalidTypeException("Type error in function call");
+            }
+        } else {
+            throw new InvalidTypeException("Type error in function call");
+        }
+    }
+
     private Type handleIntegerOperation(ASTNode arg1, ASTNode arg2, String operationName, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
         Type left = handleRefType(arg1.accept(this, env));
         Type right = handleRefType(arg2.accept(this, env));
@@ -244,5 +282,20 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
             return ((RefType) type).getRefType();
         }
         return type;
+    }
+
+    private Type getType(String name){
+switch (name){
+            case "int":
+                return IntType.singleton;
+            case "bool":
+                return BoolType.singleton;
+            case "string":
+                return StringType.singleton;
+            case "ref":
+                return RefType.singleton;
+            default:
+                return UnitType.singleton;
+        }
     }
 }

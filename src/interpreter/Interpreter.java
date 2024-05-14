@@ -5,6 +5,8 @@ import ast.ASTNode.Visitor;
 import ast.control.ASTIfThenElse;
 import ast.control.ASTSeq;
 import ast.control.ASTWhile;
+import ast.functions.ASTDefFun;
+import ast.functions.ASTFunCall;
 import ast.functions.ASTPrint;
 import ast.functions.ASTPrintln;
 import ast.operations.arithmetic.*;
@@ -194,6 +196,24 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
         Value arg = e.exp.accept(this, env);
         System.out.println(arg);
         return null;
+    }
+
+    @Override
+    public Value<?> visit(ASTDefFun e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        return new ClosureValue(e.params, e.body, env);
+
+    }
+
+    @Override
+    public Value<?> visit(ASTFunCall e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        ClosureValue closure = (ClosureValue) e.node.accept(this, env);
+        Env<Value<?>> newEnv = closure.getEnv().beginScope();
+        for(ASTNode arg : e.args) {
+            newEnv.bind(closure.getParam(e.args.indexOf(arg)), arg.accept(this, env));
+        }
+        Value<?> result = closure.getBody().accept(this, newEnv);
+        newEnv.endScope();
+        return result;
     }
 
     @Override

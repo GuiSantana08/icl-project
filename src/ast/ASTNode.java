@@ -3,6 +3,8 @@ package ast;
 import ast.control.ASTIfThenElse;
 import ast.control.ASTSeq;
 import ast.control.ASTWhile;
+import ast.functions.ASTDefFun;
+import ast.functions.ASTFunCall;
 import ast.functions.ASTPrint;
 import ast.functions.ASTPrintln;
 import ast.operations.arithmetic.*;
@@ -41,8 +43,10 @@ public interface ASTNode {
         T visit(ASTWhile e, E env)      throws InvalidTypeException, DuplicateVariableFoundException;
         T visit(ASTSeq e, E env)        throws InvalidTypeException, DuplicateVariableFoundException;
         T visit(ASTDRef e, E env)       throws InvalidTypeException, DuplicateVariableFoundException;;
-        T visit(ASTPrint e, E env) throws InvalidTypeException, DuplicateVariableFoundException;
-        T visit(ASTPrintln e, E env)throws InvalidTypeException, DuplicateVariableFoundException;
+        T visit(ASTPrint e, E env)      throws InvalidTypeException, DuplicateVariableFoundException;
+        T visit(ASTPrintln e, E env)    throws InvalidTypeException, DuplicateVariableFoundException;
+        T visit(ASTDefFun e, E env)     throws InvalidTypeException, DuplicateVariableFoundException;
+        T visit(ASTFunCall e, E env)    throws InvalidTypeException, DuplicateVariableFoundException;
     }
      <T,E> T accept(Visitor<T, E> v, E env) throws InvalidTypeException, DuplicateVariableFoundException;;
 }
