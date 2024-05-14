@@ -10,7 +10,7 @@ public class Parser implements ParserConstants {
   final public ASTNode Start() throws ParseException {
   ASTNode e;
     e = Seq();
-    jj_consume_token(EL);
+    jj_consume_token(EF);
                      {if (true) return e;}
     throw new Error("Missing return statement in function");
   }
@@ -418,10 +418,10 @@ public class Parser implements ParserConstants {
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x1000,0x0,0x0,0x23202250,0xc00000,0xc00000,0x22202250,0x1f8000,0x1f8000,0x60,0x60,0x180,0x180,0x22202250,0x50,};
+      jj_la1_0 = new int[] {0x2000,0x0,0x0,0x464044a0,0x1800000,0x1800000,0x444044a0,0x3f0000,0x3f0000,0xc0,0xc0,0x300,0x300,0x444044a0,0xa0,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x0,0x10,0x20,0x2f,0x0,0x0,0x2f,0x0,0x0,0x0,0x0,0x0,0x0,0x2d,0x0,};
+      jj_la1_1 = new int[] {0x0,0x20,0x40,0x5e,0x0,0x0,0x5e,0x0,0x0,0x0,0x0,0x0,0x0,0x5a,0x0,};
    }
 
   /** Constructor with InputStream. */
@@ -538,7 +538,7 @@ public class Parser implements ParserConstants {
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[38];
+    boolean[] la1tokens = new boolean[39];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -555,7 +555,7 @@ public class Parser implements ParserConstants {
         }
       }
     }
-    for (int i = 0; i < 38; i++) {
+    for (int i = 0; i < 39; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

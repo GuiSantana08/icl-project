@@ -21,6 +21,7 @@ SKIP :
   " "
 | "\t"
 | "\r"
+| "\n"
 }
 
 TOKEN :
@@ -32,7 +33,7 @@ TOKEN :
   |  < DIV : "/">
   |  < LPAR : "(" >
   |  < RPAR : ")" >
-  |  < EL: "\n" >
+  |  < EF: ";;" >
   |  < SEMCOL : ";" >
   |  < BOOL : ("true" | "false") >
   |  < EQUALS : "=" >
@@ -64,7 +65,7 @@ TOKEN :
 ASTNode Start():
 { ASTNode e; }
 {
-   e = Seq() <EL>  { return e; }
+   e = Seq() <EF>  { return e; }
 }
 
 
