@@ -3,16 +3,22 @@ package ast.functions;
 import ast.ASTNode;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
+import symbols.Tuple;
 
 import java.util.List;
 
 public class ASTDefFun implements ASTNode {
-    public List<String> params;
-    public ASTNode body;
+    public final List<Tuple<String, String>> params; // List of (param, type) pairs
+    public final ASTNode body;
 
-    public ASTDefFun(List<String> params, ASTNode body) {
+
+    public ASTDefFun(List<Tuple<String, String>> params, ASTNode body) {
         this.params = params;
         this.body = body;
+    }
+
+    public ASTNode getBody() {
+        return body;
     }
 
     @Override

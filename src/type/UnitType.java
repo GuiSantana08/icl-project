@@ -6,7 +6,13 @@ public class UnitType implements Type{
     private static final String TYPE = "unit";
     private static final String JVM_TYPE = "Ljava/lang/Object;";
 
-    private UnitType() {}
+    private Type type;
+
+    public UnitType() {}
+
+    public UnitType(Type type) {
+        this.type = type;
+    }
 
     @Override
     public String getType() {
@@ -17,4 +23,5 @@ public class UnitType implements Type{
     public String jvmType() {
         return JVM_TYPE;
     }
+
 }

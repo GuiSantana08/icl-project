@@ -56,6 +56,8 @@ TOKEN :
   |  < IN : "in">
   |  < NEW : "new">
   | < FUN : "fun">
+  | < FUNTYPE : ":">
+  | < TYPE : "int" | "bool" | "unit" > //TODO: DELETE unit type
   | < ARROWRIGHT : "->" >
   |  < NOT : "~">
   |  <PRINT : "print">
@@ -149,41 +151,19 @@ ASTNode Expr() :
 ASTNode Term() :
 { ASTNode e1, e2; }
 {
-     e1 = Fact()
+     e1 = Call()
      ( <TIMES> e2 = Term() { e1 = new ASTMult(e1,e2); }
      | <DIV> e2 = Term() { e1 = new ASTDiv(e1,e2); } )*
 
      { return e1; }
 }
 
-ASTNode DefFun():
-{ Token x;
-  ASTNode e;
- List<String> args = new ArrayList<String>();}
-{
-    <FUN> (x = <Id> {args.add(x.image);}
-    ("," x = <Id> {args.add(x.image); })*)?
-
-     <ARROWRIGHT> e = SeqE() { return new ASTDefFun(args, e); }
-}
-
-ASTNode fcall()  :
+ASTNode Call() :
 {ASTNode e;}
 {
-    e=Fact() (e=gets(e))*
-    {return e;}
+    e = fcall()
+    { return e; }
 }
-
-ASTNode gets(ASTNode exp) :
-{ASTNode e1,e2;
- List<ASTNode> args = new ArrayList<ASTNode>();}
-{
-
-    <LPAR> e2 = Expr() {args.add(e2); }
-    ("," e2 = Expr() { args.add(e2); })* <RPAR>
-    { return new ASTFunCall(exp, args); }
-}
-
 
 ASTNode Fact() :
 {ASTNode e;}
@@ -202,6 +182,35 @@ ASTNode Fact() :
         | <NEW> e = BoolOps() { e = new ASTNew(e); })
     { return e; }
  }
+
+ ASTNode fcall()  :
+ {ASTNode e;}
+ {
+     e=Fact() (e=gets(e))*
+     {return e;}
+ }
+
+ ASTNode gets(ASTNode exp) :
+ {ASTNode e1,e2;
+  List<ASTNode> args = new ArrayList<ASTNode>();}
+ {
+
+     <LPAR> e2 = Expr() {args.add(e2); }
+     ("," e2 = Expr() { args.add(e2); })* <RPAR>
+     { return new ASTFunCall(exp, args); }
+ }
+
+ ASTNode DefFun():
+ { Token x, t;
+   ASTNode e;
+  List<Tuple<String, String >> args = new ArrayList<Tuple<String, String >>();}
+{
+  <FUN> (
+      x = <Id> <FUNTYPE> t = <TYPE> { args.add(new Tuple<String, String>(x.image, t.image)); }
+      ("," x = <Id> <FUNTYPE> t = <TYPE> { args.add(new Tuple<String, String>(x.image, t.image)); })*
+  )? <ARROWRIGHT> e = SeqE()
+  { return new ASTDefFun(args, e); }
+}
 
  ASTNode whileLoop():
  { ASTNode e1, e2; }
@@ -231,11 +240,8 @@ ASTNode Num():
      x = <BOOL> { return new ASTBool(Boolean.parseBoolean(x.image)); }
  }
 
-
  ASTNode Id() :
 { Token x; }
 {
     x = <Id> { return new ASTId(x.image); }
-
-
 }

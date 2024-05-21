@@ -15,10 +15,9 @@ import ast.operations.relational.*;
 import ast.value.ASTBool;
 import ast.value.ASTInt;
 import ast.value.ASTString;
-import compiler.struct.Frame;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
-import symbols.CompEnv;
+import symbols.Env;
 import symbols.Tuple;
 import target.BasicBlock;
 import target.SIPush;
@@ -27,193 +26,186 @@ import target.references.IDRef;
 import target.references.IId;
 import target.references.ILet;
 import target.relational.*;
-import type.Type;
-import type.TypeChecker;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.Iterator;
-import java.util.List;
 
-public class CodeGen implements Visitor<Void, Void>{
-    BlockSeq blocks;
+public class CodeGen implements Visitor<Void, Env<Void>>{
+
+    BasicBlock block = new BasicBlock();
 
 
     @Override
-    public Void visit(ASTInt i, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
-        blocks.addInstruction(new SIPush(i.value) );
+    public Void visit(ASTInt i, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        block.addInstruction(new SIPush(i.value) );
+        return i.accept(this, env);
+    }
+
+    @Override
+    public Void visit(ASTBool b, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        block.addInstruction(new SIPush(b.value ? 1 : 0));
+        return b.accept(this, env);
+    }
+
+    @Override
+    public Void visit(ASTString e, Env<Void> env) throws InvalidTypeException {
         return null;
     }
 
     @Override
-    public Void visit(ASTBool b, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
-        blocks.addInstruction(new SIPush(b.value ? 1 : 0));
+    public Void visit(ASTNeg e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        e.arg.accept(this, env);
+        block.addInstruction(new INeg());
         return null;
     }
 
     @Override
-    public Void visit(ASTString e, Void v) throws InvalidTypeException {
+    public Void visit(ASTDiv e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        e.arg1.accept(this, env);
+        e.arg2.accept(this, env);
+        block.addInstruction(new IDiv());
         return null;
     }
 
     @Override
-    public Void visit(ASTNeg e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
-        e.arg.accept(this, v);
-        blocks.addInstruction(new INeg());
+    public Void visit(ASTMult e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        e.arg1.accept(this, env);
+        e.arg2.accept(this, env);
+        block.addInstruction(new IMul());
         return null;
     }
 
     @Override
-    public Void visit(ASTDiv e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
-        e.arg1.accept(this, v);
-        e.arg2.accept(this, v);
-        blocks.addInstruction(new IDiv());
+    public Void visit(ASTSub e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        e.arg1.accept(this, env);
+        e.arg2.accept(this, env);
+        block.addInstruction(new ISub());
         return null;
     }
 
     @Override
-    public Void visit(ASTMult e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
-        e.arg1.accept(this, v);
-        e.arg2.accept(this, v);
-        blocks.addInstruction(new IMul());
+    public Void visit(ASTAdd e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        e.arg1.accept(this, env);
+        e.arg2.accept(this, env);
+        block.addInstruction(new IAdd());
         return null;
     }
 
     @Override
-    public Void visit(ASTSub e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
-        e.arg1.accept(this, v);
-        e.arg2.accept(this, v);
-        blocks.addInstruction(new ISub());
+    public Void visit(ASTAnd e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        e.left.accept(this, env);
+        e.right.accept(this, env);
+        block.addInstruction(new IAdd());
+        return e.accept(this, env);
+    }
+
+    @Override
+    public Void visit(ASTOr e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        e.left.accept(this, env);
+        e.right.accept(this, env);
+        block.addInstruction(new IOr());
+        return e.accept(this, env);
+    }
+
+    @Override
+    public Void visit(ASTDiff e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        e.arg1.accept(this, env);
+        e.arg2.accept(this, env);
+        block.addInstruction(new If_ICmpDiff());
         return null;
     }
 
     @Override
-    public Void visit(ASTAdd e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
-        e.arg1.accept(this, v);
-        e.arg2.accept(this, v);
-        blocks.addInstruction(new IAdd());
+    public Void visit(ASTLeq e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        e.arg1.accept(this, env);
+        e.arg2.accept(this, env);
+        block.addInstruction(new If_ICmpLEq());
         return null;
     }
 
     @Override
-    public Void visit(ASTAnd e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
-        e.left.accept(this, v);
-        e.right.accept(this, v);
-        blocks.addInstruction(new IAdd());
+    public Void visit(ASTLt e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        e.arg1.accept(this, env);
+        e.arg2.accept(this, env);
+        block.addInstruction(new If_ICmpLt());
         return null;
     }
 
     @Override
-    public Void visit(ASTOr e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
-        e.left.accept(this, v);
-        e.right.accept(this, v);
-        blocks.addInstruction(new IOr());
+    public Void visit(ASTGeq e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        e.arg1.accept(this, env);
+        e.arg2.accept(this, env);
+        block.addInstruction(new If_ICmpGEq());
         return null;
     }
 
     @Override
-    public Void visit(ASTDiff e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
-        e.arg1.accept(this, v);
-        e.arg2.accept(this, v);
-        blocks.addInstruction(new If_ICmpDiff());
+    public Void visit(ASTGt e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        e.arg1.accept(this, env);
+        e.arg2.accept(this, env);
+        block.addInstruction(new If_ICmpGt());
         return null;
     }
 
     @Override
-    public Void visit(ASTLeq e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
-        e.arg1.accept(this, v);
-        e.arg2.accept(this, v);
-        blocks.addInstruction(new If_ICmpLEq());
-        return null;
-    }
-
-    @Override
-    public Void visit(ASTLt e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
-        e.arg1.accept(this, v);
-        e.arg2.accept(this, v);
-        blocks.addInstruction(new If_ICmpLt());
-        return null;
-    }
-
-    @Override
-    public Void visit(ASTGeq e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
-        e.arg1.accept(this, v);
-        e.arg2.accept(this, v);
-        blocks.addInstruction(new If_ICmpGEq());
-        return null;
-    }
-
-    @Override
-    public Void visit(ASTGt e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
-        e.arg1.accept(this, v);
-        e.arg2.accept(this, v);
-        blocks.addInstruction(new If_ICmpGt());
-        return null;
-    }
-
-    @Override
-    public Void visit(ASTEq e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
-        e.arg1.accept(this, v);
-        e.arg2.accept(this, v);
-        blocks.addInstruction(new If_ICmpEq());
+    public Void visit(ASTEq e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        e.arg1.accept(this, env);
+        e.arg2.accept(this, env);
+        block.addInstruction(new If_ICmpEq());
         return null;
     }
 
 
     @Override
-    public Void visit(ASTNot astNot, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
-        astNot.arg.accept(this, v);
-        blocks.addInstruction(new SIPush(1));
-        blocks.addInstruction(new INot());
+    public Void visit(ASTNot astNot, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        astNot.arg.accept(this, env);
+        block.addInstruction(new SIPush(0));
+        block.addInstruction(new INot());
         return null;
     }
 
     @Override
-    public Void visit(ASTId e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
-        blocks.fetch(e.id, e.type);
+    public Void visit(ASTId e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        e.accept(this, env);
+        block.addInstruction(new IId());
         return null;
     }
 
     @Override
-    public Void visit(ASTReff e, Void v) throws InvalidTypeException {
+    public Void visit(ASTReff e, Env<Void> env) throws InvalidTypeException {
         return null;
     }
 
     @Override
-    public Void visit(ASTWhile e, Void v) {
+    public Void visit(ASTWhile e, Env<Void> env) {
         return null;
     }
 
     @Override
-    public Void visit(ASTSeq e, Void v) throws InvalidTypeException {
+    public Void visit(ASTSeq e, Env<Void> env) throws InvalidTypeException {
         return null;
     }
 
     @Override
-    public Void visit(ASTDRef e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
-        e.exp.accept(this, v);
-        blocks.addInstruction(new IDRef());
+    public Void visit(ASTDRef e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        e.exp.accept(this, env);
+        block.addInstruction(new IDRef());
         return null;
     }
 
     @Override
-    public Void visit(ASTPrint astPrint, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Void visit(ASTPrint astPrint, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         return null;
     }
 
     @Override
-    public Void visit(ASTPrintln astPrintln, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Void visit(ASTPrintln astPrintln, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         return null;
     }
 
     @Override
-    public Void visit(ASTLet e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
-        int count = e.vars.size();
-        Tuple<Frame, CompEnv> p = blocks.beginScope(count);
-        Frame f = p.item1();
-        CompEnv newEnv = p.item2();
-
     public Void visit(ASTDefFun e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
         return null;
     }
@@ -225,34 +217,34 @@ public class CodeGen implements Visitor<Void, Void>{
 
     @Override
     public Void visit(ASTLet e, Env<Void> env) throws InvalidTypeException, DuplicateVariableFoundException {
+        e.body.accept(this, env);
         Iterator<Tuple<String, ASTNode>> it = e.vars.iterator();
         while (it.hasNext()){
             Tuple<String, ASTNode> var = it.next();
-            f.getTypes().add(var.;
+            var.item2().accept(this, env);
         }
-        e.body.accept(this, null);
-        blocks.endScope(f, newEnv);
+        block.addInstruction(new ILet(e.vars));
         return null;
     }
 
     @Override
-    public Void visit(ASTNew e, Void v) throws InvalidTypeException {
+    public Void visit(ASTNew e, Env<Void> env) throws InvalidTypeException {
         return null;
     }
 
     @Override
-    public Void visit(ASTIfThenElse e, Void v) throws InvalidTypeException {
+    public Void visit(ASTIfThenElse e, Env<Void> env) throws InvalidTypeException {
         return null;
     }
-    public static BlockSeq codeGen(ASTNode e) throws InvalidTypeException, DuplicateVariableFoundException {
+    public static BasicBlock codeGen(ASTNode e) throws InvalidTypeException, DuplicateVariableFoundException {
         CodeGen cg = new CodeGen();
         e.accept(cg, null);
         //e.accept(cg, null);
-        return cg.blocks;
+        return cg.block;
     }
 
 
-    private static StringBuilder genPreAndPost(BlockSeq blocks) {
+    private static StringBuilder genPreAndPost(BasicBlock block) {
         String preamble = """
 					  .class public Demo
 					  .super java/lang/Object 
@@ -276,7 +268,7 @@ public class CodeGen implements Visitor<Void, Void>{
                 .end method
                 """;
         StringBuilder sb = new StringBuilder(preamble);
-        blocks.build(sb);
+        block.build(sb);
         sb.append(footer);
         return sb;
 
@@ -289,5 +281,4 @@ public class CodeGen implements Visitor<Void, Void>{
         out.close();
 
     }
-
 }

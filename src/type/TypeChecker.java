@@ -216,12 +216,13 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     @Override
     public Type visit(ASTDefFun e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
         env = env.beginScope();
-        for (String param : e.params) {
-            env.bind(param, UnitType.singleton);
+        for (Tuple<String, String> param: e.params) {
+            Type paramType = getType(param.item2());
+            env.bind(param.item1(), paramType);
         }
         Type returnType = e.body.accept(this, env);
         env.endScope();
-        List<Type> params = e.params.stream().map(this::getType).toList();
+        List<Type> params = e.params.stream().map(param -> getType(param.item2())).toList();
 
         return new ClosureType(returnType, params);
     }
@@ -229,8 +230,7 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     @Override
     public Type visit(ASTFunCall e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
         Type fun = e.node.accept(this, env);
-        if (fun instanceof ClosureType) {
-            ClosureType closure = (ClosureType) fun;
+        if (fun instanceof ClosureType closure) {
             if (closure.getParams().size() == e.args.size()) {
                 for (int i = 0; i < e.args.size(); i++) {
                     Type arg = e.args.get(i).accept(this, env);

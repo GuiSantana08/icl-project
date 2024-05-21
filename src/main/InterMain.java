@@ -29,6 +29,7 @@ public class InterMain {
 				ASTNode e = parser.Start();
 				System.out.println("Parse OK!" );
 				e.accept(typeChecker, environmentType);
+				System.out.println("Type OK!" );
 				Interpreter.interpret(e, environmentValue);
 
 			} catch (TokenMgrError e) {
