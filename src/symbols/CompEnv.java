@@ -1,11 +1,13 @@
 package symbols;
 
+import ast.ASTNode;
+
 import java.util.Hashtable;
 import java.util.Map;
 
 public class CompEnv {
 
-    private Map<Integer, Integer> table;
+    private Map<String, Integer> table;
 
     private CompEnv prev = null;
 
@@ -27,6 +29,10 @@ public class CompEnv {
 
     public Tuple<Integer, Integer> find(String id) {
         return findIt(id);
+    }
+
+    public void bind(String varId) {
+        table.putIfAbsent(varId, table.size());
     }
 
 }
