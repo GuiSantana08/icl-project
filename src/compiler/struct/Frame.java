@@ -7,13 +7,15 @@ import java.util.List;
 
 public class Frame {
 
-    private int nFields;
-    private List<Type> types;
-    private int id;
-    private Frame prev;
+    public int nFields;
+    public List<Type> types;
+    public int id;
+    public Frame prev;
 
-    public Frame(int fields) {
+    public Frame(int fields, int id, Frame prev) {
         this.nFields = fields;
+        this.id = id;
+        this.prev = prev;
     }
 
     public String toString(){
@@ -26,6 +28,10 @@ public class Frame {
 
     public void setTypes(List<Type> types) {
         this.types = types;
+    }
+
+    public void addType(Type t) {
+        this.types.add(t);
     }
 
     public int getId() {

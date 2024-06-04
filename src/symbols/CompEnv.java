@@ -7,12 +7,13 @@ import java.util.Map;
 
 public class CompEnv {
 
-    private Map<String, Integer> table;
+    public Map<String, Integer> table;
 
-    private CompEnv prev = null;
+    public CompEnv prev = null;
 
-    public CompEnv(){
+    public CompEnv(CompEnv prev){
         table = new Hashtable<>(20);
+        this.prev = prev;
     }
 
     private Tuple<Integer, Integer> findIt(String id) {

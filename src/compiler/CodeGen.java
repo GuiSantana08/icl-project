@@ -23,9 +23,7 @@ import symbols.Tuple;
 import target.BasicBlock;
 import target.SIPush;
 import target.arithmetic.*;
-import target.references.IDRef;
-import target.references.IId;
-import target.references.ILet;
+import target.references.*;
 import target.relational.*;
 
 import java.io.FileNotFoundException;
@@ -34,6 +32,8 @@ import java.io.PrintStream;
 import java.util.Iterator;
 
 public class CodeGen implements Visitor<Void, Void>{
+
+    int frameId;
 
     BlockSeq block = new BlockSeq();
 
@@ -218,12 +218,18 @@ public class CodeGen implements Visitor<Void, Void>{
 
     @Override
     public Void visit(ASTLet e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
-        Tuple<Frame, CompEnv> letDef = block.beginScope(e.vars.size());
+        Tuple<Frame, CompEnv> letDef = block.beginScope(e.vars.size(), frameId++, block.currFrame);
+        block.addInstruction(new IFrameCreation(block.currFrame.id));
+
+        int varsCount = 0;
         Iterator<Tuple<String, ASTNode>> it = e.vars.iterator();
         while (it.hasNext()){
+            block.addInstruction(new ILoad());
             Tuple<String, ASTNode> var = it.next();
             letDef.item2().bind(var.item1());
+            letDef.item1();
             var.item2().accept(this, v);
+            block.addInstruction(new IFrameFieldCreation(block.currFrame.id, varsCount, var.item2().getType()));
         }
         block.addInstruction(new ILet(e.vars));
         e.body.accept(this, v);

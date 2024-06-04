@@ -12,7 +12,7 @@ import java.util.List;
 
 public class BlockSeq {
     List<Frame> frames;
-    Frame currFrame;
+    public Frame currFrame;
 
     public BasicBlock block;
 
@@ -21,11 +21,16 @@ public class BlockSeq {
     public BlockSeq(){
         this.frames = new ArrayList<>();
         this.block = new BasicBlock();
-        this.env = new CompEnv();
+        this.env = new CompEnv(null);
     }
 
-    public Tuple<Frame, CompEnv> beginScope(int nFields) {
-        return new Tuple<>(new Frame(nFields), env);
+    public Tuple<Frame, CompEnv> beginScope(int nFields, int frameId, Frame prev) {
+        Frame newFrame = new Frame(nFields, frameId, prev);
+        frames.add(newFrame);
+        this.currFrame = newFrame;
+
+        this.env = new CompEnv(env);
+        return new Tuple<>(newFrame, env);
     }
 
     public void advanceToFrame(Frame f, CompEnv env){
@@ -34,7 +39,9 @@ public class BlockSeq {
     }
 
     public void endScope(Frame f, CompEnv env){
+        this.env = this.env.prev;
 
+        this.currFrame = this.currFrame.getPrev();
     }
 
     public void fetch(String id, Type t) {
