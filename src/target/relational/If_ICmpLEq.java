@@ -3,8 +3,8 @@ package target.relational;
 import target.Instruction;
 
 public class If_ICmpLEq extends Instruction {
-        public If_ICmpLEq() {
-            op = "if_icmpleq";
+        public If_ICmpLEq(String label) {
+            op = "if_icmple " + label;
             args = null;
         }
 }

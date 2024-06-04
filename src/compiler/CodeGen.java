@@ -21,10 +21,12 @@ import exceptions.InvalidTypeException;
 import symbols.CompEnv;
 import symbols.Tuple;
 import target.BasicBlock;
+import target.Instruction;
 import target.SIPush;
 import target.arithmetic.*;
 import target.references.*;
 import target.relational.*;
+import type.Type;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -113,48 +115,102 @@ public class CodeGen implements Visitor<Void, Void>{
     @Override
     public Void visit(ASTDiff e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
         e.arg1.accept(this, v);
+        String l1 = NameGenerator.genLabel();
         e.arg2.accept(this, v);
-        block.addInstruction(new If_ICmpDiff());
-        return null;
+        String l2 = NameGenerator.genLabel();
+
+        block.addInstruction(new If_ICmpDiff(l1));
+        block.addInstruction(new SIPush(0));
+        block.addInstruction(new IJump(l2));
+        block.addInstruction(new Label(l1));
+        block.addInstruction(new SIPush(1));
+        block.addInstruction(new Label(l2));
+        block.addInstruction(new INop());
+        return e.accept(this, v);
     }
 
     @Override
     public Void visit(ASTLeq e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
         e.arg1.accept(this, v);
+        String l1 = NameGenerator.genLabel();
         e.arg2.accept(this, v);
-        block.addInstruction(new If_ICmpLEq());
+        String l2 = NameGenerator.genLabel();
+
+        block.addInstruction(new If_ICmpLEq(l1));
+        block.addInstruction(new SIPush(0));
+        block.addInstruction(new IJump(l2));
+        block.addInstruction(new Label(l1));
+        block.addInstruction(new SIPush(1));
+        block.addInstruction(new Label(l2));
+        block.addInstruction(new INop());
         return null;
     }
 
     @Override
     public Void visit(ASTLt e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
         e.arg1.accept(this, v);
+        String l1 = NameGenerator.genLabel();
         e.arg2.accept(this, v);
-        block.addInstruction(new If_ICmpLt());
+        String l2 = NameGenerator.genLabel();
+
+        block.addInstruction(new If_ICmpLt(l1));
+        block.addInstruction(new SIPush(0));
+        block.addInstruction(new IJump(l2));
+        block.addInstruction(new Label(l1));
+        block.addInstruction(new SIPush(1));
+        block.addInstruction(new Label(l2));
+        block.addInstruction(new INop());
         return null;
     }
 
     @Override
     public Void visit(ASTGeq e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
         e.arg1.accept(this, v);
+        String l1 = NameGenerator.genLabel();
         e.arg2.accept(this, v);
+        String l2 = NameGenerator.genLabel();
+
         block.addInstruction(new If_ICmpGEq());
+        block.addInstruction(new SIPush(0));
+        block.addInstruction(new IJump(l2));
+        block.addInstruction(new Label(l1));
+        block.addInstruction(new SIPush(1));
+        block.addInstruction(new Label(l2));
+        block.addInstruction(new INop());
         return null;
     }
 
     @Override
     public Void visit(ASTGt e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
         e.arg1.accept(this, v);
+        String l1 = NameGenerator.genLabel();
         e.arg2.accept(this, v);
+        String l2 = NameGenerator.genLabel();
+
         block.addInstruction(new If_ICmpGt());
+        block.addInstruction(new SIPush(0));
+        block.addInstruction(new IJump(l2));
+        block.addInstruction(new Label(l1));
+        block.addInstruction(new SIPush(1));
+        block.addInstruction(new Label(l2));
+        block.addInstruction(new INop());
         return null;
     }
 
     @Override
     public Void visit(ASTEq e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
         e.arg1.accept(this, v);
+        String l1 = NameGenerator.genLabel();
         e.arg2.accept(this, v);
+        String l2 = NameGenerator.genLabel();
+
         block.addInstruction(new If_ICmpEq());
+        block.addInstruction(new SIPush(0));
+        block.addInstruction(new IJump(l2));
+        block.addInstruction(new Label(l1));
+        block.addInstruction(new SIPush(1));
+        block.addInstruction(new Label(l2));
+        block.addInstruction(new INop());
         return null;
     }
 
@@ -217,7 +273,7 @@ public class CodeGen implements Visitor<Void, Void>{
     }
 
     @Override
-    public Void visit(ASTLet e, Void v) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Void visit(ASTLet e, Void v) throws InvalidTypeException, DuplicateVariableFoundException, FileNotFoundException {
         Tuple<Frame, CompEnv> letDef = block.beginScope(e.vars.size(), frameId++, block.currFrame);
         block.addInstruction(new IFrameCreation(block.currFrame.id));
 
@@ -233,6 +289,8 @@ public class CodeGen implements Visitor<Void, Void>{
         }
         block.addInstruction(new ILet(e.vars));
         e.body.accept(this, v);
+        generateFrameCode(block.currFrame);
+        block.addInstruction(new IEndFrameScope(block.currFrame.id));
         block.endScope(letDef.item1(), letDef.item2());
         return null;
     }
@@ -253,6 +311,36 @@ public class CodeGen implements Visitor<Void, Void>{
         return cg.block.block;
     }
 
+    private void generateFrameCode(Frame frame) throws FileNotFoundException {
+        String code = "";
+        if(frame.id == 0)
+            code = """
+                   .class public frame_0
+                   .super java/lang/Object
+                   .field public sl Ljava/lang/Object;""";
+        else
+            code = """
+                    .class public frame_%d
+                    .super java/lang/Object
+                    .field public sl Lframe_%d;""";
+        Iterator<Type> vars = frame.types.iterator();
+        int varCount = 0;
+        while(vars.hasNext()){
+            Type t = vars.next();
+            code = code + "\n.field public loc_" + varCount + " " + t.jvmType();
+        }
+        code = code + "\n.method public <init>()V\n" + new ILoad().op + "\ninvokenonvirtual java/lang/Object/<init>()V\nreturn";
+
+        StringBuilder sb = new StringBuilder();
+        if(frame.id == 0)
+            sb.append(code);
+        else
+            sb.append(String.format(code, frame.id, frame.id-1));
+        String frameFile = "frame_" + frame.id + ".j";
+        PrintStream file = new PrintStream(new FileOutputStream("compOut" + frameFile));
+        file.print(sb.toString());
+        file.close();
+    }
 
     private static StringBuilder genPreAndPost(BasicBlock block) {
         String preamble = """

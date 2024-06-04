@@ -16,6 +16,8 @@ import ast.value.ASTString;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 
+import java.io.FileNotFoundException;
+
 public interface ASTNode {
     interface Visitor<T,E> {
         T visit(ASTInt e, E env)        throws InvalidTypeException, DuplicateVariableFoundException;
@@ -37,7 +39,7 @@ public interface ASTNode {
         T visit(ASTNot e, E env)        throws InvalidTypeException, DuplicateVariableFoundException;
         T visit(ASTIfThenElse e, E env) throws InvalidTypeException, DuplicateVariableFoundException;
         T visit(ASTNew e, E env)        throws InvalidTypeException, DuplicateVariableFoundException;
-        T visit(ASTLet e, E env)        throws InvalidTypeException, DuplicateVariableFoundException;
+        T visit(ASTLet e, E env) throws InvalidTypeException, DuplicateVariableFoundException, FileNotFoundException;
         T visit(ASTId e, E env)         throws InvalidTypeException, DuplicateVariableFoundException;
         T visit(ASTReff e, E env)      throws InvalidTypeException, DuplicateVariableFoundException;
         T visit(ASTWhile e, E env)      throws InvalidTypeException, DuplicateVariableFoundException;
