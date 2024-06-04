@@ -4,8 +4,8 @@ import target.Instruction;
 
 public class IId extends Instruction {
 
-    public IId() {
-        op = "istore_";
+    public IId(int value) {
+        op = "istore_" + value;
         args = null;
     }
 
