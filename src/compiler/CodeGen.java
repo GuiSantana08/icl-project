@@ -281,7 +281,7 @@ public class CodeGen implements Visitor<Void, Void> {
     }
 
     @Override
-    public Void visit(ASTLet e, Void v) throws FileNotFoundException {
+    public Void visit(ASTLet e, Void v)  {
         Tuple<Frame, CompEnv> letDef = block.beginScope(e.vars.size(), frameId++, block.currFrame);
         block.addInstruction(new IFrameCreation(block.currFrame.id));
 
@@ -316,13 +316,8 @@ public class CodeGen implements Visitor<Void, Void> {
         return null;
     }
 
-//    public static BasicBlock codeGen(ASTNode e) {
-//        CodeGen cg = new CodeGen();
-//        e.accept(cg, null);
-//        return cg.block.block;
-//    }
 
-    private void generateFrameCode(Frame frame) throws FileNotFoundException {
+    private void generateFrameCode(Frame frame)  { //TODO: Check what to use. The throw or the try-catch block
         String code = "";
         if(frame.id == 0)
             code = """
@@ -348,12 +343,17 @@ public class CodeGen implements Visitor<Void, Void> {
         else
             sb.append(String.format(code, frame.id, frame.id-1));
         String frameFile = "frame_" + frame.id + ".j";
-        PrintStream file = new PrintStream(new FileOutputStream("compOut" + frameFile));
+        PrintStream file = null;
+        try {
+            file = new PrintStream(new FileOutputStream("compOut" + frameFile));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         file.print(sb.toString());
         file.close();
     }
 
-    public static BlockSeq codeGen(ASTNode e) throws InvalidTypeException, DuplicateVariableFoundException {
+    public static BlockSeq codeGen(ASTNode e) {
         CodeGen cg = new CodeGen();
         e.accept(cg, null);
         return cg.block;
@@ -389,7 +389,7 @@ public class CodeGen implements Visitor<Void, Void> {
 
     }
 
-    public static void writeToFile(ASTNode e, String filename) throws FileNotFoundException, InvalidTypeException, DuplicateVariableFoundException {
+    public static void writeToFile(ASTNode e, String filename) throws FileNotFoundException {
         StringBuilder sb = new StringBuilder();
         BlockSeq block = new BlockSeq();
         block = codeGen(e);
