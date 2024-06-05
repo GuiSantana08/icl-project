@@ -19,7 +19,11 @@ import compiler.struct.Frame;
 import symbols.CompEnv;
 import symbols.Tuple;
 import target.BlockSeq;
+import target.Pop;
 import target.SIPush;
+import target.functions.getStatic;
+import target.functions.invokeStatic;
+import target.functions.invokeVirtual;
 import target.operations.arithmetic.*;
 import target.operations.references.*;
 import target.operations.relational.*;
@@ -211,7 +215,35 @@ public class CodeGen implements Visitor<Void, Void> {
     }
 
     @Override
+    public Void visit(ASTIfThenElse e, Void v) {
+        e.condition.accept(this, v);
+        String l1 = LabelGenerator.genLabel();
+        String l2 = LabelGenerator.genLabel();
+        block.addInstruction(new SIPush(0));
+        block.addInstruction(new If_ICmpEq(l1));
+        e.thenBranch.accept(this, v);
+        block.addInstruction(new IJump(l2));
+        block.addInstruction(new Label(l1));
+        e.elseBranch.accept(this, v);
+        block.addInstruction(new Label(l2));
+        return null;
+    }
+
+    @Override
     public Void visit(ASTWhile e, Void v)  {
+        String l1 = LabelGenerator.genLabel();
+        block.addInstruction(new Label(l1));
+        e.condition.accept(this, v);
+        String l2 = LabelGenerator.genLabel();
+        block.addInstruction(new SIPush(0));
+        block.addInstruction(new If_ICmpEq(l2));
+        e.body.accept(this, v);
+        block.addInstruction(new Pop());
+        block.addInstruction(new IJump(l1));
+        block.addInstruction(new Label(l2));
+
+
+
         return null;
     }
 
@@ -229,11 +261,19 @@ public class CodeGen implements Visitor<Void, Void> {
 
     @Override
     public Void visit(ASTPrint astPrint, Void v) {
+        block.addInstruction(new getStatic("java/lang/System/out", "Ljava/io/PrintStream;"));
+        astPrint.exp.accept(this, v);
+        block.addInstruction(new invokeStatic("java/lang/String/valueOf(I)Ljava/lang/String;"));
+        block.addInstruction(new invokeVirtual("java/io/PrintStream/print(Ljava/lang/String;)V"));
         return null;
     }
 
     @Override
     public Void visit(ASTPrintln astPrintln, Void v) {
+        block.addInstruction(new getStatic("java/lang/System/out", "Ljava/io/PrintStream;"));
+        astPrintln.exp.accept(this, v);
+        block.addInstruction(new invokeStatic("java/lang/String/valueOf(I)Ljava/lang/String;"));
+        block.addInstruction(new invokeVirtual("java/io/PrintStream/println(Ljava/lang/String;)V"));
         return null;
     }
 
@@ -275,21 +315,6 @@ public class CodeGen implements Visitor<Void, Void> {
 
     @Override
     public Void visit(ASTNew e, Void v) {
-        return null;
-    }
-
-    @Override
-    public Void visit(ASTIfThenElse e, Void v) {
-        e.condition.accept(this, v);
-        String l1 = LabelGenerator.genLabel();
-        String l2 = LabelGenerator.genLabel();
-        block.addInstruction(new SIPush(0));
-        block.addInstruction(new If_ICmpEq(l1));
-        e.thenBranch.accept(this, v);
-        block.addInstruction(new IJump(l2));
-        block.addInstruction(new Label(l1));
-        e.elseBranch.accept(this, v);
-        block.addInstruction(new Label(l2));
         return null;
     }
 
@@ -357,17 +382,15 @@ public class CodeGen implements Visitor<Void, Void> {
 					   .limit locals 10
 					   .limit stack 256
 					   ; setup local variables:
-					   ;    1 - the PrintStream object held in java.lang.out
-					  getstatic java/lang/System/out Ljava/io/PrintStream;					          
+					   ;    1 - the PrintStream object held in java.lang.out					          
 				   """;
+        //getstatic java/lang/System/out Ljava/io/PrintStream;
         //TODO: delete invokesstatic
         String footer =
 
                // invokestatic java/lang/String/valueOf(I)Ljava/lang/String;
                //invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
                 """
-                 invokestatic java/lang/String/valueOf(I)Ljava/lang/String;
-                 invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
                 return
                 .end method
                 """;
