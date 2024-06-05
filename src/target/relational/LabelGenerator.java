@@ -1,6 +1,6 @@
 package target.relational;
 
-public class NameGenerator {
+public class LabelGenerator {
     private static long count = 0L;
 
     public static String genLabel() {

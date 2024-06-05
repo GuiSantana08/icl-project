@@ -1,4 +1,4 @@
-package target.relational;
+package target;
 
 import compiler.struct.Frame;
 import symbols.CompEnv;

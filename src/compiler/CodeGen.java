@@ -21,7 +21,7 @@ import exceptions.InvalidTypeException;
 import symbols.CompEnv;
 import symbols.Tuple;
 import target.BasicBlock;
-import target.Instruction;
+import target.BlockSeq;
 import target.SIPush;
 import target.arithmetic.*;
 import target.references.*;
@@ -114,9 +114,9 @@ public class CodeGen implements Visitor<Void, Void> {
     @Override
     public Void visit(ASTDiff e, Void v) {
         e.arg1.accept(this, v);
-        String l1 = NameGenerator.genLabel();
+        String l1 = LabelGenerator.genLabel();
         e.arg2.accept(this, v);
-        String l2 = NameGenerator.genLabel();
+        String l2 = LabelGenerator.genLabel();
 
         block.addInstruction(new If_ICmpDiff(l1));
         block.addInstruction(new SIPush(0));
@@ -131,9 +131,9 @@ public class CodeGen implements Visitor<Void, Void> {
     @Override
     public Void visit(ASTLeq e, Void v) {
         e.arg1.accept(this, v);
-        String l1 = NameGenerator.genLabel();
+        String l1 = LabelGenerator.genLabel();
         e.arg2.accept(this, v);
-        String l2 = NameGenerator.genLabel();
+        String l2 = LabelGenerator.genLabel();
 
         block.addInstruction(new If_ICmpLEq(l1));
         block.addInstruction(new SIPush(0));
@@ -148,9 +148,9 @@ public class CodeGen implements Visitor<Void, Void> {
     @Override
     public Void visit(ASTLt e, Void v) {
         e.arg1.accept(this, v);
-        String l1 = NameGenerator.genLabel();
+        String l1 = LabelGenerator.genLabel();
         e.arg2.accept(this, v);
-        String l2 = NameGenerator.genLabel();
+        String l2 = LabelGenerator.genLabel();
 
         block.addInstruction(new If_ICmpLt(l1));
         block.addInstruction(new SIPush(0));
@@ -165,9 +165,9 @@ public class CodeGen implements Visitor<Void, Void> {
     @Override
     public Void visit(ASTGeq e, Void v) {
         e.arg1.accept(this, v);
-        String l1 = NameGenerator.genLabel();
+        String l1 = LabelGenerator.genLabel();
         e.arg2.accept(this, v);
-        String l2 = NameGenerator.genLabel();
+        String l2 = LabelGenerator.genLabel();
 
         block.addInstruction(new If_ICmpGEq());
         block.addInstruction(new SIPush(0));
@@ -182,9 +182,9 @@ public class CodeGen implements Visitor<Void, Void> {
     @Override
     public Void visit(ASTGt e, Void v) {
         e.arg1.accept(this, v);
-        String l1 = NameGenerator.genLabel();
+        String l1 = LabelGenerator.genLabel();
         e.arg2.accept(this, v);
-        String l2 = NameGenerator.genLabel();
+        String l2 = LabelGenerator.genLabel();
 
         block.addInstruction(new If_ICmpGt());
         block.addInstruction(new SIPush(0));
@@ -199,9 +199,9 @@ public class CodeGen implements Visitor<Void, Void> {
     @Override
     public Void visit(ASTEq e, Void v) {
         e.arg1.accept(this, v);
-        String l1 = NameGenerator.genLabel();
+        String l1 = LabelGenerator.genLabel();
         e.arg2.accept(this, v);
-        String l2 = NameGenerator.genLabel();
+        String l2 = LabelGenerator.genLabel();
 
         block.addInstruction(new If_ICmpEq());
         block.addInstruction(new SIPush(0));
@@ -224,17 +224,27 @@ public class CodeGen implements Visitor<Void, Void> {
     @Override
     public Void visit(ASTId e, Void v) {
         e.accept(this, v);
-        block.addInstruction(new IId());
+        Tuple<Integer, Integer> location = this.block.env.find(e.id);
+        Frame actualFrame = block.currFrame;
+        for (int i = 0; i < location.item1() - 1; i++) {
+            block.addInstruction(new ILoad());
+            block.addInstruction(new ICheckCast(actualFrame.id));
+            block.addInstruction(new IFrameGetField("frame_" + actualFrame.id + "/sl Lframe_" + actualFrame.id + 1));
+            block.addInstruction(new IStore());
+        }
+        block.addInstruction(new IFrameGetField("frame_" + actualFrame.id + "/loc_" + location.item2() + " " /*TODO: type goes here*/));
         return null;
     }
 
     @Override
     public Void visit(ASTReff e, Void v) {
+        e.exp.accept(this, v);
+        Tuple<Integer, Integer> location = this.block.env.find( null/*TODO: WHY IS IT ASTNODE? - e.id*/);
         return null;
     }
 
     @Override
-    public Void visit(ASTWhile e, Void v) {
+    public Void visit(ASTWhile e, Void v)  {
         return null;
     }
 
@@ -271,7 +281,28 @@ public class CodeGen implements Visitor<Void, Void> {
     }
 
     @Override
-    public Void visit(ASTLet e, Void v) {
+    public Void visit(ASTLet e, Void v) throws FileNotFoundException {
+        Tuple<Frame, CompEnv> letDef = block.beginScope(e.vars.size(), frameId++, block.currFrame);
+        block.addInstruction(new IFrameCreation(block.currFrame.id));
+
+        int varsCount = 0;
+        Iterator<Tuple<String, ASTNode>> it = e.vars.iterator();
+        while (it.hasNext()){
+            block.addInstruction(new ILoad());
+            Tuple<String, ASTNode> var = it.next();
+            letDef.item2().bind(var.item1());
+            letDef.item1();
+            var.item2().accept(this, v);
+            block.addInstruction(new IFrameFieldCreation(block.currFrame.id, varsCount, /*TODO: getType() for variable*/ null));
+        }
+        block.addInstruction(new ILet(e.vars));
+        generateFrameCode(block.currFrame);
+        e.body.accept(this, v);
+        block.addInstruction(new ILoad());
+        block.addInstruction(new ICheckCast(block.currFrame.id));
+        block.addInstruction(new IEndFrameScope(block.currFrame.id));
+        block.addInstruction(new IStore());
+        block.endScope(letDef.item1(), letDef.item2());
         return null;
     }
 
@@ -285,11 +316,11 @@ public class CodeGen implements Visitor<Void, Void> {
         return null;
     }
 
-    public static BasicBlock codeGen(ASTNode e) {
-        CodeGen cg = new CodeGen();
-        e.accept(cg, null);
-        return cg.block.block;
-    }
+//    public static BasicBlock codeGen(ASTNode e) {
+//        CodeGen cg = new CodeGen();
+//        e.accept(cg, null);
+//        return cg.block.block;
+//    }
 
     private void generateFrameCode(Frame frame) throws FileNotFoundException {
         String code = "";
@@ -322,7 +353,13 @@ public class CodeGen implements Visitor<Void, Void> {
         file.close();
     }
 
-    private static StringBuilder genPreAndPost(BasicBlock block) {
+    public static BlockSeq codeGen(ASTNode e) throws InvalidTypeException, DuplicateVariableFoundException {
+        CodeGen cg = new CodeGen();
+        e.accept(cg, null);
+        return cg.block;
+    }
+
+    private static StringBuilder genPreAndPost(BlockSeq block) {
         String preamble = """
 					  .class public Demo
 					  .super java/lang/Object 
@@ -353,7 +390,10 @@ public class CodeGen implements Visitor<Void, Void> {
     }
 
     public static void writeToFile(ASTNode e, String filename) throws FileNotFoundException, InvalidTypeException, DuplicateVariableFoundException {
-        StringBuilder sb = genPreAndPost(codeGen(e));
+        StringBuilder sb = new StringBuilder();
+        BlockSeq block = new BlockSeq();
+        block = codeGen(e);
+        sb = genPreAndPost(block);
         PrintStream out = new PrintStream(new FileOutputStream(filename));
         out.print(sb.toString());
         out.close();

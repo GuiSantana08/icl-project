@@ -39,7 +39,7 @@ public interface ASTNode {
         T visit(ASTNot e, E env);
         T visit(ASTIfThenElse e, E env);
         T visit(ASTNew e, E env);
-        T visit(ASTLet e, E env);
+        T visit(ASTLet e, E env) throws FileNotFoundException;
         T visit(ASTId e, E env);
         T visit(ASTReff e, E env);
         T visit(ASTWhile e, E env);
