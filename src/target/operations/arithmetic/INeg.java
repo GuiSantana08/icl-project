@@ -1,4 +1,4 @@
-package target.arithmetic;
+package target.operations.arithmetic;
 
 import target.Instruction;
 

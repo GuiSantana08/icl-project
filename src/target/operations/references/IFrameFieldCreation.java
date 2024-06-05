@@ -1,4 +1,4 @@
-package target.references;
+package target.operations.references;
 
 import target.Instruction;
 

@@ -1,4 +1,4 @@
-package target.relational;
+package target.operations.relational;
 
 import target.Instruction;
 

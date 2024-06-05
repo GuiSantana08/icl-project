@@ -20,9 +20,9 @@ import symbols.CompEnv;
 import symbols.Tuple;
 import target.BlockSeq;
 import target.SIPush;
-import target.arithmetic.*;
-import target.references.*;
-import target.relational.*;
+import target.operations.arithmetic.*;
+import target.operations.references.*;
+import target.operations.relational.*;
 import type.Type;
 
 import java.io.FileNotFoundException;
@@ -180,16 +180,6 @@ public class CodeGen implements Visitor<Void, Void> {
         return null;
     }
 
-
-    private void createLabels(String l1, String l2) {
-        block.addInstruction(new SIPush(0));
-        block.addInstruction(new IJump(l2));
-        block.addInstruction(new Label(l1));
-        block.addInstruction(new SIPush(1));
-        block.addInstruction(new Label(l2));
-        block.addInstruction(new INop());
-    }
-
     @Override
     public Void visit(ASTNot astNot, Void v) {
         astNot.arg.accept(this, v);
@@ -290,6 +280,16 @@ public class CodeGen implements Visitor<Void, Void> {
 
     @Override
     public Void visit(ASTIfThenElse e, Void v) {
+        e.condition.accept(this, v);
+        String l1 = LabelGenerator.genLabel();
+        String l2 = LabelGenerator.genLabel();
+        block.addInstruction(new SIPush(0));
+        block.addInstruction(new If_ICmpEq(l1));
+        e.thenBranch.accept(this, v);
+        block.addInstruction(new IJump(l2));
+        block.addInstruction(new Label(l1));
+        e.elseBranch.accept(this, v);
+        block.addInstruction(new Label(l2));
         return null;
     }
 
@@ -336,6 +336,14 @@ public class CodeGen implements Visitor<Void, Void> {
         return cg.block;
     }
 
+    private void createLabels(String l1, String l2) {
+        block.addInstruction(new SIPush(0));
+        block.addInstruction(new IJump(l2));
+        block.addInstruction(new Label(l1));
+        block.addInstruction(new SIPush(1));
+        block.addInstruction(new Label(l2));
+    }
+
     private static StringBuilder genPreAndPost(BlockSeq block) {
         String preamble = """
 					  .class public Demo
@@ -354,9 +362,12 @@ public class CodeGen implements Visitor<Void, Void> {
 				   """;
         //TODO: delete invokesstatic
         String footer =
+
+               // invokestatic java/lang/String/valueOf(I)Ljava/lang/String;
+               //invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
                 """
-                invokestatic java/lang/String/valueOf(I)Ljava/lang/String;
-                invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+                 invokestatic java/lang/String/valueOf(I)Ljava/lang/String;
+                 invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
                 return
                 .end method
                 """;

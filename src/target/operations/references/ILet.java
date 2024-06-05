@@ -1,4 +1,4 @@
-package target.references;
+package target.operations.references;
 
 import ast.ASTNode;
 import ast.value.ASTBool;
