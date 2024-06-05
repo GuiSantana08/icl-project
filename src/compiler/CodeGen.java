@@ -249,6 +249,9 @@ public class CodeGen implements Visitor<Void, Void> {
 
     @Override
     public Void visit(ASTSeq e, Void v) {
+        e.left.accept(this, v);
+        block.addInstruction(new Pop());
+        e.right.accept(this, v);
         return null;
     }
 
