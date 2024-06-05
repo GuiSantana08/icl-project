@@ -30,7 +30,7 @@ public class Parser implements ParserConstants {
       }
       jj_consume_token(SEMCOL);
       e2 = Seq();
-                            {if (true) return new ASTSeq(e1, e2);}
+                            e1 = new ASTSeq(e1,e2);
     }
       {if (true) return e1;}
     throw new Error("Missing return statement in function");

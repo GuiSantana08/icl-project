@@ -191,8 +191,7 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     @Override
     public Type visit(ASTSeq e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
         e.left.accept(this, env);
-        e.right.accept(this, env);
-        return null;
+        return e.right.accept(this, env);
     }
 
     @Override

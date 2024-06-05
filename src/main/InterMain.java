@@ -7,6 +7,7 @@ import java.io.InputStream;
 
 import ast.ASTNode;
 
+import exceptions.ASTNodeException;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 import interpreter.*;
@@ -41,16 +42,15 @@ public class InterMain {
 
 			do {
 				if (!isFileMode)
-					System.out.print("< ");
+					System.out.print("> ");
 				ASTNode e = parser.Start();
 				System.out.print("Parse OK, type checking...");
 				e.accept(typeChecker, environmentType);
 				System.out.println("Type OK");
-				System.out.print("> ");
 				Interpreter.interpret(e, environmentValue);
 			} while (!isFileMode);
 
-		} catch (InvalidTypeException | DuplicateVariableFoundException e) {
+		} catch (ASTNodeException e) {
 			throw new RuntimeException(e);
 		} catch (ParseException e)  {
 			System.out.println("Syntax error encountered!");

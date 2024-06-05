@@ -1,11 +1,7 @@
 package exceptions;
 
-public class DuplicateVariableFoundException extends Exception{
+public class DuplicateVariableFoundException extends ASTNodeException{
 
-            private static final long serialVersionUID = 1L;
-
-            public DuplicateVariableFoundException() {
-            }
 
             public DuplicateVariableFoundException(String message) {
                 super(message);
