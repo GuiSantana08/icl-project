@@ -337,7 +337,7 @@ public class Parser implements ParserConstants {
       break;
     case LPAR:
       jj_consume_token(LPAR);
-      e = SeqE();
+      e = Seq();
       jj_consume_token(RPAR);
       break;
     case NEW:

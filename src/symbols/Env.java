@@ -9,6 +9,7 @@ public class Env<T> {
 
 	private Map<String,T> table;
 	private Env<T> prev = null;
+	private boolean first = true;
 
 	public Env() {
 		table = new Hashtable<>(20);
@@ -32,6 +33,10 @@ public class Env<T> {
 	}
 
 	public Env<T> beginScope() {
+		if(first) {
+			first = false;
+			return this;
+		}
 		Env<T> newEnv = new Env<>();
 		newEnv.prev = this;
 		return newEnv;

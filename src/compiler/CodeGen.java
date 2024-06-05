@@ -42,13 +42,13 @@ public class CodeGen implements Visitor<Void, Void> {
     @Override
     public Void visit(ASTInt i, Void v) {
         block.addInstruction(new SIPush(i.value));
-        return i.accept(this, v);
+        return null;
     }
 
     @Override
     public Void visit(ASTBool b, Void v) {
         block.addInstruction(new SIPush(b.value ? 1 : 0));
-        return b.accept(this, v);
+        return null;
     }
 
     @Override
@@ -317,7 +317,7 @@ public class CodeGen implements Visitor<Void, Void> {
     }
 
 
-    private void generateFrameCode(Frame frame)  { //TODO: Check what to use. The throw or the try-catch block
+    private void generateFrameCode(Frame frame)  {
         String code = "";
         if(frame.id == 0)
             code = """
@@ -375,6 +375,7 @@ public class CodeGen implements Visitor<Void, Void> {
 					   ;    1 - the PrintStream object held in java.lang.out
 					  getstatic java/lang/System/out Ljava/io/PrintStream;					          
 				   """;
+        //TODO: delete invokesstatic
         String footer =
                 """
                 invokestatic java/lang/String/valueOf(I)Ljava/lang/String;

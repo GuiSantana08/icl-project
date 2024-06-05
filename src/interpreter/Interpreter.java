@@ -242,7 +242,8 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
         return value;
     }
 
-    public static Value<?> interpret(ASTNode e, Env<Value<?>> env) {
+    public static Value<?> interpret(ASTNode e) {
+        Env<Value<?>> env = new Env<>();
         Interpreter i = new Interpreter();
         return e.accept(i, env);
     }

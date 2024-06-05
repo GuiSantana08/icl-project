@@ -21,6 +21,7 @@ import value.Value;
 
 public class InterMain {
 
+
 	@SuppressWarnings("static-access")
 	public static void main(String args[]) throws FileNotFoundException {
 		try{
@@ -47,7 +48,7 @@ public class InterMain {
 				System.out.print("Parse OK, type checking...");
 				e.accept(typeChecker, environmentType);
 				System.out.println("Type OK");
-				Interpreter.interpret(e, environmentValue);
+				Interpreter.interpret(e);
 			} while (!isFileMode);
 
 		} catch (ASTNodeException e) {

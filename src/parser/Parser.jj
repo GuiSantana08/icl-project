@@ -178,10 +178,11 @@ ASTNode Fact() :
         | e = Id()
         | e = Bool()
         | e = DefFun()
-        | <LPAR> e = SeqE() <RPAR>
+        | <LPAR> e = Seq() <RPAR>
         | <NEW> e = BoolOps() { e = new ASTNew(e); })
     { return e; }
  }
+
 
  ASTNode fcall()  :
  {ASTNode e;}

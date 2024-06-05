@@ -57,7 +57,7 @@ TOKEN :
   |  < NEW : "new">
   | < FUN : "fun">
   | < FUNTYPE : ":">
-  | < TYPE : "int" | "bool" | "unit" > //TODO: DELETE unit type
+  | < TYPE : "int" | "bool"  > //TODO: add fun type
   | < ARROWRIGHT : "->" >
   |  < NOT : "~">
   |  <PRINT : "print">
@@ -77,7 +77,7 @@ ASTNode Seq():
 { ASTNode e1, e2; }
 {
     e1 = SeqE()
-    ( <SEMCOL> e2 = Seq() { return new ASTSeq(e1, e2); })*
+    ( <SEMCOL> e2 = Seq() { e1 = new ASTSeq(e1,e2); })*
 
     { return e1; }
 }
@@ -178,10 +178,11 @@ ASTNode Fact() :
         | e = Id()
         | e = Bool()
         | e = DefFun()
-        | <LPAR> e = SeqE() <RPAR>
+        | <LPAR> e = Seq() <RPAR>
         | <NEW> e = BoolOps() { e = new ASTNew(e); })
     { return e; }
  }
+
 
  ASTNode fcall()  :
  {ASTNode e;}
