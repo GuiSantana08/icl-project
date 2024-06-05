@@ -25,22 +25,22 @@ import java.util.List;
 
 public class TypeChecker implements Visitor<Type, Env<Type>>{
     @Override
-    public Type visit(ASTInt i, Env<Type> env) throws InvalidTypeException {
+    public Type visit(ASTInt i, Env<Type> env) {
         return IntType.singleton;
     }
 
     @Override
-    public Type visit(ASTBool b, Env<Type> env) throws InvalidTypeException {
+    public Type visit(ASTBool b, Env<Type> env)  {
         return BoolType.singleton;
     }
 
     @Override
-    public Type visit(ASTString s, Env<Type> env) throws InvalidTypeException {
+    public Type visit(ASTString s, Env<Type> env)  {
         return StringType.singleton;
     }
 
     @Override
-    public Type visit(ASTNeg e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTNeg e, Env<Type> env) {
         Type arg = e.arg.accept(this, env);
         if(arg == IntType.singleton) {
             return arg;
@@ -50,27 +50,27 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     }
 
     @Override
-    public Type visit(ASTDiv e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTDiv e, Env<Type> env) {
         return handleIntegerOperation(e.arg1, e.arg2, "division", env);
     }
 
     @Override
-    public Type visit(ASTMult e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTMult e, Env<Type> env) {
         return handleIntegerOperation(e.arg1, e.arg2, "multiplication", env);
     }
 
     @Override
-    public Type visit(ASTSub e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTSub e, Env<Type> env)  {
         return handleIntegerOperation(e.arg1, e.arg2, "subtraction", env);
     }
 
     @Override
-    public Type visit(ASTAdd e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTAdd e, Env<Type> env) {
         return handleIntegerOperation(e.arg1, e.arg2, "addition", env);
     }
 
     @Override
-    public Type visit(ASTDiff e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTDiff e, Env<Type> env) {
         Type left = e.arg1.accept(this, env);
         Type right = e.arg2.accept(this, env);
         if (left == right) {
@@ -81,7 +81,7 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     }
 
     @Override
-    public Type visit(ASTEq e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTEq e, Env<Type> env)  {
         Type left = e.arg1.accept(this, env);
         Type right = e.arg2.accept(this, env);
         if (left == right) {
@@ -92,37 +92,37 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     }
 
     @Override
-    public Type visit(ASTLeq e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTLeq e, Env<Type> env)  {
         return handleIntegerBoolOperation(e.arg1, e.arg2, "less than or equal", env);
     }
 
     @Override
-    public Type visit(ASTLt e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTLt e, Env<Type> env)  {
         return handleIntegerBoolOperation(e.arg1, e.arg2, "less than", env);
     }
 
     @Override
-    public Type visit(ASTGeq e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTGeq e, Env<Type> env)  {
         return handleIntegerBoolOperation(e.arg1, e.arg2, "greater than or equal", env);
     }
     @Override
-    public Type visit(ASTGt e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTGt e, Env<Type> env) {
         return handleIntegerBoolOperation(e.arg1, e.arg2, "greater than", env);
     }
 
 
     @Override
-    public Type visit(ASTAnd e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTAnd e, Env<Type> env)  {
         return handleBooleanOperation(e.left, e.right, "and", env);
     }
 
     @Override
-    public Type visit(ASTOr e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTOr e, Env<Type> env)  {
         return handleBooleanOperation(e.left, e.right, "or", env);
     }
 
     @Override
-    public Type visit(ASTNot astNot, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTNot astNot, Env<Type> env) {
         Type arg = astNot.arg.accept(this, env);
         if (arg == BoolType.singleton) {
             return arg;
@@ -132,7 +132,7 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     }
 
     @Override
-    public Type visit(ASTIfThenElse e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTIfThenElse e, Env<Type> env) {
         Type condition = e.condition.accept(this, env);
         Type thenBranch = e.thenBranch.accept(this, env);
         Type elseBranch = e.elseBranch.accept(this, env);
@@ -144,13 +144,13 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     }
 
     @Override
-    public Type visit(ASTNew e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTNew e, Env<Type> env) {
         Type arg = e.exp.accept(this, env);
         return new RefType(arg);
     }
 
     @Override
-    public Type visit(ASTLet e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTLet e, Env<Type> env) {
         env = env.beginScope();
         for(Tuple<String, ASTNode> t : e.vars) {
             Type var = t.item2().accept(this, env);
@@ -159,9 +159,8 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
         return e.body.accept(this, env);
     }
 
-    //TODO: Implement the visit method for ASTId
     @Override
-    public Type visit(ASTId e, Env<Type> env) throws InvalidTypeException {
+    public Type visit(ASTId e, Env<Type> env) {
         Type tp = env.find(e.id);
         if (tp == null)
             throw new InvalidTypeException("Variable not found");
@@ -169,7 +168,7 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     }
 
     @Override
-    public Type visit(ASTReff e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTReff e, Env<Type> env) {
         RefType arg1 = (RefType)e.id.accept(this, env);
         Type arg2 = e.exp.accept(this, env);
         if(arg1.getRefType().getType().equals(arg2.getType()))
@@ -179,7 +178,7 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     }
 
     @Override
-    public Type visit(ASTWhile e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTWhile e, Env<Type> env) {
         Type condition = e.condition.accept(this, env);
         Type body = e.body.accept(this, env);
         if (condition != BoolType.singleton) {
@@ -189,14 +188,13 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     }
 
     @Override
-    public Type visit(ASTSeq e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTSeq e, Env<Type> env)  {
         e.left.accept(this, env);
-        e.right.accept(this, env);
-        return null;
+        return e.right.accept(this, env);
     }
 
     @Override
-    public Type visit(ASTDRef e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTDRef e, Env<Type> env) {
         RefType type = (RefType) e.exp.accept(this, env);
         if (type == null)
             throw new InvalidTypeException("Variable not found");
@@ -204,17 +202,17 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     }
 
     @Override
-    public Type visit(ASTPrint e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTPrint e, Env<Type> env)  {
         return e.exp.accept(this, env);
     }
 
     @Override
-    public Type visit(ASTPrintln e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTPrintln e, Env<Type> env) {
         return e.exp.accept(this, env);
     }
 
     @Override
-    public Type visit(ASTDefFun e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTDefFun e, Env<Type> env) {
         env = env.beginScope();
         for (Tuple<String, String> param: e.params) {
             Type paramType = getType(param.item2());
@@ -228,7 +226,7 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     }
 
     @Override
-    public Type visit(ASTFunCall e, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Type visit(ASTFunCall e, Env<Type> env) {
         Type fun = e.node.accept(this, env);
         if (fun instanceof ClosureType closure) {
             if (closure.getParams().size() == e.args.size()) {
@@ -247,7 +245,7 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
         }
     }
 
-    private Type handleIntegerOperation(ASTNode arg1, ASTNode arg2, String operationName, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    private Type handleIntegerOperation(ASTNode arg1, ASTNode arg2, String operationName, Env<Type> env) {
         Type left = handleRefType(arg1.accept(this, env));
         Type right = handleRefType(arg2.accept(this, env));
         if (left == IntType.singleton && right == IntType.singleton) {
@@ -257,7 +255,7 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
         }
     }
 
-    private Type handleIntegerBoolOperation(ASTNode arg1, ASTNode arg2, String operationName, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    private Type handleIntegerBoolOperation(ASTNode arg1, ASTNode arg2, String operationName, Env<Type> env) {
         Type left = handleRefType(arg1.accept(this, env));
         Type right = handleRefType(arg2.accept(this, env));
         if (left == IntType.singleton && right == IntType.singleton) {
@@ -267,7 +265,7 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
         }
     }
 
-    private Type handleBooleanOperation(ASTNode arg1, ASTNode arg2, String operationName, Env<Type> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    private Type handleBooleanOperation(ASTNode arg1, ASTNode arg2, String operationName, Env<Type> env) {
         Type left = handleRefType(arg1.accept(this, env));
         Type right = handleRefType(arg2.accept(this, env));
         if (left == BoolType.singleton && right == BoolType.singleton) {

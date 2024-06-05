@@ -30,7 +30,7 @@ public class Parser implements ParserConstants {
       }
       jj_consume_token(SEMCOL);
       e2 = Seq();
-                            {if (true) return new ASTSeq(e1, e2);}
+                            e1 = new ASTSeq(e1,e2);
     }
       {if (true) return e1;}
     throw new Error("Missing return statement in function");
@@ -337,7 +337,7 @@ public class Parser implements ParserConstants {
       break;
     case LPAR:
       jj_consume_token(LPAR);
-      e = SeqE();
+      e = Seq();
       jj_consume_token(RPAR);
       break;
     case NEW:

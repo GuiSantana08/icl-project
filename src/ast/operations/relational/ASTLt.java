@@ -14,7 +14,7 @@ public class ASTLt implements ASTNode {
     }
 
     @Override
-    public <T, E> T accept(Visitor<T, E> v, E env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public <T, E> T accept(Visitor<T, E> v, E env)  {
         return v.visit(this, env);
     }
 }

@@ -20,77 +20,76 @@ import exceptions.InvalidTypeException;
 import symbols.Env;
 import symbols.Tuple;
 import value.*;
-//import value.RefValue;
 
 import java.util.Objects;
 
 public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
 
     @Override
-    public Value<?> visit(ASTInt i, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Value<?> visit(ASTInt i, Env<Value<?>> env) {
         return new IntValue(i.value);
     }
 
     @Override
-    public Value<?> visit(ASTBool b, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Value<?> visit(ASTBool b, Env<Value<?>> env) {
         return new BoolValue(b.value);
     }
 
     @Override
-    public Value<?> visit(ASTString s, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Value<?> visit(ASTString s, Env<Value<?>> env) {
         return new StringValue(s.string);
     }
 
     @Override
-    public Value<?> visit(ASTNeg e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Value<?> visit(ASTNeg e, Env<Value<?>> env) {
         IntValue n1 = (IntValue) e.arg.accept(this, env);
-        return (new IntValue(-n1.getValue()));
+        return new IntValue(-n1.getValue());
     }
 
     @Override
-    public Value<?> visit(ASTDiv e, Env<Value<?>> env) throws InvalidTypeException , DuplicateVariableFoundException{
+    public Value<?> visit(ASTDiv e, Env<Value<?>> env) {
         IntValue n1 = (IntValue) e.arg1.accept(this, env);
         IntValue n2 = (IntValue) e.arg2.accept(this, env);
-        return (new IntValue(n1.getValue() / n2.getValue()));
+        return new IntValue(n1.getValue() / n2.getValue());
     }
 
     @Override
-    public Value<?> visit(ASTMult e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Value<?> visit(ASTMult e, Env<Value<?>> env) {
         IntValue n1 = (IntValue) e.arg1.accept(this, env);
         IntValue n2 = (IntValue) e.arg2.accept(this, env);
-        return (new IntValue(n1.getValue() * n2.getValue()));
+        return new IntValue(n1.getValue() * n2.getValue());
     }
 
     @Override
-    public Value<?> visit(ASTSub e, Env<Value<?>> env) throws InvalidTypeException , DuplicateVariableFoundException{
+    public Value<?> visit(ASTSub e, Env<Value<?>> env) {
         IntValue n1 = (IntValue) e.arg1.accept(this, env);
         IntValue n2 = (IntValue) e.arg2.accept(this, env);
-        return (new IntValue(n1.getValue() - n2.getValue()));
+        return new IntValue(n1.getValue() - n2.getValue());
     }
 
     @Override
-    public Value<?> visit(ASTAdd e, Env<Value<?>> env) throws InvalidTypeException , DuplicateVariableFoundException{
+    public Value<?> visit(ASTAdd e, Env<Value<?>> env) {
         IntValue n1 = (IntValue) e.arg1.accept(this, env);
         IntValue n2 = (IntValue) e.arg2.accept(this, env);
-        return (new IntValue(n1.getValue() + n2.getValue()));
+        return new IntValue(n1.getValue() + n2.getValue());
     }
 
     @Override
-    public Value<?> visit(ASTAnd e, Env<Value<?>> env) throws InvalidTypeException , DuplicateVariableFoundException{
+    public Value<?> visit(ASTAnd e, Env<Value<?>> env) {
         BoolValue b1 = (BoolValue) e.left.accept(this, env);
         BoolValue b2 = (BoolValue) e.right.accept(this, env);
-        return (new BoolValue(b1.getValue() && b2.getValue()));
+        return new BoolValue(b1.getValue() && b2.getValue());
     }
 
     @Override
-    public Value<?> visit(ASTOr e, Env<Value<?>> env) throws InvalidTypeException , DuplicateVariableFoundException{
+    public Value<?> visit(ASTOr e, Env<Value<?>> env) {
         BoolValue b1 = (BoolValue) e.left.accept(this, env);
         BoolValue b2 = (BoolValue) e.right.accept(this, env);
-        return (new BoolValue(b1.getValue() || b2.getValue()));
+        return new BoolValue(b1.getValue() || b2.getValue());
     }
 
     @Override
-    public Value<?> visit(ASTDiff e, Env<Value<?>> env) throws InvalidTypeException , DuplicateVariableFoundException{
+    public Value<?> visit(ASTDiff e, Env<Value<?>> env) {
         Value<?> arg1Value = e.arg1.accept(this, env);
         Value<?> arg2Value = e.arg2.accept(this, env);
 
@@ -104,35 +103,35 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
     }
 
     @Override
-    public Value<?> visit(ASTLeq e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Value<?> visit(ASTLeq e, Env<Value<?>> env) {
         IntValue b1 = (IntValue) e.arg1.accept(this, env);
         IntValue b2 = (IntValue) e.arg2.accept(this, env);
-        return (new BoolValue(b1.getValue() <= b2.getValue()));
+        return new BoolValue(b1.getValue() <= b2.getValue());
     }
 
     @Override
-    public Value<?> visit(ASTLt e, Env<Value<?>> env) throws InvalidTypeException , DuplicateVariableFoundException{
+    public Value<?> visit(ASTLt e, Env<Value<?>> env) {
         IntValue b1 = (IntValue) e.arg1.accept(this, env);
         IntValue b2 = (IntValue) e.arg2.accept(this, env);
-        return (new BoolValue(b1.getValue() < b2.getValue()));
+        return new BoolValue(b1.getValue() < b2.getValue());
     }
 
     @Override
-    public Value<?> visit(ASTGeq e, Env<Value<?>> env) throws InvalidTypeException , DuplicateVariableFoundException{
+    public Value<?> visit(ASTGeq e, Env<Value<?>> env) {
         IntValue b1 = (IntValue) e.arg1.accept(this, env);
         IntValue b2 = (IntValue) e.arg2.accept(this, env);
-        return (new BoolValue(b1.getValue() >= b2.getValue()));
+        return new BoolValue(b1.getValue() >= b2.getValue());
     }
 
     @Override
-    public Value<?> visit(ASTGt e, Env<Value<?>> env) throws InvalidTypeException , DuplicateVariableFoundException{
+    public Value<?> visit(ASTGt e, Env<Value<?>> env) {
         IntValue b1 = (IntValue) e.arg1.accept(this, env);
         IntValue b2 = (IntValue) e.arg2.accept(this, env);
-        return (new BoolValue(b1.getValue() > b2.getValue()));
+        return new BoolValue(b1.getValue() > b2.getValue());
     }
 
     @Override
-    public Value<?> visit(ASTEq e, Env<Value<?>> env) throws InvalidTypeException , DuplicateVariableFoundException{
+    public Value<?> visit(ASTEq e, Env<Value<?>> env) {
         Value<?> arg1Value = e.arg1.accept(this, env);
         Value<?> arg2Value = e.arg2.accept(this, env);
 
@@ -146,13 +145,13 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
     }
 
     @Override
-    public Value<?> visit(ASTNot astNot, Env<Value<?>> env) throws InvalidTypeException , DuplicateVariableFoundException{
+    public Value<?> visit(ASTNot astNot, Env<Value<?>> env) {
         BoolValue b = (BoolValue) astNot.arg.accept(this, env);
         return new BoolValue(!b.getValue());
     }
 
     @Override
-    public Value<?> visit(ASTIfThenElse e, Env<Value<?>> env) throws InvalidTypeException , DuplicateVariableFoundException{
+    public Value<?> visit(ASTIfThenElse e, Env<Value<?>> env) {
         BoolValue b = (BoolValue) e.condition.accept(this, env);
         if (b.getValue()) {
             return e.thenBranch.accept(this, env);
@@ -162,7 +161,7 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
     }
 
     @Override
-    public Value<?> visit(ASTWhile e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Value<?> visit(ASTWhile e, Env<Value<?>> env) {
         BoolValue b = (BoolValue) e.condition.accept(this, env);
         Value<?> result = null;
         while (b.getValue()) {
@@ -173,42 +172,41 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
     }
 
     @Override
-    public Value<?> visit(ASTSeq e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Value<?> visit(ASTSeq e, Env<Value<?>> env) {
         e.left.accept(this, env);
         return e.right.accept(this, env);
     }
 
     @Override
-    public Value<?> visit(ASTDRef e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Value<?> visit(ASTDRef e, Env<Value<?>> env) {
         RefValue value = (RefValue) e.exp.accept(this, env);
         return value.getValue();
     }
 
     @Override
-    public Value<?> visit(ASTPrint e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
-        Value arg = e.exp.accept(this, env);
+    public Value<?> visit(ASTPrint e, Env<Value<?>> env) {
+        Value<?> arg = e.exp.accept(this, env);
         System.out.print(arg);
         return null;
     }
 
     @Override
-    public Value<?> visit(ASTPrintln e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
-        Value arg = e.exp.accept(this, env);
+    public Value<?> visit(ASTPrintln e, Env<Value<?>> env) {
+        Value<?> arg = e.exp.accept(this, env);
         System.out.println(arg);
         return null;
     }
 
     @Override
-    public Value<?> visit(ASTDefFun e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Value<?> visit(ASTDefFun e, Env<Value<?>> env) {
         return new ClosureValue(e.params, e.body, env);
-
     }
 
     @Override
-    public Value<?> visit(ASTFunCall e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Value<?> visit(ASTFunCall e, Env<Value<?>> env) {
         ClosureValue closure = (ClosureValue) e.node.accept(this, env);
         Env<Value<?>> newEnv = closure.getEnv().beginScope();
-        for(ASTNode arg : e.args) {
+        for (ASTNode arg : e.args) {
             newEnv.bind(closure.getParam(e.args.indexOf(arg)), arg.accept(this, env));
         }
         Value<?> result = closure.getBody().accept(this, newEnv);
@@ -217,15 +215,15 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
     }
 
     @Override
-    public Value<?> visit(ASTNew e, Env<Value<?>> env) throws InvalidTypeException , DuplicateVariableFoundException{
+    public Value<?> visit(ASTNew e, Env<Value<?>> env) {
         Value<?> arg = e.exp.accept(this, env);
         return new RefValue(arg);
     }
 
     @Override
-    public Value<?> visit (ASTLet e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Value<?> visit(ASTLet e, Env<Value<?>> env) {
         env = env.beginScope();
-        for(Tuple<String, ASTNode> t : e.vars) {
+        for (Tuple<String, ASTNode> t : e.vars) {
             Value<?> var = t.item2().accept(this, env);
             env.bind(t.item1(), var);
         }
@@ -233,22 +231,20 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
     }
 
     @Override
-    public Value<?> visit(ASTId e, Env<Value<?>> env) throws InvalidTypeException {
+    public Value<?> visit(ASTId e, Env<Value<?>> env) {
         return env.find(e.id);
     }
 
     @Override
-    public Value<?> visit (ASTReff e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public Value<?> visit(ASTReff e, Env<Value<?>> env) {
         RefValue value = (RefValue) e.id.accept(this, env);
         value.setValue(e.exp.accept(this, env));
         return value;
     }
 
-
-    public static Value<?> interpret(ASTNode e, Env<Value<?>> env) throws InvalidTypeException, DuplicateVariableFoundException {
+    public static Value<?> interpret(ASTNode e) {
+        Env<Value<?>> env = new Env<>();
         Interpreter i = new Interpreter();
-        //TODO: check if this is corerect because of env
         return e.accept(i, env);
-
     }
 }
