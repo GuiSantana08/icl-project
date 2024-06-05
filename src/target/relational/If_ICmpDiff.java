@@ -4,7 +4,7 @@ import target.Instruction;
 
 public class If_ICmpDiff extends Instruction {
         public If_ICmpDiff(String label) {
-            op = "if_icmpneq " + label;
-            args = null;
+            op = "if_icmpne";
+            args = new String[] {label};
         }
 }
