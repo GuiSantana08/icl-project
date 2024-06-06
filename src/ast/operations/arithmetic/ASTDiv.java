@@ -3,12 +3,14 @@ package ast.operations.arithmetic;
 import ast.ASTNode;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
+import type.IntType;
 
-public class ASTDiv implements ASTNode {
+public class ASTDiv extends ASTNode {
     public final ASTNode arg1;
     public final ASTNode arg2;
 
     public ASTDiv(ASTNode arg1, ASTNode arg2) {
+        super(new IntType());
         this.arg1 = arg1;
         this.arg2 = arg2;
     }

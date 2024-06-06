@@ -4,15 +4,17 @@ import ast.ASTNode;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 import symbols.Tuple;
+import type.RefType;
 
 import java.util.List;
 
-public class ASTDefFun implements ASTNode {
+public class ASTDefFun extends ASTNode {
     public final List<Tuple<String, String>> params; // List of (param, type) pairs
     public final ASTNode body;
 
 
     public ASTDefFun(List<Tuple<String, String>> params, ASTNode body) {
+        super(new RefType(null)); //TODO: check if this ok
         this.params = params;
         this.body = body;
     }

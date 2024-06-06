@@ -3,12 +3,14 @@ package ast.operations.references;
 import ast.ASTNode;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
+import type.RefType;
 
-public class  ASTReff implements ASTNode {
+public class  ASTReff extends ASTNode {
 
     public ASTNode id, exp;
 
     public ASTReff(ASTNode e1, ASTNode e2) {
+        super(new RefType(null));
         this.id = e1;
         this.exp = e2;
     }

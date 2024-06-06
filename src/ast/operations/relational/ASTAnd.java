@@ -3,11 +3,13 @@ package ast.operations.relational;
 import ast.ASTNode;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
+import type.BoolType;
 
-public class ASTAnd implements ASTNode {
+public class ASTAnd extends ASTNode {
     public ASTNode left, right;
 
     public ASTAnd(ASTNode e1, ASTNode e2){
+        super(new BoolType());
         this.left = e1;
         this.right = e2;
     }

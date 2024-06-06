@@ -19,6 +19,7 @@ import compiler.struct.Frame;
 import symbols.CompEnv;
 import symbols.Tuple;
 import target.BlockSeq;
+import target.Dup;
 import target.Pop;
 import target.SIPush;
 import target.functions.getStatic;
@@ -294,26 +295,28 @@ public class CodeGen implements Visitor<Void, Void> {
     public Void visit(ASTLet e, Void v)  {
         Tuple<Frame, CompEnv> letDef = block.beginScope(e.vars.size(), frameId++, block.currFrame);
         block.addInstruction(new IFrameCreation(block.currFrame.id));
-
         int varsCount = 0;
         Iterator<Tuple<String, ASTNode>> it = e.vars.iterator();
         while (it.hasNext()){
-            block.addInstruction(new ILoad());
+            CompEnv env = letDef.item2();
+            block.addInstruction(new Dup());
             Tuple<String, ASTNode> var = it.next();
-            letDef.item2().bind(var.item1());
-            letDef.item1();
-            var.item2().accept(this, v);
-            block.addInstruction(new IFrameFieldCreation(block.currFrame.id, varsCount, /*TODO: getType() for variable*/ null));
+            String id = var.item1();
+            env.bind(id);
+            Frame f = letDef.item1();
+            ASTNode node = var.item2();
+            node.accept(this, v);
+            block.addInstruction(new IFrameFieldCreation(block.currFrame.id, varsCount, node.getJVMType()));
         }
-        block.addInstruction(new ILet(e.vars));
-        generateFrameCode(block.currFrame);
-        e.body.accept(this, v);
-        block.addInstruction(new ILoad());
-        block.addInstruction(new ICheckCast(block.currFrame.id));
-        block.addInstruction(new IEndFrameScope(block.currFrame.id));
-        block.addInstruction(new IStore());
-        block.endScope(letDef.item1(), letDef.item2());
-        return null;
+//        block.addInstruction(new ILet(e.vars));
+//        generateFrameCode(block.currFrame);
+//        e.body.accept(this, v);
+//        block.addInstruction(new ILoad());
+//        block.addInstruction(new ICheckCast(block.currFrame.id));
+//        block.addInstruction(new IEndFrameScope(block.currFrame.id));
+//        block.addInstruction(new IStore());
+//        block.endScope(letDef.item1(), letDef.item2());
+       return null;
     }
 
     @Override

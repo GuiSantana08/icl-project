@@ -1,13 +1,14 @@
 package ast.value;
 
 import ast.ASTNode;
-import exceptions.DuplicateVariableFoundException;
-import exceptions.InvalidTypeException;
+import type.IntType;
 
-public class ASTInt  implements ASTNode {
+
+public class ASTInt extends ASTNode {
     public final int value;
 
     public ASTInt(int value) {
+        super(new IntType());
         this.value = value;
     }
 

@@ -4,12 +4,14 @@ import ast.ASTNode;
 import ast.value.ASTString;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
+import type.RefType;
 
-public class ASTId implements ASTNode {
+public class ASTId extends ASTNode {
 
     public String id;
 
     public ASTId(String id) {
+        super(new RefType(null));
         this.id = id;
     }
     @Override

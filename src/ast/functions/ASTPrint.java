@@ -4,11 +4,12 @@ import ast.ASTNode;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 
-public class ASTPrint implements ASTNode {
+public class ASTPrint extends ASTNode {
 
         public ASTNode exp;
 
         public ASTPrint(ASTNode exp) {
+            super();
             this.exp = exp;
         }
 

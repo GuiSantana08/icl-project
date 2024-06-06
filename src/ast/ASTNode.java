@@ -13,13 +13,19 @@ import ast.operations.relational.*;
 import ast.value.ASTBool;
 import ast.value.ASTInt;
 import ast.value.ASTString;
-import exceptions.DuplicateVariableFoundException;
-import exceptions.InvalidTypeException;
+import type.Type;
 
-import java.io.FileNotFoundException;
+public abstract class ASTNode {
+    private Type type;
 
-public interface ASTNode {
-    interface Visitor<T,E> {
+    public ASTNode(Type type) {
+        this.type = type;
+    }
+
+    public ASTNode() {
+        this.type = null;
+    }
+    public interface Visitor<T,E> {
         T visit(ASTInt e, E env);
         T visit(ASTBool e, E env);
         T visit(ASTString e, E env);
@@ -50,5 +56,16 @@ public interface ASTNode {
         T visit(ASTDefFun e, E env);
         T visit(ASTFunCall e, E env);
     }
-    <T,E> T accept(Visitor<T, E> v, E env);
+    public abstract  <T,E> T accept(Visitor<T, E> v, E env);
+
+    public String getJVMType() {
+        return type.jvmType();
+    }
+
+    public Type getType() {
+        return type;
+    }
+    public void setType(Type type) {
+        this.type = type;
+    }
 }

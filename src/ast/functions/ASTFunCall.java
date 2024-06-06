@@ -6,11 +6,12 @@ import exceptions.InvalidTypeException;
 
 import java.util.List;
 
-public class ASTFunCall implements ASTNode {
+public class ASTFunCall extends ASTNode {
     public ASTNode node;
     public List<ASTNode> args;
 
     public ASTFunCall(ASTNode node, List<ASTNode> args) {
+        super();
         this.node = node;
         this.args = args;
     }

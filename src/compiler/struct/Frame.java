@@ -18,10 +18,6 @@ public class Frame {
         this.prev = prev;
     }
 
-    public String toString(){
-        return null;
-    }
-
     public List<Type> getTypes() {
         return types;
     }

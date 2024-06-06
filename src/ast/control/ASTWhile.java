@@ -4,11 +4,12 @@ import ast.ASTNode;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 
-public class ASTWhile implements ASTNode {
+public class ASTWhile extends ASTNode {
     public ASTNode condition;
     public ASTNode body;
 
     public ASTWhile(ASTNode condition, ASTNode body) {
+        super();
         this.condition = condition;
         this.body = body;
     }

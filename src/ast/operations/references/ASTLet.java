@@ -4,15 +4,17 @@ import ast.ASTNode;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 import symbols.Tuple;
+import type.RefType;
 
 import java.util.List;
 
-public class ASTLet implements ASTNode {
+public class ASTLet extends ASTNode {
 
     public List<Tuple<String, ASTNode>> vars;
     public ASTNode body;
 
     public ASTLet(List<Tuple<String, ASTNode>> vars, ASTNode body) {
+        super(new RefType(null));
         this.vars = vars;
         this.body = body;
     }

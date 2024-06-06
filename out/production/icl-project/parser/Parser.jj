@@ -102,15 +102,24 @@ ASTNode Decl():
     (
     (
         <LET> (
-            x = <Id> <EQUALS> (e = BoolOps())
+            x = <Id> <EQUALS> (e = Loops())
             { vars.add(new Tuple<String, ASTNode>(x.image, e)); }
         )+
         <IN> body = SeqE() { e = new ASTLet(vars, body); }
-    ) | e = BoolOps() )
+    ) | e = Loops() )
     { return e; }
 }
 
-
+ASTNode Loops():
+{ ASTNode e; }
+{
+    (
+        e = ifElse()
+        | e = whileLoop()
+        | e = BoolOps()
+    )
+    { return e; }
+}
 
 
 ASTNode BoolOps():
@@ -142,7 +151,7 @@ ASTNode CmpOps():
 ASTNode Expr() :
 { ASTNode e1, e2; }
 {
-   e1 = Term() 
+   e1 = Term()
      ( <PLUS> e2 = Expr() { e1 = new ASTAdd(e1,e2); }
      | <MINUS> e2 = Expr() { e1 = new ASTSub(e1,e2); } )*
      { return e1; }
@@ -172,8 +181,6 @@ ASTNode Fact() :
         <DEREF> e = Fact() { e = new ASTDRef(e); }
         | <PRINT> e = Fact() { e = new ASTPrint(e); }
         | <PRINTLN> e = Fact() { e = new ASTPrintln(e); }
-        | e = ifElse()
-        | e = whileLoop()
         |  e = Num()
         | e = Id()
         | e = Bool()

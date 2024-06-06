@@ -9,7 +9,7 @@ public class CompEnv {
 
     public Map<String, Integer> table;
 
-    public CompEnv prev = null;
+    public CompEnv prev;
 
     public CompEnv(CompEnv prev){
         table = new Hashtable<>(20);

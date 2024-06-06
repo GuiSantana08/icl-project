@@ -4,12 +4,13 @@ import ast.ASTNode;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 
-public class ASTIfThenElse implements ASTNode {
+public class ASTIfThenElse extends ASTNode {
     public ASTNode condition;
     public ASTNode thenBranch;
     public ASTNode elseBranch;
 
     public ASTIfThenElse(ASTNode condition, ASTNode thenBranch, ASTNode elseBranch) {
+        super();
         this.condition = condition;
         this.thenBranch = thenBranch;
         this.elseBranch = elseBranch;

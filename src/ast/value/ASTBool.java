@@ -3,11 +3,13 @@ package ast.value;
 import ast.ASTNode;
 import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
+import type.BoolType;
 
-public class ASTBool implements ASTNode{
+public class ASTBool extends ASTNode{
     public final boolean value;
 
     public ASTBool(boolean value) {
+        super(new BoolType());
         this.value = value;
     }
 
