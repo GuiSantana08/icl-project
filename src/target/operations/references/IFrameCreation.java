@@ -12,7 +12,7 @@ public class IFrameCreation extends Instruction {
             dup
             aload 0
             putfield frame_%s/sl %s
-            astore0""";
+            astore 0""";
 
     public IFrameCreation(int frameId){
         if(frameId == 0) {

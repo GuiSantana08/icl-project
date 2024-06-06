@@ -195,7 +195,6 @@ public class CodeGen implements Visitor<Void, Void> {
 
     @Override
     public Void visit(ASTId e, Void v) {
-        e.accept(this, v);
         Tuple<Integer, Integer> location = this.block.env.find(e.id);
         Frame actualFrame = block.currFrame;
         for (int i = 0; i < location.item1() - 1; i++) {
@@ -204,7 +203,7 @@ public class CodeGen implements Visitor<Void, Void> {
             block.addInstruction(new IFrameGetField("frame_" + actualFrame.id + "/sl Lframe_" + actualFrame.id + 1));
             block.addInstruction(new IStore());
         }
-        block.addInstruction(new IFrameGetField("frame_" + actualFrame.id + "/loc_" + location.item2() + " " /*TODO: type goes here*/));
+        block.addInstruction(new IFrameGetField("frame_" + actualFrame.id + "/loc_" + location.item2() + " " + actualFrame.getTypes().get(location.item2())));
         return null;
     }
 
@@ -294,7 +293,7 @@ public class CodeGen implements Visitor<Void, Void> {
     @Override
     public Void visit(ASTLet e, Void v)  {
         Tuple<Frame, CompEnv> letDef = block.beginScope(e.vars.size(), frameId++, block.currFrame);
-        block.addInstruction(new IFrameCreation(block.currFrame.id));
+//        block.addInstruction(new ILet());
         int varsCount = 0;
         Iterator<Tuple<String, ASTNode>> it = e.vars.iterator();
         while (it.hasNext()){
@@ -306,16 +305,16 @@ public class CodeGen implements Visitor<Void, Void> {
             Frame f = letDef.item1();
             ASTNode node = var.item2();
             node.accept(this, v);
-            block.addInstruction(new IFrameFieldCreation(block.currFrame.id, varsCount, node.getJVMType()));
+            block.currFrame.addType(node.getJVMType());
         }
-//        block.addInstruction(new ILet(e.vars));
-//        generateFrameCode(block.currFrame);
-//        e.body.accept(this, v);
-//        block.addInstruction(new ILoad());
-//        block.addInstruction(new ICheckCast(block.currFrame.id));
-//        block.addInstruction(new IEndFrameScope(block.currFrame.id));
-//        block.addInstruction(new IStore());
-//        block.endScope(letDef.item1(), letDef.item2());
+        generateFrameCode(block.currFrame);
+        block.addInstruction(new IFrameCreation(block.currFrame.id));
+        e.body.accept(this, v);
+        block.addInstruction(new ILoad());
+        block.addInstruction(new ICheckCast(block.currFrame.id));
+        block.addInstruction(new IEndFrameScope(block.currFrame.id));
+        block.addInstruction(new IStore());
+        block.endScope(letDef.item1(), letDef.item2());
        return null;
     }
 
@@ -337,13 +336,13 @@ public class CodeGen implements Visitor<Void, Void> {
                     .class public frame_%d
                     .super java/lang/Object
                     .field public sl Lframe_%d;""";
-        Iterator<Type> vars = frame.types.iterator();
+        Iterator<String> vars = frame.types.iterator();
         int varCount = 0;
         while(vars.hasNext()){
-            Type t = vars.next();
-            code = code + "\n.field public loc_" + varCount + " " + t.jvmType();
+            String t = vars.next();
+            code = code + "\n.field public loc_" + varCount + " " + t;
         }
-        code = code + "\n.method public <init>()V\n" + new ILoad().op + "\ninvokenonvirtual java/lang/Object/<init>()V\nreturn";
+        code = code + "\n.method public <init>()V\n" + new ILoad().op + "\ninvokenonvirtual java/lang/Object/<init>()V\nreturn\n.end method";
 
         StringBuilder sb = new StringBuilder();
         if(frame.id == 0)
@@ -353,7 +352,7 @@ public class CodeGen implements Visitor<Void, Void> {
         String frameFile = "frame_" + frame.id + ".j";
         PrintStream file = null;
         try {
-            file = new PrintStream(new FileOutputStream("compOut" + frameFile));
+            file = new PrintStream(new FileOutputStream("compOut/" + frameFile));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }

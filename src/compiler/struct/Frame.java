@@ -3,12 +3,13 @@ package compiler.struct;
 import symbols.CompEnv;
 import type.Type;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Frame {
 
     public int nFields;
-    public List<Type> types;
+    public List<String> types;
     public int id;
     public Frame prev;
 
@@ -16,17 +17,18 @@ public class Frame {
         this.nFields = fields;
         this.id = id;
         this.prev = prev;
+        this.types = new ArrayList<>();
     }
 
-    public List<Type> getTypes() {
+    public List<String> getTypes() {
         return types;
     }
 
-    public void setTypes(List<Type> types) {
+    public void setTypes(List<String> types) {
         this.types = types;
     }
 
-    public void addType(Type t) {
+    public void addType(String t) {
         this.types.add(t);
     }
 

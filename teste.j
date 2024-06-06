@@ -10,30 +10,21 @@
  .limit stack 256
  ; setup local variables:
  ;    1 - the PrintStream object held in java.lang.out
+dup
+sipush 1
 new frame_0
 dup
 invokespecial frame_0/<init>()V
 dup
 aload 0
 putfield frame_0/sl Ljava/lang/Object;
-astore0
-dup
-sipush 1
-putfield frame_0/loc_0 I
-dup
-sipush 65
-sipush 45
-if_icmplt L0
-sipush 0
-goto L1
-L0:
-sipush 1
-L1:
-putfield frame_0/loc_0 Z
-dup
-sipush 45
-sipush 88
-iadd
-putfield frame_0/loc_0 I
+astore 0
+getfield frame_0/loc_0 I
+aload 0
+checkcast frame_0
+aload 0
+getfield frame_0/sl Ljava/lang/Object;
+astore 0
+astore 0
 return
 .end method
