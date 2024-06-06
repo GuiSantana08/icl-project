@@ -1,3 +1,4 @@
+
 .class public Demo
 .super java/lang/Object
 .method public <init>()V
@@ -10,11 +11,17 @@
  .limit stack 256
  ; setup local variables:
  ;    1 - the PrintStream object held in java.lang.out
-getstatic  java/lang/System/out Ljava/io/PrintStream;
-sipush 4
-sipush 8
-iadd
-invokestatic  java/lang/String/valueOf(I)Ljava/lang/String;
-invokevirtual  java/io/PrintStream/print(Ljava/lang/String;)V
+getstatic java/lang/System/out Ljava/io/PrintStream;
+sipush 11
+sipush 22
+if_icmplt L1
+sipush 0
+goto L2
+L1:
+sipush 1
+L2:
+nop
+invokestatic java/lang/String/valueOf(I)Ljava/lang/String;
+invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
 return
 .end method

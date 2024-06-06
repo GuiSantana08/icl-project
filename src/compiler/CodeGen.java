@@ -16,16 +16,17 @@ import ast.value.ASTBool;
 import ast.value.ASTInt;
 import ast.value.ASTString;
 import compiler.struct.Frame;
-import exceptions.DuplicateVariableFoundException;
-import exceptions.InvalidTypeException;
 import symbols.CompEnv;
 import symbols.Tuple;
-import target.BasicBlock;
 import target.BlockSeq;
+import target.Pop;
 import target.SIPush;
-import target.arithmetic.*;
-import target.references.*;
-import target.relational.*;
+import target.functions.getStatic;
+import target.functions.invokeStatic;
+import target.functions.invokeVirtual;
+import target.operations.arithmetic.*;
+import target.operations.references.*;
+import target.operations.relational.*;
 import type.Type;
 
 import java.io.FileNotFoundException;
@@ -42,25 +43,25 @@ public class CodeGen implements Visitor<Void, Void> {
     @Override
     public Void visit(ASTInt i, Void v) {
         block.addInstruction(new SIPush(i.value));
-        return null;
+        return v;
     }
 
     @Override
     public Void visit(ASTBool b, Void v) {
         block.addInstruction(new SIPush(b.value ? 1 : 0));
-        return null;
+        return v;
     }
 
     @Override
     public Void visit(ASTString e, Void v) {
-        return null;
+        return v;
     }
 
     @Override
     public Void visit(ASTNeg e, Void v) {
         e.arg.accept(this, v);
         block.addInstruction(new INeg());
-        return null;
+        return v;
     }
 
     @Override
@@ -68,7 +69,7 @@ public class CodeGen implements Visitor<Void, Void> {
         e.arg1.accept(this, v);
         e.arg2.accept(this, v);
         block.addInstruction(new IDiv());
-        return null;
+        return v;
     }
 
     @Override
@@ -76,7 +77,7 @@ public class CodeGen implements Visitor<Void, Void> {
         e.arg1.accept(this, v);
         e.arg2.accept(this, v);
         block.addInstruction(new IMul());
-        return null;
+        return v;
     }
 
     @Override
@@ -84,7 +85,7 @@ public class CodeGen implements Visitor<Void, Void> {
         e.arg1.accept(this, v);
         e.arg2.accept(this, v);
         block.addInstruction(new ISub());
-        return null;
+        return v;
     }
 
     @Override
@@ -92,7 +93,7 @@ public class CodeGen implements Visitor<Void, Void> {
         e.arg1.accept(this, v);
         e.arg2.accept(this, v);
         block.addInstruction(new IAdd());
-        return null;
+        return v;
     }
 
     @Override
@@ -100,7 +101,7 @@ public class CodeGen implements Visitor<Void, Void> {
         e.left.accept(this, v);
         e.right.accept(this, v);
         block.addInstruction(new IAdd());
-        return e.accept(this, v);
+        return v;
     }
 
     @Override
@@ -108,7 +109,7 @@ public class CodeGen implements Visitor<Void, Void> {
         e.left.accept(this, v);
         e.right.accept(this, v);
         block.addInstruction(new IOr());
-        return e.accept(this, v);
+        return v;
     }
 
     @Override
@@ -119,13 +120,8 @@ public class CodeGen implements Visitor<Void, Void> {
         String l2 = LabelGenerator.genLabel();
 
         block.addInstruction(new If_ICmpDiff(l1));
-        block.addInstruction(new SIPush(0));
-        block.addInstruction(new IJump(l2));
-        block.addInstruction(new Label(l1));
-        block.addInstruction(new SIPush(1));
-        block.addInstruction(new Label(l2));
-        block.addInstruction(new INop());
-        return e.accept(this, v);
+        createLabels(l1, l2);
+        return v;
     }
 
     @Override
@@ -136,12 +132,7 @@ public class CodeGen implements Visitor<Void, Void> {
         String l2 = LabelGenerator.genLabel();
 
         block.addInstruction(new If_ICmpLEq(l1));
-        block.addInstruction(new SIPush(0));
-        block.addInstruction(new IJump(l2));
-        block.addInstruction(new Label(l1));
-        block.addInstruction(new SIPush(1));
-        block.addInstruction(new Label(l2));
-        block.addInstruction(new INop());
+        createLabels(l1, l2);
         return null;
     }
 
@@ -153,12 +144,7 @@ public class CodeGen implements Visitor<Void, Void> {
         String l2 = LabelGenerator.genLabel();
 
         block.addInstruction(new If_ICmpLt(l1));
-        block.addInstruction(new SIPush(0));
-        block.addInstruction(new IJump(l2));
-        block.addInstruction(new Label(l1));
-        block.addInstruction(new SIPush(1));
-        block.addInstruction(new Label(l2));
-        block.addInstruction(new INop());
+        createLabels(l1, l2);
         return null;
     }
 
@@ -169,13 +155,8 @@ public class CodeGen implements Visitor<Void, Void> {
         e.arg2.accept(this, v);
         String l2 = LabelGenerator.genLabel();
 
-        block.addInstruction(new If_ICmpGEq());
-        block.addInstruction(new SIPush(0));
-        block.addInstruction(new IJump(l2));
-        block.addInstruction(new Label(l1));
-        block.addInstruction(new SIPush(1));
-        block.addInstruction(new Label(l2));
-        block.addInstruction(new INop());
+        block.addInstruction(new If_ICmpGEq(l1));
+        createLabels(l1, l2);
         return null;
     }
 
@@ -186,13 +167,8 @@ public class CodeGen implements Visitor<Void, Void> {
         e.arg2.accept(this, v);
         String l2 = LabelGenerator.genLabel();
 
-        block.addInstruction(new If_ICmpGt());
-        block.addInstruction(new SIPush(0));
-        block.addInstruction(new IJump(l2));
-        block.addInstruction(new Label(l1));
-        block.addInstruction(new SIPush(1));
-        block.addInstruction(new Label(l2));
-        block.addInstruction(new INop());
+        block.addInstruction(new If_ICmpGt(l1));
+        createLabels(l1, l2);
         return null;
     }
 
@@ -203,13 +179,8 @@ public class CodeGen implements Visitor<Void, Void> {
         e.arg2.accept(this, v);
         String l2 = LabelGenerator.genLabel();
 
-        block.addInstruction(new If_ICmpEq());
-        block.addInstruction(new SIPush(0));
-        block.addInstruction(new IJump(l2));
-        block.addInstruction(new Label(l1));
-        block.addInstruction(new SIPush(1));
-        block.addInstruction(new Label(l2));
-        block.addInstruction(new INop());
+        block.addInstruction(new If_ICmpEq(l1));
+        createLabels(l1, l2);
         return null;
     }
 
@@ -244,12 +215,43 @@ public class CodeGen implements Visitor<Void, Void> {
     }
 
     @Override
+    public Void visit(ASTIfThenElse e, Void v) {
+        e.condition.accept(this, v);
+        String l1 = LabelGenerator.genLabel();
+        String l2 = LabelGenerator.genLabel();
+        block.addInstruction(new SIPush(0));
+        block.addInstruction(new If_ICmpEq(l1));
+        e.thenBranch.accept(this, v);
+        block.addInstruction(new IJump(l2));
+        block.addInstruction(new Label(l1));
+        e.elseBranch.accept(this, v);
+        block.addInstruction(new Label(l2));
+        return null;
+    }
+
+    @Override
     public Void visit(ASTWhile e, Void v)  {
+        String l1 = LabelGenerator.genLabel();
+        block.addInstruction(new Label(l1));
+        e.condition.accept(this, v);
+        String l2 = LabelGenerator.genLabel();
+        block.addInstruction(new SIPush(0));
+        block.addInstruction(new If_ICmpEq(l2));
+        e.body.accept(this, v);
+        block.addInstruction(new Pop());
+        block.addInstruction(new IJump(l1));
+        block.addInstruction(new Label(l2));
+
+
+
         return null;
     }
 
     @Override
     public Void visit(ASTSeq e, Void v) {
+        e.left.accept(this, v);
+        block.addInstruction(new Pop());
+        e.right.accept(this, v);
         return null;
     }
 
@@ -262,11 +264,19 @@ public class CodeGen implements Visitor<Void, Void> {
 
     @Override
     public Void visit(ASTPrint astPrint, Void v) {
+        block.addInstruction(new getStatic("java/lang/System/out", "Ljava/io/PrintStream;"));
+        astPrint.exp.accept(this, v);
+        block.addInstruction(new invokeStatic("java/lang/String/valueOf(I)Ljava/lang/String;"));
+        block.addInstruction(new invokeVirtual("java/io/PrintStream/print(Ljava/lang/String;)V"));
         return null;
     }
 
     @Override
     public Void visit(ASTPrintln astPrintln, Void v) {
+        block.addInstruction(new getStatic("java/lang/System/out", "Ljava/io/PrintStream;"));
+        astPrintln.exp.accept(this, v);
+        block.addInstruction(new invokeStatic("java/lang/String/valueOf(I)Ljava/lang/String;"));
+        block.addInstruction(new invokeVirtual("java/io/PrintStream/println(Ljava/lang/String;)V"));
         return null;
     }
 
@@ -308,11 +318,6 @@ public class CodeGen implements Visitor<Void, Void> {
 
     @Override
     public Void visit(ASTNew e, Void v) {
-        return null;
-    }
-
-    @Override
-    public Void visit(ASTIfThenElse e, Void v) {
         return null;
     }
 
@@ -359,6 +364,14 @@ public class CodeGen implements Visitor<Void, Void> {
         return cg.block;
     }
 
+    private void createLabels(String l1, String l2) {
+        block.addInstruction(new SIPush(0));
+        block.addInstruction(new IJump(l2));
+        block.addInstruction(new Label(l1));
+        block.addInstruction(new SIPush(1));
+        block.addInstruction(new Label(l2));
+    }
+
     private static StringBuilder genPreAndPost(BlockSeq block) {
         String preamble = """
 					  .class public Demo
@@ -372,14 +385,15 @@ public class CodeGen implements Visitor<Void, Void> {
 					   .limit locals 10
 					   .limit stack 256
 					   ; setup local variables:
-					   ;    1 - the PrintStream object held in java.lang.out
-					  getstatic java/lang/System/out Ljava/io/PrintStream;					          
+					   ;    1 - the PrintStream object held in java.lang.out					          
 				   """;
+        //getstatic java/lang/System/out Ljava/io/PrintStream;
         //TODO: delete invokesstatic
         String footer =
+
+               // invokestatic java/lang/String/valueOf(I)Ljava/lang/String;
+               //invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
                 """
-                invokestatic java/lang/String/valueOf(I)Ljava/lang/String;
-                invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
                 return
                 .end method
                 """;
