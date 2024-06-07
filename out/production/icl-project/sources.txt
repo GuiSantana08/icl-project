@@ -6,6 +6,7 @@ C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2Semestre\ICL\icl-project\src\
 C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2Semestre\ICL\icl-project\src\ast\functions\ASTFunCall.java
 C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2Semestre\ICL\icl-project\src\ast\functions\ASTPrint.java
 C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2Semestre\ICL\icl-project\src\ast\functions\ASTPrintln.java
+C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2Semestre\ICL\icl-project\src\ast\functions\io\out\ASTExit.java
 C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2Semestre\ICL\icl-project\src\ast\operations\arithmetic\ASTAdd.java
 C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2Semestre\ICL\icl-project\src\ast\operations\arithmetic\ASTDiv.java
 C:\Users\guipi\Documents\eu\SST_FCT_UNL_MIEI\4Ano\2Semestre\ICL\icl-project\src\ast\operations\arithmetic\ASTMult.java

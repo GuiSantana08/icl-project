@@ -51,8 +51,12 @@ public class InterMain {
 				Interpreter.interpret(e);
 			} while (!isFileMode);
 
+		} catch (TokenMgrError e) {
+			System.out.println("\nLexical error encountered!");
+			e.printStackTrace();
 		} catch (ASTNodeException e) {
-			throw new RuntimeException(e);
+			System.out.println("\nAST error encountered!");
+			e.printStackTrace();
 		} catch (ParseException e)  {
 			System.out.println("Syntax error encountered!");
 			e.printStackTrace();

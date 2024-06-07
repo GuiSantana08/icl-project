@@ -7,6 +7,7 @@ import ast.functions.ASTDefFun;
 import ast.functions.ASTFunCall;
 import ast.functions.ASTPrint;
 import ast.functions.ASTPrintln;
+import ast.functions.io.out.ASTExit;
 import ast.operations.arithmetic.*;
 import ast.operations.references.*;
 import ast.operations.relational.*;
@@ -55,6 +56,7 @@ public abstract class ASTNode {
         T visit(ASTPrintln e, E env);
         T visit(ASTDefFun e, E env);
         T visit(ASTFunCall e, E env);
+        T visit(ASTExit e, E env);
     }
     public abstract  <T,E> T accept(Visitor<T, E> v, E env);
 

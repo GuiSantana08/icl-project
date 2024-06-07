@@ -8,6 +8,7 @@ package parser;
 import ast.*; import ast.value.*; import ast.operations.arithmetic.*;
 import ast.operations.relational.*; import ast.control.*; import ast.operations.references.*;
 import ast.functions.*;
+import ast.functions.io.out.*;
 import symbols.Tuple; import java.util.List;import java.util.ArrayList;
 
 public class Parser {
@@ -36,6 +37,7 @@ TOKEN :
   |  < EF: ";;" >
   |  < SEMCOL : ";" >
   |  < BOOL : ("true" | "false") >
+  |  < EXIT : "exit">
   |  < EQUALS : "=" >
   |  < EQREL : "==">
   |  < GT : ">">
@@ -186,6 +188,7 @@ ASTNode Fact() :
         | e = Bool()
         | e = DefFun()
         | <LPAR> e = Seq() <RPAR>
+        | <EXIT> { e = new ASTExit(); }
         | <NEW> e = BoolOps() { e = new ASTNew(e); })
     { return e; }
  }

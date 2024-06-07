@@ -9,6 +9,7 @@ import ast.functions.ASTDefFun;
 import ast.functions.ASTFunCall;
 import ast.functions.ASTPrint;
 import ast.functions.ASTPrintln;
+import ast.functions.io.out.ASTExit;
 import ast.operations.arithmetic.*;
 import ast.operations.references.*;
 import ast.operations.relational.*;
@@ -243,6 +244,11 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
         } else {
             throw new InvalidTypeException("Type error in function call");
         }
+    }
+
+    @Override
+    public Type visit(ASTExit e, Env<Type> env) {
+        return e.getType();
     }
 
     private Type handleIntegerOperation(ASTNode arg1, ASTNode arg2, String operationName, Env<Type> env) {

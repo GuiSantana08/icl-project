@@ -9,6 +9,7 @@ import ast.functions.ASTDefFun;
 import ast.functions.ASTFunCall;
 import ast.functions.ASTPrint;
 import ast.functions.ASTPrintln;
+import ast.functions.io.out.ASTExit;
 import ast.operations.arithmetic.*;
 import ast.operations.references.*;
 import ast.operations.relational.*;
@@ -212,6 +213,12 @@ public class Interpreter implements Visitor<Value<?>, Env<Value<?>>>{
         Value<?> result = closure.getBody().accept(this, newEnv);
         newEnv.endScope();
         return result;
+    }
+
+    @Override
+    public Value<?> visit(ASTExit e, Env<Value<?>> env) {
+        System.exit(0);
+        return new IntValue(1);
     }
 
     @Override

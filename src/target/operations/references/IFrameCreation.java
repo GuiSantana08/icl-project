@@ -11,7 +11,7 @@ public class IFrameCreation extends Instruction {
             invokespecial frame_%s/<init>()V
             dup
             aload 0
-            putfield frame_%s/sl %s
+            putfield frame_%s/SL %s
             astore 0""";
 
     public IFrameCreation(int frameId){
