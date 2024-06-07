@@ -32,7 +32,10 @@ import type.Type;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Iterator;
 
 public class CodeGen implements Visitor<Void, Void> {
@@ -352,8 +355,9 @@ public class CodeGen implements Visitor<Void, Void> {
         String frameFile = "frame_" + frame.id + ".j";
         PrintStream file = null;
         try {
+            Files.createDirectories(Paths.get("compOut"));
             file = new PrintStream(new FileOutputStream("compOut/" + frameFile));
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         file.print(sb.toString());
@@ -411,7 +415,7 @@ public class CodeGen implements Visitor<Void, Void> {
         BlockSeq block = new BlockSeq();
         block = codeGen(e);
         sb = genPreAndPost(block);
-        PrintStream out = new PrintStream(new FileOutputStream(filename));
+        PrintStream out = new PrintStream(new FileOutputStream("compOut/" + filename));
         out.print(sb.toString());
         out.close();
 
