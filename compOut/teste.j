@@ -18,47 +18,12 @@ aload 0
 putfield frame_0/sl Ljava/lang/Object
 astore 0
 aload 0
-sipush 2
-putfield frame_0/loc_0 I
 aload 0
-sipush 3
-putfield frame_0/loc_1 I
-new frame_1
-dup
-invokespecial frame_1/<init>()V
-dup
-aload 0
-putfield frame_1/sl Lframe_0;
-astore 0
-aload 0
-aload 0
-getfield frame_1/sl Lframe_0;
-getfield frame_0/loc_0 I
-aload 0
-getfield frame_1/sl Lframe_0;
-getfield frame_0/loc_1 I
-iadd
-putfield frame_1/loc_0 I
-aload 0
-getfield frame_1/sl Lframe_0;
-getfield frame_0/loc_0 I
-aload 0
-getfield frame_1/sl Lframe_0;
-getfield frame_0/loc_1 I
-aload 0
-getfield frame_1/loc_0 I
-iadd
-iadd
-aload 0
-checkcast frame_1
-aload 0
-getfield frame_1/sl Lframe_0;
-astore 0
+putfield closure_0/v0 int
 aload 0
 getfield frame_0/sl Ljava/lang/Object;
 astore 0
-aload 0
-checkcast frame_0
+putfield frame_0/loc_0 Ljava/lang/Object;
 aload 0
 getfield frame_0/sl Ljava/lang/Object;
 astore 0

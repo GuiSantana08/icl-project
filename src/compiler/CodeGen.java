@@ -16,6 +16,7 @@ import ast.operations.relational.*;
 import ast.value.ASTBool;
 import ast.value.ASTInt;
 import ast.value.ASTString;
+import compiler.struct.Closure;
 import compiler.struct.Frame;
 import symbols.CompEnv;
 import symbols.Tuple;
@@ -36,12 +37,14 @@ import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Iterator;
+import java.util.List;
 
 public class CodeGen implements Visitor<Void, Void> {
 
     private static final String getBaseFrame = "Ljava/lang/Object;";
     private static final String putBaseFrame = "Ljava/lang/Object";
     int frameId;
+    int closureId;
 
     BlockSeq block = new BlockSeq();
 
@@ -238,7 +241,7 @@ public class CodeGen implements Visitor<Void, Void> {
     @Override
     public Void visit(ASTReff e, Void v) {
         e.exp.accept(this, v);
-        Tuple<Integer, Integer> location = this.block.env.find( null/*TODO: WHY IS IT ASTNODE? - e.id*/);
+        Tuple<Integer, Integer> location = this.block.env.find(e.id.toString());
         return null;
     }
 
@@ -310,6 +313,24 @@ public class CodeGen implements Visitor<Void, Void> {
 
     @Override
     public Void visit(ASTDefFun e, Void v) {
+        Tuple<Closure, CompEnv> letDef = block.beginScopeFunction(e.params.size(), closureId++, block.currClosure);
+        Iterator<Tuple<String, String>> it = e.params.iterator();
+        while (it.hasNext()){
+            CompEnv env = letDef.item2();
+            Tuple<String, String> var = it.next();
+            String id = var.item1();
+            env.bind(id);
+            block.addInstruction(new ILoad());
+            String node = var.item2();
+            String closureFile = "closure_" + block.currClosure.id + "/v" + block.currClosure.types.size();;
+            String type = node;
+            block.currClosure.types.add(type);
+            block.addInstruction(new IputField(closureFile, type));
+        }
+        genFunFrameCode(block.currClosure);
+        genFunctionCode(block.currClosure, e.params, e.body);
+        EndFrameCode(block.currClosure.id);
+        block.endScopeFunction(letDef.item1(), letDef.item2());
         return null;
     }
 
@@ -343,7 +364,6 @@ public class CodeGen implements Visitor<Void, Void> {
         }
         genFrameCode(block.currFrame);
         e.body.accept(this, v);
-        String frameFile = "frame_" + block.currFrame.id;
         EndFrameCode(block.currFrame.id);
         block.endScope(letDef.item1(), letDef.item2());
        return null;
@@ -425,6 +445,131 @@ public class CodeGen implements Visitor<Void, Void> {
             file = new PrintStream(new FileOutputStream("compOut/" + frameFile));
             file.print(sb);
             file.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private void genFunFrameCode(Closure closure) {
+        String head;
+        if (closure.id == 0)
+            head = """
+                    .class public frame_0
+                    .super java/lang/Object
+                    .field public sl Ljava/lang/Object;""";
+        else
+            head = """
+                    .class public frame_%d
+                    .super java/lang/Object
+                    .field public sl Lframe_%d;""";
+        StringBuilder variables = new StringBuilder();
+        Iterator<String> vars = closure.types.iterator();
+        int varCount = 0;
+        while (vars.hasNext()) {
+            String t = vars.next();
+            variables.append("\n.field public v").append(varCount).append(" ").append(convertToJVM(t));
+            varCount++;
+        }
+        String buttom = """
+                \n.method public <init>()V
+                aload_0
+                invokenonvirtual java/lang/Object/<init>()V
+                return
+                .end method""";
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format(head, closure.id, closure.id - 1));
+        sb.append(variables);
+        sb.append(buttom);
+        String frameFile = "closure_" + closure.id + ".j";
+        PrintStream file;
+        try {
+            Files.createDirectories(Paths.get("compOut"));
+            file = new PrintStream(new FileOutputStream("compOut/" + frameFile));
+            file.print(sb);
+            file.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void genFunctionCode(Closure closure, List<Tuple<String, String>> params, ASTNode body){
+        String head = "";
+        String interfaceFun = "";
+        if (closure.id == 0) {
+                interfaceFun = """
+                        .interface public closure_interface%s
+                        .super java/lang/Object
+                        .method public abstact apply%s
+                        .end method""";
+                head = """
+                        .class public closure_0
+                        .super java/lang/Object
+                        .implements closure_interface_%s
+                        .field public sl Lframe_%d;""";
+        } else
+            head = """
+                    .class public closure_%d
+                    .super java/lang/Object
+                    .implements closure_interface_%s
+                    .field public sl Lframe_%d;""";
+        StringBuilder variables = new StringBuilder();
+        StringBuilder jvmVars = new StringBuilder();
+        jvmVars.append("(");
+        Iterator<Tuple<String, String>> vars = params.iterator();
+        int varCount = 0;
+        while(vars.hasNext()){
+            Tuple<String, String> t = vars.next();
+            if(varCount == 0) {
+                variables.append(t.item2());
+                jvmVars.append(convertToJVM(t.item2()));
+            }
+            else {
+                variables.append("_").append(t.item2());
+                jvmVars.append(";").append(convertToJVM(t.item2()));
+            }
+            varCount++;
+        }
+        variables.append("_").append(convertToType(body.getJVMType()));
+        jvmVars.append(")").append(body.getJVMType());
+
+        String buttom1 = """
+                \n.method public apply%s
+                .limit locals %s
+                %s
+                .end method""";
+
+        String buttom2 = """
+                \n.method public <init>()V
+                aload_0
+                invokenonvirtual java/lang/Object/<init>()V
+                return
+                .end method""";
+
+        Void v = null;
+        StringBuilder interSB = new StringBuilder();
+        interSB.append(String.format(interfaceFun, variables, jvmVars));
+        String closureFile = "closure_interface_" + variables + ".j";
+
+        StringBuilder sb = new StringBuilder();
+        if(closure.id == 0)
+            sb.append(String.format(head, variables, block.currFrame.id));
+        else
+            sb.append(String.format(head, closure.id, variables, block.currFrame.id));
+        sb.append(buttom2);
+        String frameFile = "closure_" + closure.id + ".j";
+        PrintStream file1;
+        PrintStream file2;
+        try {
+            Files.createDirectories(Paths.get("compOut"));
+
+            file1 = new PrintStream(new FileOutputStream("compOut/" + frameFile));
+            file1.print(sb);
+            file1.close();
+
+            file2 = new PrintStream(new FileOutputStream("compOut/" + closureFile));
+            file2.print(interSB);
+            file2.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -518,5 +663,19 @@ public class CodeGen implements Visitor<Void, Void> {
         out.print(sb.toString());
         out.close();
 
+    }
+
+    private String convertToJVM (String type) {
+        if(type.equals("int"))
+            return "I";
+        else
+            return "Z";
+    }
+
+    private String convertToType(String jvmType) {
+        if(jvmType.equals("I"))
+            return "int";
+        else
+            return "bool";
     }
 }

@@ -1,5 +1,6 @@
 package target;
 
+import compiler.struct.Closure;
 import compiler.struct.Frame;
 import symbols.CompEnv;
 import symbols.Tuple;
@@ -13,6 +14,8 @@ import java.util.List;
 public class BlockSeq {
     List<Frame> frames;
     public Frame currFrame;
+    public List<Closure> closures;
+    public Closure currClosure;
 
     public BasicBlock block;
 
@@ -22,6 +25,7 @@ public class BlockSeq {
         this.frames = new ArrayList<>();
         this.block = new BasicBlock();
         this.env = new CompEnv(null);
+        this.closures = new ArrayList<>();
     }
 
     public Tuple<Frame, CompEnv> beginScope(int nFields, int frameId, Frame prev) {
@@ -33,6 +37,13 @@ public class BlockSeq {
         return new Tuple<>(newFrame, env);
     }
 
+    public Tuple<Closure, CompEnv> beginScopeFunction(int nFields, int frameId, Closure prev) {
+        Closure newClosure = new Closure(nFields, frameId, prev);
+        closures.add(newClosure);
+        this.currClosure = newClosure;
+        return new Tuple<>(newClosure, env);
+    }
+
     public void advanceToFrame(Frame f, CompEnv env){
         this.currFrame = f;
         frames.add(f);
@@ -42,6 +53,9 @@ public class BlockSeq {
         this.env = this.env.prev;
 
         this.currFrame = this.currFrame.getPrev();
+    }
+
+    public void endScopeFunction(Closure c, CompEnv env){
     }
 
     public void fetch(String id, Type t) {
