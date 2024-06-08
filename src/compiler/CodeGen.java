@@ -498,7 +498,7 @@ public class CodeGen implements Visitor<Void, Void> {
         String interfaceFun = "";
         if (closure.id == 0) {
                 interfaceFun = """
-                        .interface public closure_interface%s
+                        .interface public closure_interface_%s
                         .super java/lang/Object
                         .method public abstact apply%s
                         .end method""";
