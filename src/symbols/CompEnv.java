@@ -17,15 +17,15 @@ public class CompEnv {
     }
 
     private Tuple<Integer, Integer> findIt(String id) {
-        Integer width;
+        Integer loc;
         CompEnv env = this;
         int depth = -1;
         do{
-            width = env.table.get(id);
-            env = this.prev;
+            loc = env.table.get(id);
+            env = env.prev;
             depth++;
-        }while (width == null && env != null);
-        return new Tuple<>(depth, width);
+        }while (loc == null && env != null);
+        return new Tuple<>(depth, loc);
     }
 
     public Tuple<Integer, Integer> find(String id) {

@@ -4,9 +4,9 @@ import target.Instruction;
 
 public class IStore extends Instruction {
 
-    public IStore() {
-        op = "astore 0";
-        args = null;
+    public IStore(String... args) {
+        op = "astore";
+        this.args = args;
     }
 
 }

@@ -23,13 +23,11 @@ import target.BlockSeq;
 import target.Dup;
 import target.Pop;
 import target.SIPush;
-import target.functions.getStatic;
-import target.functions.invokeStatic;
-import target.functions.invokeVirtual;
+import target.functions.*;
+import target.operations.New;
 import target.operations.arithmetic.*;
 import target.operations.references.*;
 import target.operations.relational.*;
-import type.Type;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -41,6 +39,8 @@ import java.util.Iterator;
 
 public class CodeGen implements Visitor<Void, Void> {
 
+    private static final String getBaseFrame = "Ljava/lang/Object;";
+    private static final String putBaseFrame = "Ljava/lang/Object";
     int frameId;
 
     BlockSeq block = new BlockSeq();
@@ -201,14 +201,38 @@ public class CodeGen implements Visitor<Void, Void> {
     public Void visit(ASTId e, Void v) {
         Tuple<Integer, Integer> location = this.block.env.find(e.id);
         Frame actualFrame = block.currFrame;
-        for (int i = 0; i < location.item1() - 1; i++) {
-            block.addInstruction(new ILoad());
-            block.addInstruction(new ICheckCast(actualFrame.id));
-            block.addInstruction(new IFrameGetField("frame_" + actualFrame.id + "/SL Lframe_" + actualFrame.id + 1));
-           block.addInstruction(new IStore());
+        int depth = actualFrame.id;
+        block.addInstruction(new ILoad());
+        int targetDeep = location.item1();
+        for(int i = 0; i < targetDeep; i++){
+            String acFrame = "frame_" + actualFrame.id + "/sl";
+            String prevFrame = "Lframe_" + (actualFrame.id - 1) + ";";
+            block.addInstruction(new IgetField(acFrame, prevFrame));
+            actualFrame = actualFrame.prev;
         }
-        block.addInstruction(new IFrameGetField("frame_" + actualFrame.id + "/loc_" + location.item2() + " " + actualFrame.getTypes().get(location.item2())));
-        return null;
+
+//        while(depth >= targetDeep){
+//            String acFrame = "frame_" + actualFrame.id + "/sl";
+//            String prevFrame = "Lframe_" + (actualFrame.id - 1) + ";";
+//            block.addInstruction(new IgetField(acFrame, prevFrame));
+//            actualFrame = actualFrame.prev;
+//            depth--;
+//        }
+        int targetPos = location.item2();
+        String var = "frame_" + actualFrame.id + "/loc_" + targetPos;
+        String varType = actualFrame.getTypes().get(location.item2());
+        block.addInstruction(new IgetField(var, varType));
+
+
+//        for (int i = 0; i < location.item1() - 1; i++) {
+//            block.addInstruction(new ILoad());
+//            String frameFile = "frame_" + actualFrame.id;
+//            block.addInstruction(new IcheckCast(frameFile));
+//            block.addInstruction(new IgetField("frame_" + actualFrame.id + "/SL Lframe_" + actualFrame.id + 1));
+//           block.addInstruction(new IStore());
+//        }
+//        block.addInstruction(new IgetField("frame_" + actualFrame.id + "/loc_" + location.item2() + " " + actualFrame.getTypes().get(location.item2())));
+       return null;
     }
 
     @Override
@@ -268,19 +292,19 @@ public class CodeGen implements Visitor<Void, Void> {
 
     @Override
     public Void visit(ASTPrint astPrint, Void v) {
-        block.addInstruction(new getStatic("java/lang/System/out", "Ljava/io/PrintStream;"));
+        block.addInstruction(new IgetStatic("java/lang/System/out", "Ljava/io/PrintStream;"));
         astPrint.exp.accept(this, v);
-        block.addInstruction(new invokeStatic("java/lang/String/valueOf(I)Ljava/lang/String;"));
-        block.addInstruction(new invokeVirtual("java/io/PrintStream/print(Ljava/lang/String;)V"));
+        block.addInstruction(new IinvokeStatic("java/lang/String/valueOf(I)Ljava/lang/String;"));
+        block.addInstruction(new IinvokeVirtual("java/io/PrintStream/print(Ljava/lang/String;)V"));
         return null;
     }
 
     @Override
     public Void visit(ASTPrintln astPrintln, Void v) {
-        block.addInstruction(new getStatic("java/lang/System/out", "Ljava/io/PrintStream;"));
+        block.addInstruction(new IgetStatic("java/lang/System/out", "Ljava/io/PrintStream;"));
         astPrintln.exp.accept(this, v);
-        block.addInstruction(new invokeStatic("java/lang/String/valueOf(I)Ljava/lang/String;"));
-        block.addInstruction(new invokeVirtual("java/io/PrintStream/println(Ljava/lang/String;)V"));
+        block.addInstruction(new IinvokeStatic("java/lang/String/valueOf(I)Ljava/lang/String;"));
+        block.addInstruction(new IinvokeVirtual("java/io/PrintStream/println(Ljava/lang/String;)V"));
         return null;
     }
 
@@ -302,26 +326,62 @@ public class CodeGen implements Visitor<Void, Void> {
     @Override
     public Void visit(ASTLet e, Void v)  {
         Tuple<Frame, CompEnv> letDef = block.beginScope(e.vars.size(), frameId++, block.currFrame);
-        generateFrameCode(block.currFrame);
-        block.addInstruction(new IFrameCreation(block.currFrame.id));
-        block.addInstruction(new Dup());
-
+        createFrameCode(block.currFrame.id);
         Iterator<Tuple<String, ASTNode>> it = e.vars.iterator();
         while (it.hasNext()){
             CompEnv env = letDef.item2();
             Tuple<String, ASTNode> var = it.next();
             String id = var.item1();
             env.bind(id);
+            block.addInstruction(new ILoad());
             ASTNode node = var.item2();
             node.accept(this, v);
-            block.currFrame.addType(node.getJVMType());
+            String frameFile = "frame_" + block.currFrame.id + "/loc_" + block.currFrame.getTypes().size();;
+            String type = node.getJVMType();
+            block.currFrame.addType(type);
+            block.addInstruction(new IputField(frameFile, type));
         }
+        genFrameCode(block.currFrame);
         e.body.accept(this, v);
         block.addInstruction(new ILoad());
-        block.addInstruction(new ICheckCast(block.currFrame.id));
-        block.addInstruction(new IEndFrameScope(block.currFrame.id));
+        String frameFile = "frame_" + block.currFrame.id;
+        block.addInstruction(new IcheckCast(frameFile));
+        EndFrameCode(block.currFrame.id);
         block.endScope(letDef.item1(), letDef.item2());
        return null;
+    }
+
+    private void EndFrameCode(int id) {
+        while(id > 0){
+            block.addInstruction(new ILoad());
+            String acFrame = "frame_" + id + "/sl";
+            String nextFrame = "Lframe_" + (id - 1) + ";";
+            block.addInstruction(new IgetField(acFrame, nextFrame));
+            block.addInstruction(new IStore("0"));
+            id--;
+        }
+        block.addInstruction(new ILoad());
+        String acFrame = "frame_" + id + "/sl";
+        block.addInstruction(new IgetField(acFrame, getBaseFrame));
+        block.addInstruction(new IStore("0"));
+    }
+
+    private void createFrameCode(int id) {
+        block.addInstruction(new New("frame_" + id));
+        block.addInstruction(new Dup());
+        block.addInstruction(new IinvokeEspecial("frame_" + id + "/<init>()V"));
+        block.addInstruction(new Dup());
+        block.addInstruction(new ILoad());
+        if (id == 0) {
+            String frame1 = "frame_" + id +"/sl";
+            block.addInstruction(new IputField(frame1, putBaseFrame));
+        }
+        else {
+            String acFrame = "frame_" + id + "/sl";
+            String nextFrame = "Lframe_" + (id - 1) + ";";
+            block.addInstruction(new IputField(acFrame, nextFrame));
+        }
+        block.addInstruction(new IStore("0"));
     }
 
     @Override
@@ -330,42 +390,85 @@ public class CodeGen implements Visitor<Void, Void> {
     }
 
 
-    private void generateFrameCode(Frame frame)  {
-        String code = "";
-        if(frame.id == 0)
-            code = """
-                   .class public frame_0
-                   .super java/lang/Object
-                   .field public SL Ljava/lang/Object;""";
+    private void genFrameCode(Frame frame){
+        String head;
+        if (frame.id == 0)
+            head = """
+                    .class public frame_0
+                    .super java/lang/Object
+                    .field public sl Ljava/lang/Object;""";
         else
-            code = """
+            head = """
                     .class public frame_%d
                     .super java/lang/Object
                     .field public sl Lframe_%d;""";
+        StringBuilder variables = new StringBuilder();
         Iterator<String> vars = frame.types.iterator();
         int varCount = 0;
         while(vars.hasNext()){
             String t = vars.next();
-            code = code + "\n.field public loc_" + varCount + " " + t;
+            variables.append("\n.field public loc_").append(varCount).append(" ").append(t);
+            varCount++;
         }
-        code = code + "\n.method public <init>()V\n" + new ILoad().op + "\ninvokenonvirtual java/lang/Object/<init>()V\nreturn\n.end method";
-
+        String buttom = """
+                \n.method public <init>()V
+                aload_0
+                invokenonvirtual java/lang/Object/<init>()V
+                return
+                .end method""";
         StringBuilder sb = new StringBuilder();
-        if(frame.id == 0)
-            sb.append(code);
-        else
-            sb.append(String.format(code, frame.id, frame.id-1));
+        sb.append(String.format(head, frame.id, frame.id-1));
+        sb.append(variables);
+        sb.append(buttom);
         String frameFile = "frame_" + frame.id + ".j";
-        PrintStream file = null;
+        PrintStream file;
         try {
             Files.createDirectories(Paths.get("compOut"));
             file = new PrintStream(new FileOutputStream("compOut/" + frameFile));
+            file.print(sb);
+            file.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        file.print(sb.toString());
-        file.close();
+
     }
+
+//    private void generateFrameCode(Frame frame)  {
+//        String code;
+//        if(frame.id == 0)
+//            code = """
+//                   .class public frame_0
+//                   .super java/lang/Object
+//                   .field public sl Ljava/lang/Object;""";
+//        else
+//            code = """
+//                    .class public frame_%d
+//                    .super java/lang/Object
+//                    .field public sl Lframe_%d;""";
+//        Iterator<String> vars = frame.types.iterator();
+//        int varCount = 0;
+//        while(vars.hasNext()){
+//            String t = vars.next();
+//            code = code + "\n.field public loc_" + varCount + " " + t;
+//        }
+//        code = code + "\n.method public <init>()V\n" + new ILoad() + "\ninvokenonvirtual java/lang/Object/<init>()V\nreturn\n.end method";
+//
+//        StringBuilder sb = new StringBuilder();
+//        if(frame.id == 0)
+//            sb.append(code);
+//        else
+//            sb.append(String.format(code, frame.id, frame.id-1));
+//        String frameFile = "frame_" + frame.id + ".j";
+//        PrintStream file;
+//        try {
+//            Files.createDirectories(Paths.get("compOut"));
+//            file = new PrintStream(new FileOutputStream("compOut/" + frameFile));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//        file.print(sb);
+//        file.close();
+//    }
 
     public static BlockSeq codeGen(ASTNode e) {
         CodeGen cg = new CodeGen();
@@ -396,12 +499,7 @@ public class CodeGen implements Visitor<Void, Void> {
 					   ; setup local variables:
 					   ;    1 - the PrintStream object held in java.lang.out					          
 				   """;
-        //getstatic java/lang/System/out Ljava/io/PrintStream;
-        //TODO: delete invokesstatic
         String footer =
-
-               // invokestatic java/lang/String/valueOf(I)Ljava/lang/String;
-               //invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
                 """
                 return
                 .end method
