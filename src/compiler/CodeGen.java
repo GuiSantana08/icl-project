@@ -343,27 +343,25 @@ public class CodeGen implements Visitor<Void, Void> {
         }
         genFrameCode(block.currFrame);
         e.body.accept(this, v);
-        block.addInstruction(new ILoad());
         String frameFile = "frame_" + block.currFrame.id;
-        block.addInstruction(new IcheckCast(frameFile));
         EndFrameCode(block.currFrame.id);
         block.endScope(letDef.item1(), letDef.item2());
        return null;
     }
 
     private void EndFrameCode(int id) {
-        while(id > 0){
+        if(id > 0){
             block.addInstruction(new ILoad());
             String acFrame = "frame_" + id + "/sl";
             String nextFrame = "Lframe_" + (id - 1) + ";";
             block.addInstruction(new IgetField(acFrame, nextFrame));
             block.addInstruction(new IStore("0"));
-            id--;
+        } else {
+            block.addInstruction(new ILoad());
+            String acFrame = "frame_" + id + "/sl";
+            block.addInstruction(new IgetField(acFrame, getBaseFrame));
+            block.addInstruction(new IStore("0"));
         }
-        block.addInstruction(new ILoad());
-        String acFrame = "frame_" + id + "/sl";
-        block.addInstruction(new IgetField(acFrame, getBaseFrame));
-        block.addInstruction(new IStore("0"));
     }
 
     private void createFrameCode(int id) {
