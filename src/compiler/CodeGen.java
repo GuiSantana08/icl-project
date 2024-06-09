@@ -256,8 +256,6 @@ public class CodeGen implements Visitor<Void, Void> {
         block.addInstruction(new IJump(l1));
         block.addInstruction(new Label(l2));
 
-
-
         return null;
     }
 
@@ -271,8 +269,9 @@ public class CodeGen implements Visitor<Void, Void> {
 
     @Override
     public Void visit(ASTDRef e, Void v) {
+        block.addInstruction(new ILoad());
         e.exp.accept(this, v);
-        block.addInstruction(new IDRef());
+        block.addInstruction(new IgetField("ref_" + type + "/value " + convertToJVM(type)));
         return null;
     }
 
@@ -393,7 +392,7 @@ public class CodeGen implements Visitor<Void, Void> {
         block.addInstruction(new IinvokeEspecial(ref + "/<init>()V"));
         e.exp.accept(this, v);
         block.addInstruction(new IputField(e.getJVMType() + "/value", e.exp.getJVMType()));
-        block.addInstruction(new IStore("0"));
+//        block.addInstruction(new IStore("0"));
 
         StringBuilder sb = new StringBuilder();
         String head = """
@@ -568,7 +567,6 @@ public class CodeGen implements Visitor<Void, Void> {
         sb.append(String.format(buttom1, jvmVars, body.getJVMType(), varCount));
         body.accept(this, v);
         sb.append(buttom2);
-        //sb.append(buttom2);
         String frameFile = "closure_" + closure.id + ".j";
         PrintStream file1;
         PrintStream file2;
@@ -587,43 +585,6 @@ public class CodeGen implements Visitor<Void, Void> {
         }
 
     }
-
-//    private void generateFrameCode(Frame frame)  {
-//        String code;
-//        if(frame.id == 0)
-//            code = """
-//                   .class public frame_0
-//                   .super java/lang/Object
-//                   .field public sl Ljava/lang/Object;""";
-//        else
-//            code = """
-//                    .class public frame_%d
-//                    .super java/lang/Object
-//                    .field public sl Lframe_%d;""";
-//        Iterator<String> vars = frame.types.iterator();
-//        int varCount = 0;
-//        while(vars.hasNext()){
-//            String t = vars.next();
-//            code = code + "\n.field public loc_" + varCount + " " + t;
-//        }
-//        code = code + "\n.method public <init>()V\n" + new ILoad() + "\ninvokenonvirtual java/lang/Object/<init>()V\nreturn\n.end method";
-//
-//        StringBuilder sb = new StringBuilder();
-//        if(frame.id == 0)
-//            sb.append(code);
-//        else
-//            sb.append(String.format(code, frame.id, frame.id-1));
-//        String frameFile = "frame_" + frame.id + ".j";
-//        PrintStream file;
-//        try {
-//            Files.createDirectories(Paths.get("compOut"));
-//            file = new PrintStream(new FileOutputStream("compOut/" + frameFile));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        file.print(sb);
-//        file.close();
-//    }
 
     public static BlockSeq codeGen(ASTNode e) {
         CodeGen cg = new CodeGen();
@@ -680,14 +641,18 @@ public class CodeGen implements Visitor<Void, Void> {
     private String convertToJVM (String type) {
         if(type.equals("int"))
             return "I";
-        else
+        else if(type.equals("bool"))
             return "Z";
+        else
+            return "Lref_";
     }
 
     private String convertToType(String jvmType) {
         if(jvmType.equals("I"))
             return "int";
-        else
+        else if(jvmType.equals("Z"))
             return "bool";
+        else
+            return "ref_";
     }
 }

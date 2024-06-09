@@ -10,7 +10,7 @@ public class ASTDRef extends ASTNode {
     public ASTNode exp;
 
     public ASTDRef(ASTNode exp) {
-        super(new RefType(null));
+        super(new RefType(exp.getType()));
         this.exp = exp;
     }
 

@@ -10,7 +10,7 @@ public class  ASTReff extends ASTNode {
     public ASTNode id, exp;
 
     public ASTReff(ASTNode e1, ASTNode e2) {
-        super(new RefType(null));
+        super(new RefType(e2.getType()));
         this.id = e1;
         this.exp = e2;
     }
