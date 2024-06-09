@@ -269,7 +269,6 @@ public class CodeGen implements Visitor<Void, Void> {
 
     @Override
     public Void visit(ASTDRef e, Void v) {
-        block.addInstruction(new ILoad());
         e.exp.accept(this, v);
         //block.addInstruction(new IgetField("ref_" + type + "/value " + convertToJVM(type)));
         return null;
@@ -390,6 +389,7 @@ public class CodeGen implements Visitor<Void, Void> {
         block.addInstruction(new New(ref));
         block.addInstruction(new Dup());
         block.addInstruction(new IinvokeEspecial(ref + "/<init>()V"));
+        block.addInstruction(new Dup());
         e.exp.accept(this, v);
         block.addInstruction(new IputField(e.getJVMType() + "/value", e.exp.getJVMType()));
 
@@ -546,7 +546,7 @@ public class CodeGen implements Visitor<Void, Void> {
         jvmVars.append(")").append(body.getJVMType());
 
         String buttom1 = """
-                \n.method public apply%s%s
+                \n.method public apply%s
                 .limit locals %s""";
 
         String buttom2 = """
@@ -563,7 +563,7 @@ public class CodeGen implements Visitor<Void, Void> {
             sb.append(String.format(head, variables, block.currFrame.id));
         else
             sb.append(String.format(head, closure.id, variables, block.currFrame.id));
-        sb.append(String.format(buttom1, jvmVars, body.getJVMType(), varCount));
+        sb.append(String.format(buttom1, jvmVars, varCount));
         //body.accept(this, v);
         sb.append(buttom2);
         String frameFile = "closure_" + closure.id + ".j";
