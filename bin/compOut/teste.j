@@ -18,12 +18,22 @@ aload 0
 putfield frame_0/sl Ljava/lang/Object;
 astore 0
 aload 0
+<<<<<<< Updated upstream
 aload 0
 putfield closure_0/v0 I
 aload 0
 getfield frame_0/sl Ljava/lang/Object;
 astore 0
 putfield frame_0/loc_0 I
+=======
+sipush 12
+putfield frame_0/loc_0 I
+getstatic java/lang/System/out Ljava/io/PrintStream;
+aload 0
+getfield frame_0/loc_0 I
+invokestatic java/lang/String/valueOf(I)Ljava/lang/String;
+invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+>>>>>>> Stashed changes
 aload 0
 getfield frame_0/sl Ljava/lang/Object;
 astore 0

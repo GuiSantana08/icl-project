@@ -29,6 +29,7 @@ import target.operations.New;
 import target.operations.arithmetic.*;
 import target.operations.references.*;
 import target.operations.relational.*;
+import type.Type;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -270,7 +271,8 @@ public class CodeGen implements Visitor<Void, Void> {
     @Override
     public Void visit(ASTDRef e, Void v) {
         e.exp.accept(this, v);
-        //block.addInstruction(new IgetField("ref_" + type + "/value " + convertToJVM(type)));
+        Type refType = e.exp.getType();
+        block.addInstruction(new IgetField(e.getJVMType() + "/value", refType.getType()));
         return null;
     }
 
@@ -395,7 +397,6 @@ public class CodeGen implements Visitor<Void, Void> {
 
         StringBuilder sb = new StringBuilder();
         String head = """
-                .source %s.j
                 .class %s
                 .super java/lang/Object
                 .field public value %s
@@ -404,7 +405,7 @@ public class CodeGen implements Visitor<Void, Void> {
                 invokespecial java/lang/Object/<init>()V
                 return
                 .end method""";
-        sb.append(String.format(head, ref, ref, e.exp.getJVMType()));
+        sb.append(String.format(head, ref, e.exp.getJVMType()));
         String refFile = ref + ".j";
         PrintStream file;
         try {

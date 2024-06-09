@@ -172,6 +172,8 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     public Type visit(ASTReff e, Env<Type> env) {
         RefType arg1 = (RefType)e.id.accept(this, env);
         Type arg2 = e.exp.accept(this, env);
+        String t = arg1.getRefType().getType();
+        String t2 = arg2.getType();
         if(arg1.getRefType().getType().equals(arg2.getType()))
             return arg1;
         else
