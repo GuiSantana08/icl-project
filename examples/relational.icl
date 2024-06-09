@@ -23,4 +23,6 @@ in
     1 > 2;
     1 > 1;
     ~t;
-    ~f;;
+    ~f;
+    if t then f = true else f = false end;
+    println(f);;
