@@ -8,9 +8,9 @@ public class Closure {
     public int nFields;
     public List<String> types;
     public int id;
-    public Closure prev;
+    public Frame prev;
 
-    public Closure(int fields, int id, Closure prev) {
+    public Closure(int fields, int id, Frame prev) {
         this.nFields = fields;
         this.id = id;
         this.prev = prev;

@@ -37,7 +37,7 @@ public class BlockSeq {
         return new Tuple<>(newFrame, env);
     }
 
-    public Tuple<Closure, CompEnv> beginScopeFunction(int nFields, int frameId, Closure prev) {
+    public Tuple<Closure, CompEnv> beginScopeFunction(int nFields, int frameId, Frame prev) {
         Closure newClosure = new Closure(nFields, frameId, prev);
         closures.add(newClosure);
         this.currClosure = newClosure;

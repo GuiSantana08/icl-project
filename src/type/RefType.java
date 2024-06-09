@@ -3,8 +3,8 @@ package type;
 public class RefType implements Type{
     public static final RefType singleton = new RefType(null);
 
-    private static final String TYPE = "ref";
-    private static final String JVM_TYPE = "Ljava/lang/Object;";
+    private static final String TYPE = "ref_";
+    private static final String JVM_TYPE = "Lref_";
 
     private Type type;
 
@@ -15,12 +15,12 @@ public class RefType implements Type{
     //TODO: correct this
     @Override
     public String getType() {
-        return TYPE;
+        return TYPE + type.getType();
     }
 
     @Override
     public String jvmType() {
-        return JVM_TYPE;
+        return JVM_TYPE + type.getType();
     }
 
     public Type getRefType(){

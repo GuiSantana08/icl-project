@@ -213,34 +213,17 @@ public class CodeGen implements Visitor<Void, Void> {
             block.addInstruction(new IgetField(acFrame, prevFrame));
             actualFrame = actualFrame.prev;
         }
-
-//        while(depth >= targetDeep){
-//            String acFrame = "frame_" + actualFrame.id + "/sl";
-//            String prevFrame = "Lframe_" + (actualFrame.id - 1) + ";";
-//            block.addInstruction(new IgetField(acFrame, prevFrame));
-//            actualFrame = actualFrame.prev;
-//            depth--;
-//        }
         int targetPos = location.item2();
         String var = "frame_" + actualFrame.id + "/loc_" + targetPos;
         String varType = actualFrame.getTypes().get(location.item2());
         block.addInstruction(new IgetField(var, varType));
-
-
-//        for (int i = 0; i < location.item1() - 1; i++) {
-//            block.addInstruction(new ILoad());
-//            String frameFile = "frame_" + actualFrame.id;
-//            block.addInstruction(new IcheckCast(frameFile));
-//            block.addInstruction(new IgetField("frame_" + actualFrame.id + "/SL Lframe_" + actualFrame.id + 1));
-//           block.addInstruction(new IStore());
-//        }
-//        block.addInstruction(new IgetField("frame_" + actualFrame.id + "/loc_" + location.item2() + " " + actualFrame.getTypes().get(location.item2())));
        return null;
     }
 
     @Override
     public Void visit(ASTReff e, Void v) {
         e.exp.accept(this, v);
+        block.addInstruction(new IDRef());
         Tuple<Integer, Integer> location = this.block.env.find(e.id.toString());
         return null;
     }
@@ -313,7 +296,7 @@ public class CodeGen implements Visitor<Void, Void> {
 
     @Override
     public Void visit(ASTDefFun e, Void v) {
-        Tuple<Closure, CompEnv> letDef = block.beginScopeFunction(e.params.size(), closureId++, block.currClosure);
+        Tuple<Closure, CompEnv> letDef = block.beginScopeFunction(e.params.size(), closureId++, block.currFrame);
         Iterator<Tuple<String, String>> it = e.params.iterator();
         while (it.hasNext()){
             CompEnv env = letDef.item2();
@@ -404,6 +387,37 @@ public class CodeGen implements Visitor<Void, Void> {
 
     @Override
     public Void visit(ASTNew e, Void v) {
+        String ref = e.getType().getType();
+        block.addInstruction(new New(ref));
+        block.addInstruction(new Dup());
+        block.addInstruction(new IinvokeEspecial(ref + "/<init>()V"));
+        e.exp.accept(this, v);
+        block.addInstruction(new IputField(e.getJVMType() + "/value", e.exp.getJVMType()));
+        block.addInstruction(new IStore("0"));
+
+        StringBuilder sb = new StringBuilder();
+        String head = """
+                .source %s.j
+                .class %s
+                .super java/lang/Object
+                .field public value %s
+                .method public <init>()V
+                aload_0
+                invokespecial java/lang/Object/<init>()V
+                return
+                .end method""";
+        sb.append(String.format(head, ref, ref, e.exp.getJVMType()));
+        String refFile = ref + ".j";
+        PrintStream file;
+        try {
+            Files.createDirectories(Paths.get("compOut"));
+            file = new PrintStream(new FileOutputStream("compOut/" + refFile));
+            file.print(sb);
+            file.close();
+        } catch (IOException err) {
+            throw new RuntimeException(err);
+        }
+
         return null;
     }
 
@@ -534,16 +548,11 @@ public class CodeGen implements Visitor<Void, Void> {
         jvmVars.append(")").append(body.getJVMType());
 
         String buttom1 = """
-                \n.method public apply%s
-                .limit locals %s
-                %s
-                .end method""";
+                \n.method public apply%s%s
+                .limit locals %s""";
 
         String buttom2 = """
-                \n.method public <init>()V
-                aload_0
-                invokenonvirtual java/lang/Object/<init>()V
-                return
+                \nreturn
                 .end method""";
 
         Void v = null;
@@ -556,7 +565,10 @@ public class CodeGen implements Visitor<Void, Void> {
             sb.append(String.format(head, variables, block.currFrame.id));
         else
             sb.append(String.format(head, closure.id, variables, block.currFrame.id));
+        sb.append(String.format(buttom1, jvmVars, body.getJVMType(), varCount));
+        body.accept(this, v);
         sb.append(buttom2);
+        //sb.append(buttom2);
         String frameFile = "closure_" + closure.id + ".j";
         PrintStream file1;
         PrintStream file2;
