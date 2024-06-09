@@ -24,5 +24,5 @@ in
     1 > 1;
     ~t;
     ~f;
-    if t then f = true else f = false end;
+    if t then f == true else f == false end;
     println(f);;
