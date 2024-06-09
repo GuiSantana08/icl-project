@@ -282,8 +282,8 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
     }
 
     private Type handleRefType(Type type) {
-        if (type instanceof RefType) {
-            return ((RefType) type).getRefType();
+        while(type instanceof RefType refType) {
+            type = refType.getRefType();
         }
         return type;
     }

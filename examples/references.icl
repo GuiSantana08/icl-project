@@ -6,5 +6,5 @@ let
     x = new(new(10))
     y = new(5)
 in
-    x : = !!x + !y; println(x)
+    x := !!x + !y; println(!x)
 ;;

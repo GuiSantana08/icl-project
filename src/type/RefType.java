@@ -15,7 +15,7 @@ public class RefType implements Type{
     //TODO: correct this
     @Override
     public String getType() {
-        return TYPE + type.getType();
+        return type.getType();
     }
 
     @Override
