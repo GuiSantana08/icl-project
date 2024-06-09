@@ -9,6 +9,7 @@ cd ..\bin
 REM Check if an argument is passed
 if "%1"=="" (
     echo No argument provided. Running Compiler without argument...
+    echo INSERT PROGRAM HERE
     java main.CompMain
 ) else (
     echo Argument provided: %1. Running Compiler with file: %1...

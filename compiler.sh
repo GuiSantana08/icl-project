@@ -10,6 +10,7 @@ cd ../bin
 # Check if an argument is passed
 if [ -z "$1" ]; then
     echo "No argument provided. Running Compiler without argument..."
+    echo "INSERT PROGRAM HERE"
     java main.CompMain
 else
     echo "Argument provided: $1. Running Compiler with file: $1..."

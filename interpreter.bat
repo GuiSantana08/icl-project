@@ -14,3 +14,4 @@ if "%1"=="" (
     echo Argument provided: %1. Running Interpreter with file: %1...
     java main.InterMain ../examples/%1
 )
+cd ..\bin
