@@ -513,6 +513,7 @@ public class CodeGen implements Visitor<Void, Void> {
                         .interface public closure_interface_%s
                         .super java/lang/Object
                         .method public abstact apply%s
+                        return
                         .end method""";
                 head = """
                         .class public closure_0

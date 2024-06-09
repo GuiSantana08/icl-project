@@ -18,7 +18,7 @@ fi
 
 echo "Compile has completed. Generating JAR file..."
 
-cd ../compOut
+cd compOut
 java -jar ../../jasmin.jar *.j
 java Demo
 
