@@ -5,8 +5,8 @@ import java.util.List;
 public class ClosureType implements Type{
 public static final ClosureType singleton = new ClosureType(null, null);
 
-    private static final String TYPE = "closure";
-    private static final String JVM_TYPE = "Ljava/lang/Object;";
+    private static final String TYPE = "closure_";
+    private static final String JVM_TYPE = "Lclosure_";
 
     private Type returnType;
     private List<Type> params;
@@ -23,7 +23,7 @@ public static final ClosureType singleton = new ClosureType(null, null);
 
     @Override
     public String jvmType() {
-        return JVM_TYPE;
+        return returnType.jvmType();
     }
 
     public Type getReturnType(){

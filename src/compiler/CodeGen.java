@@ -271,7 +271,7 @@ public class CodeGen implements Visitor<Void, Void> {
     public Void visit(ASTDRef e, Void v) {
         block.addInstruction(new ILoad());
         e.exp.accept(this, v);
-        block.addInstruction(new IgetField("ref_" + type + "/value " + convertToJVM(type)));
+        //block.addInstruction(new IgetField("ref_" + type + "/value " + convertToJVM(type)));
         return null;
     }
 
@@ -306,8 +306,8 @@ public class CodeGen implements Visitor<Void, Void> {
             String node = var.item2();
             String closureFile = "closure_" + block.currClosure.id + "/v" + block.currClosure.types.size();;
             String type = node;
-            block.currClosure.types.add(type);
-            block.addInstruction(new IputField(closureFile, type));
+            block.currClosure.types.add(convertToJVM(type));
+            block.addInstruction(new IputField(closureFile, convertToJVM(type)));
         }
         genFunFrameCode(block.currClosure);
         genFunctionCode(block.currClosure, e.params, e.body);
@@ -339,7 +339,7 @@ public class CodeGen implements Visitor<Void, Void> {
             block.addInstruction(new ILoad());
             ASTNode node = var.item2();
             node.accept(this, v);
-            String frameFile = "frame_" + block.currFrame.id + "/loc_" + block.currFrame.getTypes().size();;
+            String frameFile = "frame_" + block.currFrame.id + "/loc_" + block.currFrame.getTypes().size();
             String type = node.getJVMType();
             block.currFrame.addType(type);
             block.addInstruction(new IputField(frameFile, type));
@@ -392,7 +392,6 @@ public class CodeGen implements Visitor<Void, Void> {
         block.addInstruction(new IinvokeEspecial(ref + "/<init>()V"));
         e.exp.accept(this, v);
         block.addInstruction(new IputField(e.getJVMType() + "/value", e.exp.getJVMType()));
-//        block.addInstruction(new IStore("0"));
 
         StringBuilder sb = new StringBuilder();
         String head = """
@@ -565,7 +564,7 @@ public class CodeGen implements Visitor<Void, Void> {
         else
             sb.append(String.format(head, closure.id, variables, block.currFrame.id));
         sb.append(String.format(buttom1, jvmVars, body.getJVMType(), varCount));
-        body.accept(this, v);
+        //body.accept(this, v);
         sb.append(buttom2);
         String frameFile = "closure_" + closure.id + ".j";
         PrintStream file1;
