@@ -42,7 +42,7 @@ import java.util.List;
 public class CodeGen implements Visitor<Void, Void> {
 
     private static final String getBaseFrame = "Ljava/lang/Object;";
-    private static final String putBaseFrame = "Ljava/lang/Object";
+    private static final String putBaseFrame = "Ljava/lang/Object;";
     int frameId;
     int closureId;
 
