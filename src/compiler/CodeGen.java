@@ -215,6 +215,7 @@ public class CodeGen implements Visitor<Void, Void> {
             String prevFrame = "Lframe_" + (depth - 1) + ";";
             block.addInstruction(new IgetField(acFrame, prevFrame));
             actualFrame = actualFrame.prev;
+            depth--;
         }
         int targetPos = location.item2().item1();
         e.setType(location.item2().item2());

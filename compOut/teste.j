@@ -33,22 +33,25 @@ astore 0
 aload 0
 aload 0
 getfield frame_1/sl Lframe_0;
-getfield frame_1/loc_0 I
+getfield frame_0/loc_0 I
 aload 0
 getfield frame_1/sl Lframe_0;
-getfield frame_1/loc_1 I
+getfield frame_0/loc_1 I
 iadd
 putfield frame_1/loc_0 I
+getstatic java/lang/System/out Ljava/io/PrintStream;
 aload 0
 getfield frame_1/sl Lframe_0;
-getfield frame_1/loc_0 I
+getfield frame_0/loc_0 I
 aload 0
 getfield frame_1/sl Lframe_0;
-getfield frame_1/loc_1 I
+getfield frame_0/loc_1 I
 aload 0
 getfield frame_1/loc_0 I
 iadd
 iadd
+invokestatic java/lang/String/valueOf(I)Ljava/lang/String;
+invokevirtual java/io/PrintStream/print(Ljava/lang/String;)V
 aload 0
 getfield frame_1/sl Lframe_0;
 astore 0
