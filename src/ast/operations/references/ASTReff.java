@@ -1,8 +1,6 @@
 package ast.operations.references;
 
 import ast.ASTNode;
-import exceptions.DuplicateVariableFoundException;
-import exceptions.InvalidTypeException;
 import type.RefType;
 
 public class  ASTReff extends ASTNode {
@@ -10,7 +8,7 @@ public class  ASTReff extends ASTNode {
     public ASTNode id, exp;
 
     public ASTReff(ASTNode e1, ASTNode e2) {
-        super(new RefType(e2.getType()));
+        super(new RefType(e2.getASTType()));
         this.id = e1;
         this.exp = e2;
     }

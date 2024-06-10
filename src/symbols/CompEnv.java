@@ -1,13 +1,14 @@
 package symbols;
 
 import ast.ASTNode;
+import type.Type;
 
 import java.util.Hashtable;
 import java.util.Map;
 
 public class CompEnv {
 
-    public Map<String, Integer> table;
+    public Map<String, Tuple<Integer, Type>> table;
 
     public CompEnv prev;
 
@@ -16,24 +17,25 @@ public class CompEnv {
         this.prev = prev;
     }
 
-    private Tuple<Integer, Integer> findIt(String id) {
-        Integer loc;
+    private Tuple<Integer, Tuple<Integer, Type>> findIt(String id) {
         CompEnv env = this;
+        Tuple<Integer, Type> tuple;
         int depth = -1;
         do{
-            loc = env.table.get(id);
+            tuple = env.table.get(id);
             env = env.prev;
             depth++;
-        }while (loc == null && env != null);
-        return new Tuple<>(depth, loc);
+        }while (tuple == null && env != null);
+        return new Tuple<>(depth, tuple);
     }
 
-    public Tuple<Integer, Integer> find(String id) {
+    public Tuple<Integer, Tuple<Integer, Type>> find(String id) {
         return findIt(id);
     }
 
-    public void bind(String varId) {
-        table.putIfAbsent(varId, table.size());
+    public void bind(String varId, Type t) {
+        Tuple<Integer, Type> tuple = new Tuple<>(table.size(), t);
+        table.putIfAbsent(varId, tuple);
     }
 
 }

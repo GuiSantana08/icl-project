@@ -16,11 +16,9 @@ import ast.operations.relational.*;
 import ast.value.ASTBool;
 import ast.value.ASTInt;
 import ast.value.ASTString;
-import exceptions.DuplicateVariableFoundException;
 import exceptions.InvalidTypeException;
 import symbols.Env;
 import symbols.Tuple;
-import value.RefValue;
 
 import java.util.List;
 
@@ -250,7 +248,7 @@ public class TypeChecker implements Visitor<Type, Env<Type>>{
 
     @Override
     public Type visit(ASTExit e, Env<Type> env) {
-        return e.getType();
+        return e.getASTType();
     }
 
     private Type handleIntegerOperation(ASTNode arg1, ASTNode arg2, String operationName, Env<Type> env) {

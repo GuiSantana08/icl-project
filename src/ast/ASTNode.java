@@ -64,7 +64,7 @@ public abstract class ASTNode {
         return type.jvmType();
     }
 
-    public Type getType() {
+    public Type getASTType() {
         return type;
     }
     public void setType(Type type) {

@@ -1,11 +1,8 @@
 package ast.functions;
 
 import ast.ASTNode;
-import exceptions.DuplicateVariableFoundException;
-import exceptions.InvalidTypeException;
 import symbols.Tuple;
 import type.ClosureType;
-import type.RefType;
 
 import java.util.List;
 
@@ -15,7 +12,7 @@ public class ASTDefFun extends ASTNode {
 
 
     public ASTDefFun(List<Tuple<String, String>> params, ASTNode body) {
-        super(new ClosureType(body.getType(), null)); //TODO: check if this ok
+        super(new ClosureType(body.getASTType(), null)); //TODO: check if this ok
         this.params = params;
         this.body = body;
     }

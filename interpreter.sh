@@ -16,4 +16,4 @@ else
     echo "Argument provided: $1. Running InterMain with argument..."
     java main.InterMain ../examples/"$1"
 fi
-cd ../bin
+cd ../

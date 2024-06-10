@@ -1,16 +1,13 @@
 package ast.operations.references;
 
 import ast.ASTNode;
-import exceptions.DuplicateVariableFoundException;
-import exceptions.InvalidTypeException;
-import type.RefType;
 
 public class ASTDRef extends ASTNode {
 
     public ASTNode exp;
 
     public ASTDRef(ASTNode exp) {
-        super(new RefType(exp.getType()));
+        super(exp.getASTType());
         this.exp = exp;
     }
 

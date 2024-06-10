@@ -11,7 +11,7 @@ public class ASTId extends ASTNode {
     public String id;
 
     public ASTId(String id) {
-        super(new RefType(null));
+        super(null);
         this.id = id;
     }
     @Override

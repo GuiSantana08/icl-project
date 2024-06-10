@@ -29,6 +29,7 @@ import target.operations.New;
 import target.operations.arithmetic.*;
 import target.operations.references.*;
 import target.operations.relational.*;
+import type.RefType;
 import type.Type;
 
 import java.io.FileNotFoundException;
@@ -44,6 +45,7 @@ public class CodeGen implements Visitor<Void, Void> {
 
     private static final String getBaseFrame = "Ljava/lang/Object;";
     private static final String putBaseFrame = "Ljava/lang/Object;";
+    private static final String TYPE = "ref_";
     int frameId;
     int closureId;
 
@@ -203,21 +205,25 @@ public class CodeGen implements Visitor<Void, Void> {
 
     @Override
     public Void visit(ASTId e, Void v) {
-        Tuple<Integer, Integer> location = this.block.env.find(e.id);
+        Tuple<Integer, Tuple<Integer, Type>> location = this.block.env.find(e.id);
         Frame actualFrame = block.currFrame;
         int depth = actualFrame.id;
         block.addInstruction(new ILoad());
         int targetDeep = location.item1();
         for(int i = 0; i < targetDeep; i++){
-            String acFrame = "frame_" + actualFrame.id + "/sl";
-            String prevFrame = "Lframe_" + (actualFrame.id - 1) + ";";
+            String acFrame = "frame_" + depth + "/sl";
+            String prevFrame = "Lframe_" + (depth - 1) + ";";
             block.addInstruction(new IgetField(acFrame, prevFrame));
             actualFrame = actualFrame.prev;
         }
-        int targetPos = location.item2();
-        String var = "frame_" + actualFrame.id + "/loc_" + targetPos;
-        String varType = actualFrame.getTypes().get(location.item2());
-        block.addInstruction(new IgetField(var, varType));
+        int targetPos = location.item2().item1();
+        e.setType(location.item2().item2());
+        String var = "frame_" + depth + "/loc_" + targetPos;
+        String JVMType = e.getJVMType();
+        if(JVMType.contains("ref")) {
+            JVMType = "L" + TYPE + e.getASTType().getType() + ";";
+        }
+        block.addInstruction(new IgetField(var, JVMType));
        return null;
     }
 
@@ -225,7 +231,6 @@ public class CodeGen implements Visitor<Void, Void> {
     public Void visit(ASTReff e, Void v) {
         e.exp.accept(this, v);
         block.addInstruction(new IDRef());
-        Tuple<Integer, Integer> location = this.block.env.find(e.id.toString());
         return null;
     }
 
@@ -263,7 +268,6 @@ public class CodeGen implements Visitor<Void, Void> {
     @Override
     public Void visit(ASTSeq e, Void v) {
         e.left.accept(this, v);
-        block.addInstruction(new Pop());
         e.right.accept(this, v);
         return null;
     }
@@ -271,8 +275,10 @@ public class CodeGen implements Visitor<Void, Void> {
     @Override
     public Void visit(ASTDRef e, Void v) {
         e.exp.accept(this, v);
-        Type refType = e.exp.getType();
-        block.addInstruction(new IgetField(e.getJVMType() + "/value", refType.getType()));
+        String JVMType = e.exp.getJVMType();
+        RefType ref = (RefType) e.exp.getASTType();
+        String refType = ref.getRefType().jvmType();
+        block.addInstruction(new IgetField(JVMType + "/value", refType));
         return null;
     }
 
@@ -302,7 +308,7 @@ public class CodeGen implements Visitor<Void, Void> {
             CompEnv env = letDef.item2();
             Tuple<String, String> var = it.next();
             String id = var.item1();
-            env.bind(id);
+            env.bind(id, null);
             block.addInstruction(new ILoad());
             String node = var.item2();
             String closureFile = "closure_" + block.currClosure.id + "/v" + block.currClosure.types.size();;
@@ -336,13 +342,16 @@ public class CodeGen implements Visitor<Void, Void> {
             CompEnv env = letDef.item2();
             Tuple<String, ASTNode> var = it.next();
             String id = var.item1();
-            env.bind(id);
+            env.bind(id, var.item2().getASTType());
             block.addInstruction(new ILoad());
             ASTNode node = var.item2();
             node.accept(this, v);
             String frameFile = "frame_" + block.currFrame.id + "/loc_" + block.currFrame.getTypes().size();
             String type = node.getJVMType();
-            block.currFrame.addType(type);
+            block.currFrame.addType(node.getASTType().jvmType());
+            if(type.contains("ref")){
+                type = "L" + TYPE + node.getASTType().getType() + ";";
+            }
             block.addInstruction(new IputField(frameFile, type));
         }
         genFrameCode(block.currFrame);
@@ -387,13 +396,13 @@ public class CodeGen implements Visitor<Void, Void> {
 
     @Override
     public Void visit(ASTNew e, Void v) {
-        String ref = e.getType().getType();
+        String ref = TYPE + e.getASTType().getType();
         block.addInstruction(new New(ref));
         block.addInstruction(new Dup());
         block.addInstruction(new IinvokeEspecial(ref + "/<init>()V"));
         block.addInstruction(new Dup());
         e.exp.accept(this, v);
-        block.addInstruction(new IputField(e.getJVMType() + "/value", e.exp.getJVMType()));
+        block.addInstruction(new IputField(ref + "/value", e.exp.getJVMType()));
 
         StringBuilder sb = new StringBuilder();
         String head = """
@@ -438,6 +447,8 @@ public class CodeGen implements Visitor<Void, Void> {
         int varCount = 0;
         while(vars.hasNext()){
             String t = vars.next();
+            if(t.contains("ref"))
+                t = "L" + t + ";";
             variables.append("\n.field public loc_").append(varCount).append(" ").append(t);
             varCount++;
         }
@@ -481,6 +492,8 @@ public class CodeGen implements Visitor<Void, Void> {
         int varCount = 0;
         while (vars.hasNext()) {
             String t = vars.next();
+            if(t.contains("ref"))
+                t = "L" + t + ";";
             variables.append("\n.field public v").append(varCount).append(" ").append(convertToJVM(t));
             varCount++;
         }
